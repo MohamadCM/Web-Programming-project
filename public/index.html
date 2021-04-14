@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+      <style>
+          @font-face { /* Importing local font */
+          font-family: "IranianSans";
+          src: local("IranianSans"),   url(../public/IranianSans.ttf) format("truetype");}
+      body { /* Setting font for body */
+          font-family: IranianSans, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-align: center;
+          color: #2c3e50;
+      }
+      button { /* Setting font for buttons */
+          font-family: inherit;
+      }
+      </style>
   </head>
   <body>
     <noscript>
