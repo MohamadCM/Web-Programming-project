@@ -1,30 +1,29 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">خانه</router-link> |
-      <router-link to="/about">درباره</router-link>
-      <button>خانه</button>
-    </div>
     <router-view/>
+    <footer class="footer--stick-bottom"><my-footer></my-footer></footer>
   </div>
 </template>
 
+<script>
+import myFooter from './components/my-footer.vue';
+
+export default {
+  components: {
+    myFooter,
+  },
+};
+</script>
 <style lang="scss">
-
-@font-face {
-  font-family: "IranianSans";
-  src: local("IranianSans"),   url(../public/IranianSans.ttf) format("truetype");}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.footer--stick-bottom { /* Stick footer to bottom of the window */
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
+@font-face { /* import Iran sans font */
+  font-family: "IranianSans";
+  src: local("IranianSans"),   url(../public/IranianSans.ttf) format("truetype");
+}
+
 </style>
