@@ -8,21 +8,19 @@
              :text="button.text"
              :on-click-function="button.onClickFunction"/>
   <div class="header__item" />
-  <div class="header__item" />
-  <my-button id="loginButton"
-             color="transparent"
-             text="ورود / ثبت نام"
-             on-click-function="button.onClickFunction"/>
+  <button-login class="header__item"/>
 </div>
 </template>
 
 <script>
 import myButton from './core/my-button.vue';
+import buttonLogin from './button-login.vue';
 
 export default {
   name: 'my-header',
   components: {
     myButton,
+    buttonLogin,
   },
   data() {
     return {
@@ -51,24 +49,12 @@ export default {
   color: #0EBAC5;
   margin: auto;
 }
-#loginButton {
-  /*Border's CSS*/
-  outline-color: #FFC80A;
-  outline-style: solid;
-  -moz-outline-radius: 25px;
-  /*Location's CSS*/
-  width: 10%;
-  float: right;
-  padding: 15px;
-  position: relative;
-  margin: auto;
-}
 * {
   box-sizing: border-box;
   float: right;
 }
 .header__item {
-  width: 12%;
+  width: 14%;
   float: right;
   padding: 15px;
   position: relative;

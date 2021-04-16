@@ -30,6 +30,7 @@ export default {
   top: 0;
   width: 100%;
   margin: 5px;
+  font-family: IranianSans,sans-serif;
 }
 @font-face { /* import Iran sans font */
   font-family: "IranianSans";
