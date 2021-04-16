@@ -3,6 +3,7 @@
           :style="style"
           @mouseover="mouseOver"
           @mouseout="mouseOver"
+          @click="onClickFunction"
           >
     {{text}}
   </button>
@@ -29,6 +30,10 @@ export default {
       type: String,
       default: '#00A1FF',
     },
+    onClickFunction: {
+      type: Function,
+      default: () => {},
+    },
   },
   methods: {
     mouseOver() {
@@ -52,7 +57,7 @@ export default {
   box-shadow: none;
   font-family: inherit;
   font-size: 15px;
-  padding: 0.7% 1.5%;
+  padding: 0.0% 1.5%;
   border-radius: 20px;
   border: 0 solid;
 }

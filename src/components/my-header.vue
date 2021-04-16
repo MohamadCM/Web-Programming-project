@@ -1,7 +1,18 @@
 <template>
 <div class="header">
-  <h1 class="logo">{{logoTitle}}</h1>
-  <my-button color="transparent" text="ورود / ثبت نام"/>
+  <h1 class="logo header__item">{{logoTitle}}</h1>
+  <my-button v-for="button of buttons"
+             :key="button.text"
+             class="header__item"
+             color="transparent"
+             :text="button.text"
+             :on-click-function="button.onClickFunction"/>
+  <div class="header__item" />
+  <div class="header__item" />
+  <my-button id="loginButton"
+             color="transparent"
+             text="ورود / ثبت نام"
+             on-click-function="button.onClickFunction"/>
 </div>
 </template>
 
@@ -16,6 +27,12 @@ export default {
   data() {
     return {
       logoTitle: 'فروشگاه',
+      buttons: [
+        { text: 'صفحه اول', onClickFunction: () => { this.$router.push('/'); } },
+        { text: 'تماس با ما', onClickFunction: () => { this.$router.push('/'); } },
+        { text: 'پشتیبانی', onClickFunction: () => { this.$router.push('/'); } },
+        { text: 'محصولات', onClickFunction: () => { this.$router.push('/'); } },
+      ],
     };
   },
 };
@@ -23,18 +40,38 @@ export default {
 
 <style scoped>
 .header {
-  background-color: white;
+  background-color: transparent;
   text-align: right;
   direction: rtl;
-  padding: 65px;
+  height: 65px;
+  width: 100%;
 }
 .logo {
   font-size: 18px;
   color: #0EBAC5;
+  margin: auto;
 }
 #loginButton {
-  outline-color: gold;
+  /*Border's CSS*/
+  outline-color: #FFC80A;
   outline-style: solid;
-  -moz-outline-radius: 20px;
+  -moz-outline-radius: 25px;
+  /*Location's CSS*/
+  width: 10%;
+  float: right;
+  padding: 15px;
+  position: relative;
+  margin: auto;
+}
+* {
+  box-sizing: border-box;
+  float: right;
+}
+.header__item {
+  width: 12%;
+  float: right;
+  padding: 15px;
+  position: relative;
+  margin: auto;
 }
 </style>

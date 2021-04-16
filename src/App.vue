@@ -26,9 +26,10 @@ export default {
 }
 .header--stick-top {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   width: 100%;
+  margin: 5px;
 }
 @font-face { /* import Iran sans font */
   font-family: "IranianSans";
