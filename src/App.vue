@@ -1,16 +1,19 @@
 <template>
   <div id="app">
+    <header class="header--stick-top"><my-header /></header>
     <router-view/>
-    <footer class="footer--stick-bottom"><my-footer></my-footer></footer>
+    <footer class="footer--stick-bottom"><my-footer /></footer>
   </div>
 </template>
 
 <script>
 import myFooter from './components/my-footer.vue';
+import myHeader from './components/my-header.vue';
 
 export default {
   components: {
     myFooter,
+    myHeader,
   },
 };
 </script>
@@ -19,6 +22,12 @@ export default {
   position: fixed;
   left: 0;
   bottom: 0;
+  width: 100%;
+}
+.header--stick-top {
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 100%;
 }
 @font-face { /* import Iran sans font */
