@@ -44,16 +44,23 @@ export default {
   border-radius: 20px;
   box-shadow: 0 6px 5px -5px rgba(0,0,0,0.3);
 }
+/* Arrow */
 .dropdown > a::after, .dropdown.toggle > label::after {
-  content: '\02C5';
+  content: '\142F';
   float: left;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
+  border-left: 15px solid transparent;
   border-right: 5px solid transparent;
   position: relative;
   left: 5px;
-  font-size: 20px;
+  font-size: 12px;
+}
+/* Hide arrow on small screens */
+@media (max-width: 767px) {
+  .dropdown > a::after, .dropdown.toggle > label::after {
+    display: none;
+  }
 }
 .dropdown ul {
   list-style-type: none;
@@ -133,6 +140,12 @@ export default {
   position: relative;
   margin: auto;
   background: transparent none;
+}
+/* Login bottom size on smaller screens */
+@media screen and (max-width: 767px) {
+  #loginButton {
+    font-size: 10px;
+  }
 }
 #loginButton:hover {
   background-color: #FFC80A;

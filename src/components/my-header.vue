@@ -49,6 +49,13 @@ export default {
   color: #0EBAC5;
   margin: auto;
 }
+/* logo size on smaller screens */
+@media screen and (max-width: 767px) {
+  .logo {
+    font-size: 14px;
+  }
+}
+
 * {
   box-sizing: border-box;
   float: right;
@@ -57,7 +64,6 @@ export default {
   width: 14%;
   float: right;
   padding: 15px;
-  position: relative;
   margin: auto;
 }
 </style>

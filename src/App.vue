@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <header class="header--stick-top"><my-header /></header>
     <router-view/>
     <footer class="footer--stick-bottom"><my-footer /></footer>
@@ -25,7 +25,6 @@ export default {
   width: 100%;
 }
 .header--stick-top {
-  position: fixed;
   right: 0;
   top: 0;
   width: 100%;
@@ -35,6 +34,11 @@ export default {
 @font-face { /* import Iran sans font */
   font-family: "IranianSans";
   src: local("IranianSans"),   url(../public/IranianSans.ttf) format("truetype");
+}
+/*Flex container*/
+.container {
+  display: flex;
+  flex-direction: column;
 }
 
 </style>
