@@ -18,11 +18,18 @@ export default {
 };
 </script>
 <style lang="scss">
+#app {
+  max-width: 1280px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 .footer--stick-bottom { /* Stick footer to bottom of the window */
   position: fixed;
-  left: 0;
   bottom: 0;
   width: 100%;
+  max-width: 1280px;
 }
 .header--stick-top {
   right: 0;
