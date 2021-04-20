@@ -138,11 +138,11 @@ export default {
   float: right;
   padding: 15px;
   position: relative;
-  margin: auto;
+  margin: 5px 0;
   background: transparent none;
 }
 /* Login bottom size on smaller screens */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 960px) {
   #loginButton {
     font-size: 10px;
   }
