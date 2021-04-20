@@ -38,7 +38,7 @@ export default {
 
 <style scoped>
 .header {
-  background-color: transparent;
+  background-color: white;
   text-align: right;
   direction: rtl;
   height: 65px;

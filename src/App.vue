@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container">
     <header class="header--stick-top"><my-header /></header>
-    <router-view/>
+    <router-view />
     <footer class="footer--stick-bottom"><my-footer /></footer>
   </div>
 </template>
@@ -23,6 +23,7 @@ export default {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: -7px;
   display: block;
 }
 .footer--stick-bottom { /* Stick footer to bottom of the window */
@@ -32,10 +33,9 @@ export default {
   max-width: 1280px;
 }
 .header--stick-top {
-  right: 0;
   top: 0;
   width: 100%;
-  margin: 5px;
+  max-width: 1280px;
   font-family: IranianSans,sans-serif;
 }
 @font-face { /* import Iran sans font */
@@ -45,7 +45,7 @@ export default {
 /*Flex container*/
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 </style>
