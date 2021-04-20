@@ -30,6 +30,10 @@ export default {
       type: String,
       default: '#00A1FF',
     },
+    backGroundColor: {
+      type: String,
+      default: 'transparent',
+    },
     onClickFunction: {
       type: Function,
       default: () => {},
@@ -43,7 +47,7 @@ export default {
   computed: {
     style() {
       return `color: ${this.hovering ? '#0EBAC5' : 'black'};
-      background-color: ${this.color}`;
+      background-color: ${this.backGroundColor}`;
     },
   },
 };
@@ -58,7 +62,7 @@ export default {
   font-family: inherit;
   font-size: 15px;
   padding: 0.0% 1.5%;
-  border-radius: 20px;
+  border-radius: 24px;
   border: 0 solid;
 }
 </style>
