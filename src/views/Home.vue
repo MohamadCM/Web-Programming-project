@@ -17,6 +17,7 @@
         :category="product.category"
         :name="product.name"
         :price="product.price"
+        :image="product.image"
         class="product-box__item"
         >
         </product-card>
@@ -46,19 +47,22 @@ export default {
         id: 0,
         name: 'نام',
         category: 'دسته بندی',
-        price: 1235,
+        price: 1,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG',
       },
       {
         id: 1,
         name: 'نام2',
         category: 'دسته بندی2',
         price: 1235,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG',
       },
       {
         id: 2,
         name: 'نام2',
         category: 'دسته بندی2',
         price: 1235,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG',
       },
 
       {
@@ -66,6 +70,7 @@ export default {
         name: 'نام2',
         category: 'دسته بندی2',
         price: 1235,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG',
       },
       ],
     };
@@ -84,6 +89,7 @@ export default {
   margin-right: 10px;
   display: flex;
   flex-direction: row;
+  margin-top: 15px;
 }
 /* Filter box sizing */
 .filter-box {
@@ -101,6 +107,9 @@ export default {
   min-width: 200px;
   max-width: 30%;
 }
+.product-box__item {
+  margin-bottom: 15px;
+}
 /* Sizing in smaller screens */
 @media (max-width: 768px) {
   #main-part{
@@ -116,6 +125,11 @@ export default {
   .product-wrapper {
     margin-left: 0;
     max-width: 100%;
+  }
+}
+@media (min-width: 1280px) {
+  .product-wrapper {
+    max-width: 280px;
   }
 }
 </style>

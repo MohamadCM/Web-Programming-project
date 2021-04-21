@@ -29,9 +29,9 @@
           <input id='b' type='range' min='0' :max='initialSliderMax' v-model="min"/>
         </div>
         <div id="range__values">
-        <span>{{shownMinMax.min}}</span>
+        <span style="float: right; margin-right: 5px">{{shownMinMax.min}}</span>
         <span>  تا </span>
-        <span>{{shownMinMax.max}}</span>
+        <span style="float: left; margin-left: 5px">{{shownMinMax.max}}</span>
         </div>
       </div>
   </div>
@@ -99,7 +99,6 @@ export default {
   text-align: right;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
-  margin-top: 10px;
 }
 
 /* Creating bottom line for p */
@@ -158,6 +157,7 @@ export default {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 /* Sliders wrapper */
 .wrap {

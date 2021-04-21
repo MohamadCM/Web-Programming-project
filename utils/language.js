@@ -4,7 +4,7 @@ function toFarsiNumber(n) {
   return n
     .toString()
     .split('')
-    .map((x) => farsiDigits[x])
+    .map((x) => (Number(x) || x === '0' ? farsiDigits[x] : x))
     .join('');
 }
 export default { toFarsiNumber };
