@@ -56,11 +56,11 @@ export default {
     return {
       categories: [
         {
-          id: 0,
+          id: 1,
           title: 'دسته‌بندی یک',
         },
         {
-          id: 1,
+          id: 2,
           title: 'دسته‌بندی دو',
         },
         {
