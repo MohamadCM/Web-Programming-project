@@ -93,6 +93,12 @@ export default {
 .btn:hover {
   box-shadow: 0 0 3pt 0.5pt silver;
 }
+@media (max-width: 500px) {
+  .btn {
+    padding: 5px 10px;
+    margin-top: 10px;
+  }
+}
 /*Flex container*/
 .container {
   display: flex;
