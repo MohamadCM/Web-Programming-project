@@ -27,7 +27,7 @@ export default {
   display: block;
 }
 .footer--stick-bottom { /* Stick footer to bottom of the window */
-  position: fixed;
+  position: sticky;
   bottom: 0;
   width: 100%;
   max-width: 1280px;

@@ -33,11 +33,12 @@ export default {
 #main-part {
   margin-left: 10px;
   margin-right: 10px;
+  overflow: auto;
 }
 .filter-box {
   width: 25%;
 }
-@media (max-width: 768px) {
+@media (max-width: 680px) {
   .filter-box{
     width: 100%;
   }
