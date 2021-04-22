@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="container">
+    <div class="container__top">
     <header class="header--stick-top"><my-header /></header>
     <router-view />
+    </div>
     <footer class="footer--stick-bottom"><my-footer /></footer>
   </div>
 </template>
@@ -47,5 +49,8 @@ export default {
   display: flex;
   flex-direction: row;
 }
-
+/* Fixing upper parts to top */
+.container__top {
+  min-height: 100vh;
+}
 </style>

@@ -8,7 +8,7 @@
              :text="button.text"
              :on-click-function="button.onClickFunction"/>
   <div class="header__item" />
-  <button-login class="header__item"/>
+  <button-login class="header__item"/> <!-- TODO: Hide this ln login page -->
 </div>
 </template>
 

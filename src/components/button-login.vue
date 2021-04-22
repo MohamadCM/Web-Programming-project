@@ -6,7 +6,9 @@
       <li><a href="#">خروج از حساب</a></li>
     </ul>
   </div>
-  <button v-else id="loginButton">
+  <button v-else
+           id="loginButton"
+           @click="loginOnClick">
     ورود / ثبت نام
   </button>
 </template>
@@ -24,6 +26,11 @@ export default {
   },
   mounted() {
     this.isLogged = auth.isLoggedIn();
+  },
+  methods: {
+    loginOnClick() {
+      if (!this.$router.currentRoute.path.includes('login')) this.$router.push('/login');
+    },
   },
 };
 </script>
