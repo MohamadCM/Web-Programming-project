@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      isSignupMode: false, // TODO: Place link/button to change this (And Change page title)
+      isSignupMode: true, // TODO: Place link/button to change this (And Change page title)
       email: '', // TODO: Add validation
       password: '',
       name: '',
@@ -88,7 +88,7 @@ export default {
 <style scoped>
 /* Overall Container styling */
 #login-container {
-  padding-top: 20%;
+  padding-top: 22%;
 }
 
 /* Title styling */

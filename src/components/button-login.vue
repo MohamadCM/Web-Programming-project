@@ -1,6 +1,8 @@
 <template>
   <div v-if="isLogged" class="dropdown hover">
-    <a href="#" style="background: #FFC80A;">{{ username }}</a>
+    <a href="#" id="dropdown-a">
+      {{ username }}
+    </a>
     <ul>
       <li><a href="#" style="font-family:  sans-serif !important; ">پروفایل</a></li>
       <li><a href="#">خروج از حساب</a></li>
@@ -36,6 +38,15 @@ export default {
 </script>
 
 <style scoped>
+/* Dropdown button styling */
+#dropdown-a {
+  background: white;
+  border: solid 2px #FFC80A;
+}
+#dropdown-a:hover {
+  background: #FFC80A;
+  color: black;
+}
 .dropdown {
   display: inline-block;
   margin-right: 10px;
