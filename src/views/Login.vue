@@ -38,7 +38,7 @@
         <template>
         <text-field
           area
-          style="height: 128px; width: 87.5%"
+          style="height: 128px; width: 89%"
           class="login-text-field"
           placeholder="آدرس خود را وارد کنید..."
           title="آدرس" v-model="address"/>
@@ -96,6 +96,7 @@ export default {
   font-family: inherit;
   font-size: 32px;
   color: #0EBAC5;
+  margin-bottom: 30px;
 }
 
 /* Login form */
@@ -109,9 +110,9 @@ export default {
 .login-text-field {
   height: 48px;
   width: 50%;
-  margin-bottom: 30px;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 /* my-buttons specific styling */
