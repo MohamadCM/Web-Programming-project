@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      isSignupMode: true, // TODO: Place link/button to change this (And Change page title)
+      isSignupMode: false, // TODO: Place link/button to change this (And Change page title)
       email: '', // TODO: Add validation
       password: '',
       name: '',
