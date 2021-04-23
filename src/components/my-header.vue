@@ -4,7 +4,7 @@
   <my-button v-for="button of buttons"
              :key="button.text"
              class="header__item"
-             color="transparent"
+             color="#0EBAC5"
              :text="button.text"
              :on-click-function="button.onClickFunction"/>
   <div class="header__item" />

@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     style() {
-      return `color: ${this.hovering ? '#0EBAC5' : 'black'};
+      return `color: ${this.hovering ? this.color : 'black'};
       background-color: ${this.backGroundColor}`;
     },
   },
