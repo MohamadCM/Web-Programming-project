@@ -1,22 +1,22 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import Login from '../views/Login.vue';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'خانه',
-    component: Home,
-  },
-  {
-    path: '/login',
-    name: 'ورود',
-    component: Login,
-  },
-  /* {
+	{
+		path: "/",
+		name: "خانه",
+		component: Home
+	},
+	{
+		path: "/login",
+		name: "ورود",
+		component: Login
+	}
+	/* {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -27,12 +27,12 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes,
+	routes
 });
 
 router.afterEach((to) => { // Setting page name on each route change
-  Vue.nextTick(() => {
-    document.title = to.name;
-  });
+	Vue.nextTick(() => {
+		document.title = to.name;
+	});
 });
 export default router;

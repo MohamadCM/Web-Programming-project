@@ -1,55 +1,62 @@
 <template>
-  <div id="sort-box" class="container">
+  <div
+    id="sort-box"
+    class="container"
+  >
     <div>
-    <p class="title">مرتب سازی بر اساس: </p>
+      <p class="title">
+        مرتب سازی بر اساس:
+      </p>
     </div>
     <div>
-    <button v-for="(btn, index) of buttons"
-               :key="btn.text"
-               :text="btn.text"
-               :color="btn.color"
-               @click="selection(index)"
-               :back-ground-color="btn.backGroundColor"
-                :style="style(index)"
-               class="btn btn__box-shadow btn__margin">
-      {{btn.text}}
-    </button>
+      <button
+        v-for="(btn, index) of buttons"
+        :key="btn.text"
+        :text="btn.text"
+        :color="btn.color"
+        :back-ground-color="btn.backGroundColor"
+        :style="style(index)"
+        class="btn btn__box-shadow btn__margin"
+        @click="selection(index)"
+      >
+        {{ btn.text }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'sort-box',
-  components: {
-  },
-  data() {
-    return {
-      buttons: [{
-        text: 'بیشترین فروش',
-        backGroundColor: '#00A1FF',
-        color: 'white',
-      }, {
-        text: 'قیمت',
-        backGroundColor: 'white',
-        color: 'black',
-      }],
-    };
-  },
-  methods: {
-    selection(buttonIndex) {
-      this.buttons[buttonIndex].color = 'white';
-      this.buttons[buttonIndex].backGroundColor = '#00A1FF';
-      const changeIndex = buttonIndex === 1 ? 0 : 1;
-      this.buttons[changeIndex].color = 'black';
-      this.buttons[changeIndex].backGroundColor = 'white';
-    },
-    style(index) {
-      // Selection logic and requests
-      return `color: ${this.buttons[index].color};
+	name: "SortBox",
+	components: {
+	},
+	data() {
+		return {
+			buttons: [{
+				text: "بیشترین فروش",
+				backGroundColor: "#00A1FF",
+				color: "white"
+			}, {
+				text: "قیمت",
+				backGroundColor: "white",
+				color: "black"
+			}]
+		};
+	},
+	methods: {
+		selection(buttonIndex) {
+			this.buttons[buttonIndex].color = "white";
+			this.buttons[buttonIndex].backGroundColor = "#00A1FF";
+			const changeIndex = buttonIndex === 1 ? 0 : 1;
+			this.buttons[changeIndex].color = "black";
+			this.buttons[changeIndex].backGroundColor = "white";
+		},
+		style(index) {
+			// Selection logic and requests
+			return `color: ${this.buttons[index].color};
       background-color: ${this.buttons[index].backGroundColor}`;
-    },
-  },
+		}
+	}
 
 };
 </script>

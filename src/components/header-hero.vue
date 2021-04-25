@@ -1,32 +1,42 @@
 <template>
-<div class="header-hero">
-  <div>
-  <p id="title">در محصولات سایت جستجو کنید...</p>
+  <div class="header-hero">
+    <div>
+      <p id="title">
+        در محصولات سایت جستجو کنید...
+      </p>
+    </div>
+    <div>
+      <input
+        type="text"
+        class="text-field"
+        onfocus="placeholder = ''"
+        onblur="placeholder = 'نام محصول خود را وارد کنید...'"
+        :placeholder="placeholder"
+      >
+    </div>
+    <div>
+      <button class="button-search">
+        جستجو کنید
+      </button>
+    </div>
+    <div>
+      <img
+        id="image-clock"
+        src="../assets/clock.png"
+        alt="Tick toc..."
+      >
+    </div>
   </div>
-  <div>
-  <input type="text"
-         class="text-field"
-         onfocus="placeholder = ''"
-         onblur="placeholder = 'نام محصول خود را وارد کنید...'"
-         :placeholder="placeholder">
-  </div>
-  <div>
-  <button class="button-search">جستجو کنید</button>
-  </div>
-  <div>
-    <img id="image-clock" src="../assets/clock.png" alt="Tick toc..."/>
-  </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: 'header-hero',
-  data() {
-    return {
-      placeholder: 'نام محصول خود را وارد کنید...',
-    };
-  },
+	name: "HeaderHero",
+	data() {
+		return {
+			placeholder: "نام محصول خود را وارد کنید..."
+		};
+	}
 };
 </script>
 

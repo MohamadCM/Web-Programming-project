@@ -1,22 +1,29 @@
 <template>
-  <div id="app" class="container">
+  <div
+    id="app"
+    class="container"
+  >
     <div class="container__top">
-    <header class="header--stick-top"><my-header /></header>
-    <router-view />
+      <header class="header--stick-top">
+        <my-header />
+      </header>
+      <router-view />
     </div>
-    <footer class="footer--stick-bottom"><my-footer /></footer>
+    <footer class="footer--stick-bottom">
+      <my-footer />
+    </footer>
   </div>
 </template>
 
 <script>
-import myFooter from './components/my-footer.vue';
-import myHeader from './components/my-header.vue';
+import myFooter from "./components/my-footer.vue";
+import myHeader from "./components/my-header.vue";
 
 export default {
-  components: {
-    myFooter,
-    myHeader,
-  },
+	components: {
+		myFooter,
+		myHeader
+	}
 };
 </script>
 <style lang="scss">

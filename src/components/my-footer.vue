@@ -1,17 +1,17 @@
 <template>
   <div class="footer">
-    {{text}}
+    {{ text }}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'footer',
-  data() {
-    return {
-      text: 'تمامی حقوق برای محمد چمن مطلق محفوظ است.©',
-    };
-  },
+	name: "Footer",
+	data() {
+		return {
+			text: "تمامی حقوق برای محمد چمن مطلق محفوظ است.©"
+		};
+	}
 };
 </script>
 

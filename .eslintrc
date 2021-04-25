@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/recommended"
+  ],
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "rules": {
+    "comma-dangle": "warn", // No dangling comma
+    "semi": "error", // Mandatory Semi-colon
+    "indent": ["warn", "tab", { "SwitchCase": 1 }], // tab for indent
+    "max-len": ["warn", { "code": 120, "ignoreTrailingComments": true, "comments": 150  }], // Setiing Maximun line length
+    "quotes": ["error", "double"]
+  },
+  "ignorePatterns": ["node_modules"]
+}

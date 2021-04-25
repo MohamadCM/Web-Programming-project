@@ -5,17 +5,23 @@
         دسته بندی
       </p>
       <div class="category-container__all">
-      <div v-for="category of categories"
-           :key="category.id"
-      class="category-container">
-        <input
-          class="category"
-          type="checkbox"
-          :id="category.id"
-          :value="category.id"
-          v-model="selectedCategory">
-        <label :for="category.id" class="category__label">{{ category.title }}</label>
-      </div>
+        <div
+          v-for="category of categories"
+          :key="category.id"
+          class="category-container"
+        >
+          <input
+            :id="category.id"
+            v-model="selectedCategory"
+            class="category"
+            type="checkbox"
+            :value="category.id"
+          >
+          <label
+            :for="category.id"
+            class="category__label"
+          >{{ category.title }}</label>
+        </div>
       </div>
       <br>
     </div>
@@ -23,67 +29,83 @@
       <p class="category-card__title">
         تنظیم قیمت کالا
       </p>
-        <div class='wrap' role='group'
-             aria-labelledby='multi-lbl' :style=rangeStyle>
-          <input id='a' type='range' min='0' :max='initialSliderMax' v-model="max"/>
-          <input id='b' type='range' min='0' :max='initialSliderMax' v-model="min"/>
-        </div>
-        <div id="range__values">
-        <span style="float: right; margin-right: 5px">{{shownMinMax.min}}</span>
-        <span>  تا </span>
-        <span style="float: left; margin-left: 5px">{{shownMinMax.max}}</span>
-        </div>
+      <div
+        class="wrap"
+        role="group"
+        aria-labelledby="multi-lbl"
+        :style="rangeStyle"
+      >
+        <input
+          id="a"
+          v-model="max"
+          type="range"
+          min="0"
+          :max="initialSliderMax"
+        >
+        <input
+          id="b"
+          v-model="min"
+          type="range"
+          min="0"
+          :max="initialSliderMax"
+        >
       </div>
+      <div id="range__values">
+        <span style="float: right; margin-right: 5px">{{ shownMinMax.min }}</span>
+        <span>  تا </span>
+        <span style="float: left; margin-left: 5px">{{ shownMinMax.max }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import language from '../../utils/language';
+import language from "../../utils/language";
 
 export default {
-  name: 'filter-box',
-  props: {
-    initialSliderMin: {
-      type: Number,
-      default: 0,
-    },
-    initialSliderMax: {
-      type: Number,
-      default: 50,
-    },
-  },
-  data() {
-    return {
-      categories: [
-        {
-          id: 1,
-          title: 'دسته‌بندی یک',
-        },
-        {
-          id: 2,
-          title: 'دسته‌بندی دو',
-        },
-        {
-          id: 3,
-          title: 'دسته‌بندی سه',
-        },
-      ],
-      selectedCategory: [],
-      min: this.initialSliderMin,
-      max: this.initialSliderMax,
-    };
-  },
-  computed: {
-    rangeStyle() {
-      return `--a: ${50}; --b: ${0}; --min: ${0}; --max: ${50}`;
-    },
-    shownMinMax() {
-      return {
-        max: language.toFarsiNumber(this.max),
-        min: language.toFarsiNumber(this.min),
-      };
-    },
-  },
+	name: "FilterBox",
+	props: {
+		initialSliderMin: {
+			type: Number,
+			default: 0
+		},
+		initialSliderMax: {
+			type: Number,
+			default: 50
+		}
+	},
+	data() {
+		return {
+			categories: [
+				{
+					id: 1,
+					title: "دسته‌بندی یک"
+				},
+				{
+					id: 2,
+					title: "دسته‌بندی دو"
+				},
+				{
+					id: 3,
+					title: "دسته‌بندی سه"
+				}
+			],
+			selectedCategory: [],
+			min: this.initialSliderMin,
+			max: this.initialSliderMax
+		};
+	},
+	computed: {
+		rangeStyle() {
+			return `--a: ${50}; --b: ${0}; --min: ${0}; --max: ${50}`;
+		},
+		shownMinMax() {
+			return {
+				max: language.toFarsiNumber(this.max),
+				min: language.toFarsiNumber(this.min)
+			};
+		}
+	}
 };
 </script>
 

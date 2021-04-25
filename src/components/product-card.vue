@@ -1,13 +1,30 @@
 <template>
   <div id="product-card">
-    <p v-if="amountBadge" class="badge">{{ amountBadge }}</p>
+    <p
+      v-if="amountBadge"
+      class="badge"
+    >
+      {{ amountBadge }}
+    </p>
     <div class="product-card--padding-all">
-      <img :src="image" :alt='name + " تصویر "' class="product-image">
+      <img
+        :src="image"
+        :alt="name + 'تصویر'"
+        class="product-image"
+      >
       <h3>{{ name }}</h3>
-      <h4 class="category-title">{{ category }}</h4>
+      <h4 class="category-title">
+        {{ category }}
+      </h4>
       <div class="bottom">
-        <p style="justify-content: center">{{formattedPrice}}
-          <button class="btn" @click="buttonFunction">{{buttonTitle}}</button>
+        <p style="justify-content: center">
+          {{ formattedPrice }}
+          <button
+            class="btn"
+            @click="buttonFunction"
+          >
+            {{ buttonTitle }}
+          </button>
         </p>
       </div>
     </div>
@@ -15,46 +32,46 @@
 </template>
 
 <script>
-import formatter from '../../utils/formatter';
-import language from '../../utils/language';
+import formatter from "../../utils/formatter";
+import language from "../../utils/language";
 
 export default {
-  name: 'product-card',
-  props: {
-    name: {
-      type: String,
-      default: '',
-    },
-    category: {
-      type: String,
-      default: '',
-    },
-    price: {
-      type: Number,
-      default: 0,
-    },
-    image: {
-      type: String,
-      default: '',
-    },
-    buttonTitle: {
-      type: String,
-      default: 'خرید محصول',
-    },
-    buttonFunction: {
-      type: Function,
-      default: () => {},
-    },
-    amountBadge: {
-      type: Number,
-      default: undefined,
-    },
-  },
-  computed: {
-    formattedPrice() {
-      return language.toFarsiNumber(formatter.formatToRial(this.price));
-    },
-  },
+	name: "ProductCard",
+	props: {
+		name: {
+			type: String,
+			default: ""
+		},
+		category: {
+			type: String,
+			default: ""
+		},
+		price: {
+			type: Number,
+			default: 0
+		},
+		image: {
+			type: String,
+			default: ""
+		},
+		buttonTitle: {
+			type: String,
+			default: "خرید محصول"
+		},
+		buttonFunction: {
+			type: Function,
+			default: () => {}
+		},
+		amountBadge: {
+			type: Number,
+			default: undefined
+		}
+	},
+	computed: {
+		formattedPrice() {
+			return language.toFarsiNumber(formatter.formatToRial(this.price));
+		}
+	}
 };
 </script>
 

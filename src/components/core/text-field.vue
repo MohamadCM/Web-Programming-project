@@ -3,49 +3,52 @@
     <div id="text-field__title-box">
       <p>{{ title }}</p>
     </div>
-    <input v-if="!area"
+    <input
+      v-if="!area"
+      v-model="value"
       class="text-field"
       type="text"
       :placeholder="placeholder"
-      v-model="value">
-    <textarea v-else
-              class="text-field"
-              :placeholder="placeholder"
-              v-model="value"
-              rows="1"
+    >
+    <textarea
+      v-else
+      v-model="value"
+      class="text-field"
+      :placeholder="placeholder"
+      rows="1"
     />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'text-field',
-  props: {
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    area: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      value: '',
-    };
-  },
-  watch: {
-    value(newValue) {
-      this.$emit('input', newValue);
-    },
-  },
-  mounted() {
-  },
+	name: "TextField",
+	props: {
+		placeholder: {
+			type: String,
+			default: ""
+		},
+		title: {
+			type: String,
+			default: ""
+		},
+		area: {
+			type: Boolean,
+			default: false
+		}
+	},
+	data() {
+		return {
+			value: ""
+		};
+	},
+	watch: {
+		value(newValue) {
+			this.$emit("input", newValue);
+		}
+	},
+	mounted() {
+	}
 };
 </script>
 

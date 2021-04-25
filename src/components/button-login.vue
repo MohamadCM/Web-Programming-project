@@ -1,39 +1,52 @@
 <template>
-  <div v-if="isLogged" class="dropdown hover">
-    <a href="#" id="dropdown-a">
+  <div
+    v-if="isLogged"
+    class="dropdown hover"
+  >
+    <a
+      id="dropdown-a"
+      href="#"
+    >
       {{ username }}
     </a>
     <ul>
-      <li><a href="#" style="font-family:  sans-serif !important; ">پروفایل</a></li>
+      <li>
+        <a
+          href="#"
+          style="font-family:  sans-serif !important; "
+        >پروفایل</a>
+      </li>
       <li><a href="#">خروج از حساب</a></li>
     </ul>
   </div>
-  <button v-else
-           id="loginButton"
-           @click="loginOnClick">
+  <button
+    v-else
+    id="loginButton"
+    @click="loginOnClick"
+  >
     ورود / ثبت نام
   </button>
 </template>
 
 <script>
-import auth from '../controller/authorization';
+import auth from "../controller/authorization";
 
 export default {
-  name: 'button-login',
-  data() {
-    return {
-      isLogged: true,
-      username: 'محمد',
-    };
-  },
-  mounted() {
-    this.isLogged = auth.isLoggedIn();
-  },
-  methods: {
-    loginOnClick() {
-      if (!this.$router.currentRoute.path.includes('login')) this.$router.push('/login');
-    },
-  },
+	name: "ButtonLogin",
+	data() {
+		return {
+			isLogged: true,
+			username: "محمد"
+		};
+	},
+	mounted() {
+		this.isLogged = auth.isLoggedIn();
+	},
+	methods: {
+		loginOnClick() {
+			if (!this.$router.currentRoute.path.includes("login")) this.$router.push("/login");
+		}
+	}
 };
 </script>
 

@@ -1,55 +1,56 @@
 <template>
-  <button class="btn"
-          :style="style"
-          @mouseover="mouseOver"
-          @mouseout="mouseOver"
-          @click="onClickFunction"
-          >
-    {{text}}
+  <button
+    class="btn"
+    :style="style"
+    @mouseover="mouseOver"
+    @mouseout="mouseOver"
+    @click="onClickFunction"
+  >
+    {{ text }}
   </button>
 </template>
 
 <script>
 export default {
-  name: 'my-button',
-  data() {
-    return {
-      hovering: false,
-    };
-  },
-  props: {
-    text: {
-      type: String,
-      default: 'دکمه',
-    },
-    fill: {
-      type: Boolean,
-      default: true,
-    },
-    color: {
-      type: String,
-      default: '#00A1FF',
-    },
-    backGroundColor: {
-      type: String,
-      default: 'transparent',
-    },
-    onClickFunction: {
-      type: Function,
-      default: () => {},
-    },
-  },
-  methods: {
-    mouseOver() {
-      this.hovering = !this.hovering;
-    },
-  },
-  computed: {
-    style() {
-      return `color: ${this.hovering ? this.color : 'black'};
+	name: "MyButton",
+	props: {
+		text: {
+			type: String,
+			default: "دکمه"
+		},
+		fill: {
+			type: Boolean,
+			default: true
+		},
+		color: {
+			type: String,
+			default: "#00A1FF"
+		},
+		backGroundColor: {
+			type: String,
+			default: "transparent"
+		},
+		onClickFunction: {
+			type: Function,
+			default: () => {}
+		}
+	},
+	data() {
+		return {
+			hovering: false
+		};
+	},
+	computed: {
+		style() {
+			return `color: ${this.hovering ? this.color : "black"};
       background-color: ${this.backGroundColor}`;
-    },
-  },
+		}
+	},
+	methods: {
+		mouseOver() {
+			this.hovering = !this.hovering;
+		}
+	}
 };
 
 </script>
