@@ -12,9 +12,6 @@
       <button
         v-for="(btn, index) of buttons"
         :key="btn.text"
-        :text="btn.text"
-        :color="btn.color"
-        :back-ground-color="btn.backGroundColor"
         :style="style(index)"
         class="btn btn__box-shadow btn__margin"
         @click="selection(index)"
@@ -45,6 +42,7 @@ export default {
 	},
 	methods: {
 		selection(buttonIndex) {
+			// Selection logic and requests
 			this.buttons[buttonIndex].color = "white";
 			this.buttons[buttonIndex].backGroundColor = "#00A1FF";
 			const changeIndex = buttonIndex === 1 ? 0 : 1;
@@ -52,7 +50,6 @@ export default {
 			this.buttons[changeIndex].backGroundColor = "white";
 		},
 		style(index) {
-			// Selection logic and requests
 			return `color: ${this.buttons[index].color};
       background-color: ${this.buttons[index].backGroundColor}`;
 		}
