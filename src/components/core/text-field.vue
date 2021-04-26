@@ -35,6 +35,10 @@ export default {
 		area: {
 			type: Boolean,
 			default: false
+		},
+		initialValue: {
+		  type: String,
+			default: ""
 		}
 	},
 	data() {
@@ -48,6 +52,7 @@ export default {
 		}
 	},
 	mounted() {
+	  this.value = this.initialValue;
 	}
 };
 </script>

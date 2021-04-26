@@ -41,7 +41,7 @@ export default {
 	},
 	methods: {
 	  selection(index) {
-			// Selection logic and requests
+			this.$emit("input", index);
 			this.currentTabs[index].color = "black";
 			this.currentTabs[index].backGroundColor = "rgb(238,238,238)";
 			for (let i = 0; i < this.currentTabs.length; i++) {

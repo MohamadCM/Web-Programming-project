@@ -8,13 +8,13 @@
       <template v-if="!isSignupMode">
         <text-field
           v-model="email"
-          class="login-text-field"
+          class="profile-tab__text-field"
           placeholder="ایمیل خود را وارد کنید..."
           title="ایمیل"
         />
         <text-field
           v-model="password"
-          class="login-text-field"
+          class="profile-tab__text-field"
           placeholder="پسورد خود را وارد کنید..."
           title="پسورد"
         />
@@ -23,14 +23,14 @@
       <template v-else>
         <div class="text-field__row">
           <text-field
-            v-model="email"
-            class="login-text-field"
+            v-model="name"
+            class="profile-tab__text-field"
             placeholder="نام خود را وارد کنید..."
             title="نام"
           />
           <text-field
-            v-model="password"
-            class="login-text-field"
+            v-model="lastName"
+            class="profile-tab__text-field"
             placeholder="نام خانوادگی خود را وارد کنید..."
             title="نام خوانوادگی"
           />
@@ -38,13 +38,13 @@
         <div class="text-field__row">
           <text-field
             v-model="email"
-            class="login-text-field"
+            class="profile-tab__text-field"
             placeholder="ایمیل خود را وارد کنید..."
             title="ایمیل"
           />
           <text-field
             v-model="password"
-            class="login-text-field"
+            class="profile-tab__text-field"
             placeholder="پسورد خود را وارد کنید..."
             title="پسورد"
           />
@@ -54,7 +54,7 @@
             v-model="address"
             area
             style="height: 128px; width: 89%"
-            class="login-text-field"
+            class="profile-tab__text-field"
             placeholder="آدرس خود را وارد کنید..."
             title="آدرس"
           />
@@ -106,7 +106,7 @@ export default {
 <style scoped>
 /* Overall Container styling */
 #login-container {
-  padding-top: 22%;
+  padding-top: 21%;
 }
 
 /* Title styling */
@@ -125,7 +125,7 @@ export default {
 }
 
 /*Text fields styling*/
-.login-text-field {
+.profile-tab__text-field {
   height: 48px;
   width: 50%;
   margin-bottom: 10px;
