@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../pages/Home.vue";
 import Login from "../pages/Login.vue";
 import Profile from "../pages/Profile";
+import Admin from "../pages/Admin";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
 		path: "/profile",
 		name: "پروفایل کاربری",
 		component: Profile
+	},
+	{
+		path: "/admin",
+		name: "ادمین",
+		component: Admin
 	}
 	/* {
     path: '/about',

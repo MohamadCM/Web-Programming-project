@@ -55,8 +55,10 @@ export default {
 	data(){
 	  return {
 			receipts: [
-				{trackingCode: "SHOP102312", product: "کیف صورتی", price: 5000, address: "تهران، تهران، خونه"},
-				{trackingCode: "SHOP202312", product: "کیف قرمز", price: 10000, address: "تهران، تهران، خونه"}
+				{trackingCode: "SHOP102312",
+					product: "کیف صورتی", price: 5000, address: "تهران، تهران، خونه", username: "محمد"},
+				{trackingCode: "SHOP202312",
+					product: "کیف قرمز", price: 10000, address: "تهران، تهران، خونه", username: "محمد"}
 			]
 		};
 	}
@@ -88,15 +90,15 @@ th {
   padding: 0 25px 50px 25px;
   box-shadow: 0 0 3pt 0.5pt silver;
 }
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   /* Make table font smaller on smaller screens */
   table {
-    font-size: 10px;
+    font-size: 1.6vw;
   }
 }
 /*Text field styling*/
 .receipt-tab__text-field {
-  height: 48px;
+  height: 52px;
   width: 60%;
   margin-bottom: 48px;
   margin-top: 16px;
