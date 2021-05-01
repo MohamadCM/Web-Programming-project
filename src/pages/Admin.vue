@@ -20,6 +20,7 @@
           is-admin
           style="width: 95%"
         />
+        <category-tab v-if="selectedTab === 1" />
       </div>
     </transition>
   </div>
@@ -30,12 +31,14 @@ import tabSelector from "../components/core/tab-selector";
 import receiptTab from "../views/receipt-tap";
 import language from "../../utils/language";
 import formatter from "../../utils/formatter";
+import categoryTab from "../views/category-tab";
 
 export default {
 	name: "Admin",
 	components: {
 		tabSelector,
-		receiptTab
+		receiptTab,
+		categoryTab
 	},
 	data(){
 		return {

@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!--  Adding fontawesome icons  -->
     <title><%= htmlWebpackPlugin.options.title %></title>
-      <style>
-          @font-face { /* Importing local font */
-          font-family: "IranianSans";
-          src: local("IranianSans"),   url(../public/IranianSans.ttf) format("truetype");}
-      body { /* Setting font for body */
-          font-family: IranianSans, sans-serif !important;
-          font-size: 16px;
-          -webkit-font-smoothing: antialiased !important;
-          -moz-osx-font-smoothing: grayscale !important;
-          text-align: center !important;
-          color: #2c3e50 !important;
-          direction: rtl;
-          margin-right: auto;
-          margin-left: auto;
-          overflow: auto;
-          background: #E8E9ED;
-      }
-      </style>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <style>
+        @font-face {
+            /* Importing local font */
+            font-family: "IranianSans";
+            src: local("IranianSans"), url(../public/IranianSans.ttf) format("truetype");
+        }
+
+        body { /* Setting font for body */
+            font-family: IranianSans, sans-serif !important;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-align: center !important;
+            color: #2c3e50 !important;
+            direction: rtl;
+            margin-right: auto;
+            margin-left: auto;
+            overflow: auto;
+            background: #E8E9ED;
+        }
+    </style>
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
 </html>

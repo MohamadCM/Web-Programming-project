@@ -6,6 +6,7 @@
     @mouseout="mouseOver"
     @click="onClickFunction"
   >
+    <slot />
     {{ text }}
   </button>
 </template>
