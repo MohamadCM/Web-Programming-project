@@ -90,6 +90,11 @@ export default {
   flex-wrap: nowrap;
   align-items: center;
 }
+@media (max-width: 560px) {
+  input, #text-field__title-box {
+    font-size: 10px;
+  }
+}
 /* Input placeholder styling */
 .text-field::placeholder {
   text-indent: 5px;

@@ -98,7 +98,7 @@ th {
 }
 /*Text field styling*/
 .receipt-tab__text-field {
-  height: 52px;
+  height: 48px;
   width: 60%;
   margin-bottom: 48px;
   margin-top: 16px;

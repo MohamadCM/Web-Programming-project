@@ -56,6 +56,7 @@ export default {
 </script>
 
 <style scoped>
+/* Overall styles */
 .btn {
   margin: 30px auto;
   background: none;
@@ -65,5 +66,11 @@ export default {
   padding: 0.0% 1.5%;
   border-radius: 24px;
   border: 0 solid;
+}
+@media (max-width: 560px) {
+  /* Smaller font on smaller screens */
+  .btn {
+    font-size: 12px;
+  }
 }
 </style>

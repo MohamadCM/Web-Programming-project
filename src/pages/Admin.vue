@@ -86,9 +86,6 @@ export default {
   #admin__tab-selector {
     font-size: 12px;
   }
-  receipt-tab {
-    font-size: 2px;
-  }
 }
 /* Enter and leave animation */
 .slide-fade-enter-active {
