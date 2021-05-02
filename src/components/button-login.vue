@@ -7,6 +7,10 @@
       @mouseenter="hover = true"
     >
       {{ username }}
+      <i
+        id="arrow"
+        class="fas fa-chevron-down"
+      />
     </div>
     <transition name="slide">
       <div
@@ -85,20 +89,6 @@ export default {
   background: #FFC80A;
 }
 
-/* Arrow */
-#dropdown::after {
-  content: '\142F';
-  float: left;
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 5px solid transparent;
-  position: relative;
-  left: 5px;
-  top: 3px;
-  font-size: 12px;
-}
-
 /* Content of dropdown styles */
 #dropdown__content {
   line-height: 20px;
@@ -129,7 +119,7 @@ export default {
 }
 @media (max-width: 767px) {
   /* Hide arrow on small screens */
-  #dropdown::after {
+ #arrow {
     display: none;
   }
   /*Smaller fonts*/
