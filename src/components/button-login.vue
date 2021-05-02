@@ -1,23 +1,36 @@
 <template>
   <div
     v-if="isLogged"
-    class="dropdown hover"
   >
-    <a
-      id="dropdown-a"
-      href="#"
+    <div
+      id="dropdown"
+      @mouseenter="hover = true"
     >
       {{ username }}
-    </a>
-    <ul>
-      <li>
-        <a
-          href="#"
-          style="font-family:  sans-serif !important; "
-        >پروفایل</a>
-      </li>
-      <li><a href="#">خروج از حساب</a></li>
-    </ul>
+    </div>
+    <transition name="slide">
+      <div
+        v-if="hover"
+        id="dropdown__content"
+        @mouseleave="hover = false"
+      >
+        <div
+          class="dropdown__content-item"
+          style="margin-top: 20px"
+        >
+          <p
+            class="dropdown__content-item__text"
+          >
+            پروفایل
+          </p>
+        </div>
+        <div class="dropdown__content-item">
+          <p class="dropdown__content-item__text">
+            خروج از حساب
+          </p>
+        </div>
+      </div>
+    </transition>
   </div>
   <button
     v-else
@@ -36,7 +49,8 @@ export default {
 	data() {
 		return {
 			isLogged: true,
-			username: "محمد"
+			username: "محمد",
+			hover: false
 		};
 	},
 	mounted() {
@@ -52,31 +66,26 @@ export default {
 
 <style scoped>
 /* Dropdown button styling */
-#dropdown-a {
+#dropdown {
   background: white;
   border: solid 2px #FFC80A;
-}
-#dropdown-a:hover {
-  background: #FFC80A;
-  color: black;
-}
-.dropdown {
-  display: inline-block;
-  margin-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   bottom: 5px;
-  position: relative;
   text-align: center;
   font-size: 16px;
+  border-radius: 24px;
+  cursor: default;
+  position: relative;
+  z-index: 2; /* Place over dropdown content */
 }
-.dropdown.toggle > input {
-  display: none;
+/* Dropdown background color on hover */
+#dropdown:hover {
+  background: #FFC80A;
 }
-.dropdown > a, .dropdown.toggle > label {
-  border-radius: 20px;
-  box-shadow: 0 6px 5px -5px rgba(0,0,0,0.3);
-}
+
 /* Arrow */
-.dropdown > a::after, .dropdown.toggle > label::after {
+#dropdown::after {
   content: '\142F';
   float: left;
   width: 0;
@@ -85,79 +94,51 @@ export default {
   border-right: 5px solid transparent;
   position: relative;
   left: 5px;
+  top: 3px;
   font-size: 12px;
 }
-/* Hide arrow on small screens */
-@media (max-width: 767px) {
-  .dropdown > a::after, .dropdown.toggle > label::after {
-    display: none;
-  }
-}
-.dropdown ul {
-  list-style-type: none;
-  display: block;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  width: 100%;
-  box-shadow: 0 6px 5px -5px rgba(0,0,0,0.3);
-  overflow: hidden;
-}
-.dropdown a, .dropdown.toggle > label {
-  display: block;
-  padding: 0 0 0 10px;
-  text-decoration: none;
-  line-height: 40px;
-  text-transform: uppercase;
+
+/* Content of dropdown styles */
+#dropdown__content {
+  line-height: 20px;
   font-weight: bold;
   color: black;
-  font-family: IranianSans sans-serif;
-  font-size: 16px;
+  font-family: inherit;
+  font-size: 14px;
   background: #E1E1E1;
+  padding: 5px 5px 10px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  cursor: default;
+  position: relative;
+  top: -25px;
+  z-index: 1;
+  /* Transition styles */
+  transform-origin: top;
+  transition: transform 300ms ease-in-out;
 }
-.dropdown li {
-  height: 0;
-  overflow: hidden;
-  transition: all 300ms;
+/* Each item of content styles */
+.dropdown__content-item:hover {
+  background: #EDEDED;
 }
-.dropdown.hover li {
-  transition-delay: 300ms;
+/* Each item of content's text styles */
+.dropdown__content-item__text {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-.dropdown li:first-child a {
-  border-radius: 2px 2px 0 0;
+@media (max-width: 767px) {
+  /* Hide arrow on small screens */
+  #dropdown::after {
+    display: none;
+  }
+  /*Smaller fonts*/
+  #dropdown{
+    font-size: 10px;
+  }
+  #dropdown__content {
+    font-size: 8px;
+  }
 }
-.dropdown li:last-child a {
-  border-radius: 0 0 2px 2px;
-}
-.dropdown li:first-child a::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #E1E1E1;
-  margin: -10px 0 0 30px;
-}
-.dropdown a:hover, .dropdown.toggle > label:hover, .dropdown.toggle > input:checked ~ label {
-  background-color: #EDEDED;
-  color: #666;
-}
-.dropdown > a:hover::after, .dropdown.toggle > label:hover::after,
-.dropdown.toggle > input:checked ~ label::after {
-  border-top-color: #AAA;
-}
-.dropdown li:first-child a:hover::before {
-  border-bottom-color: #EEE;
-}
-.dropdown.hover:hover li, .dropdown.toggle > input:checked ~ ul li {
-  height: 40px;
-}
-.dropdown.hover:hover li:first-child, .dropdown.toggle > input:checked ~ ul li:first-child {
-  padding-top: 15px;
-}
-
 #loginButton {
   font-family: inherit;
   font-size: 15px;
@@ -172,13 +153,19 @@ export default {
   margin: 5px 0;
   background: transparent none;
 }
+
 /* Login bottom size on smaller screens */
 @media screen and (max-width: 960px) {
   #loginButton {
     font-size: 10px;
   }
 }
+
 #loginButton:hover {
   background-color: #FFC80A;
+}
+/* Dropdown slide effect animation */
+.slide-enter, .slide-leave-to{
+  transform: scaleY(0);
 }
 </style>
