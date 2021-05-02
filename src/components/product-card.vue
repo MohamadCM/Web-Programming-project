@@ -4,7 +4,7 @@
       v-if="amountBadge"
       class="badge"
     >
-      {{ amountBadge }}
+      {{ toFarsiNumber(amountBadge) }}
     </p>
     <div class="product-card--padding-all">
       <img
@@ -71,6 +71,11 @@ export default {
 		formattedPrice() {
 			return language.toFarsiNumber(formatter.formatToRial(this.price));
 		}
+	},
+	methods: {
+	  toFarsiNumber(num){
+			return language.toFarsiNumber(num);
+		}
 	}
 };
 </script>
@@ -78,6 +83,7 @@ export default {
 <style scoped>
 /* Overall styles */
 #product-card {
+  position: relative;
   background: white;
   direction: rtl;
   text-align: right;
@@ -102,6 +108,8 @@ export default {
   padding-bottom: 45px;
   border-top-style: none;
   border-right-style: none;
+  font-size: 14px;
+  color: silver;
 }
 /* Bottom part styles */
 .bottom {
@@ -151,13 +159,14 @@ export default {
   background: white;
   color: #00A1FF;
   border-radius: 100%;
-  padding: 15px;
+  padding: 10px;
   height: 15px;
   width: 15px;
   box-shadow: 10px 10px 10px rgba(192, 192, 192, 0.99);
   /* Badge position */
-  position: relative;
+  position: absolute;
   top: -35px;
   left: -15px;
+  font-size: 14px;
 }
 </style>

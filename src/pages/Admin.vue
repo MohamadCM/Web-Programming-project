@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 16%;">
+  <div style="padding-top: 10%;">
     <span class="welcome-name">
       ادمین عزیز، خوش آمدید
     </span>
@@ -15,12 +15,13 @@
       name="slide-fade"
     >
       <div style="display: flex; justify-content: center">
+        <category-tab v-if="selectedTab === 1" />
+        <products-tab v-if="selectedTab === 0" />
         <receipt-tab
           v-if="selectedTab === 2"
           is-admin
           style="width: 95%"
         />
-        <category-tab v-if="selectedTab === 1" />
       </div>
     </transition>
   </div>
@@ -32,13 +33,15 @@ import receiptTab from "../views/receipt-tap";
 import language from "../../utils/language";
 import formatter from "../../utils/formatter";
 import categoryTab from "../views/category-tab";
+import productsTab from "../views/products-tab";
 
 export default {
 	name: "Admin",
 	components: {
 		tabSelector,
 		receiptTab,
-		categoryTab
+		categoryTab,
+		productsTab
 	},
 	data(){
 		return {
