@@ -11,19 +11,15 @@
         <filter-box />
       </div>
       <div class="product-container">
-        <div
+        <product-card
           v-for="product of products"
           :key="product.id"
-          class="product-wrapper"
-        >
-          <product-card
-            :category="product.category"
-            :name="product.name"
-            :price="product.price"
-            :image="product.image"
-            class="product-box__item"
-          />
-        </div>
+          :category="product.category"
+          :name="product.name"
+          :price="product.price"
+          :image="product.image"
+          class="product-box__item"
+        />
       </div>
     </div>
   </div>
@@ -100,17 +96,15 @@ export default {
 }
 /* Product container sizing */
 .product-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto auto auto; /* Three columns */
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
 }
-.product-wrapper {
-  margin-left: 15px;
-  margin-bottom: 15px;
-  min-width: 200px;
-  max-width: 30%;
-}
-.product-box__item {
-  margin-bottom: 15px;
+@media (max-width: 990px) {
+  .product-container {
+    grid-template-columns: auto auto; /*Two columns*/
+  }
 }
 /* Sizing in smaller screens */
 @media (max-width: 768px) {
@@ -120,18 +114,10 @@ export default {
   .filter-box{
     width: 100%;
   }
-  .product-container {
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-  .product-wrapper {
-    margin-left: 0;
-    max-width: 100%;
-  }
 }
-@media (min-width: 1280px) {
-  .product-wrapper {
-    max-width: 280px;
+@media (max-width: 580px) {
+  .product-container {
+    grid-template-columns: auto; /*One column*/
   }
 }
 </style>
