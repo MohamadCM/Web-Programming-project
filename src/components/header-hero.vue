@@ -1,32 +1,42 @@
 <template>
-<div class="header-hero">
-  <div>
-  <p id="title">در محصولات سایت جستجو کنید...</p>
+  <div class="header-hero">
+    <div>
+      <p id="title">
+        در محصولات سایت جستجو کنید...
+      </p>
+    </div>
+    <div>
+      <input
+        type="text"
+        class="text-field"
+        onfocus="placeholder = ''"
+        onblur="placeholder = 'نام محصول خود را وارد کنید...'"
+        :placeholder="placeholder"
+      >
+    </div>
+    <div>
+      <button class="search__button">
+        جستجو کنید
+      </button>
+    </div>
+    <div>
+      <img
+        id="image-clock"
+        src="../assets/clock.png"
+        alt="Tick toc..."
+      >
+    </div>
   </div>
-  <div>
-  <input type="text"
-         class="text-field"
-         onfocus="placeholder = ''"
-         onblur="placeholder = 'نام محصول خود را وارد کنید...'"
-         :placeholder="placeholder">
-  </div>
-  <div>
-  <button class="button-search">جستجو کنید</button>
-  </div>
-  <div>
-    <img id="image-clock" src="../assets/clock.png" alt="Tick toc..."/>
-  </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: 'header-hero',
-  data() {
-    return {
-      placeholder: 'نام محصول خود را وارد کنید...',
-    };
-  },
+	name: "HeaderHero",
+	data() {
+		return {
+			placeholder: "نام محصول خود را وارد کنید..."
+		};
+	}
 };
 </script>
 
@@ -67,7 +77,7 @@ export default {
   box-shadow: 0 0 3pt 0.5pt #D3D3D3;
 }
 /* Search button overall style */
-.button-search{
+.search__button{
   background: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   font-family: inherit;
@@ -82,7 +92,7 @@ export default {
   -webkit-transition: 0.3s;
 }
 /* Box shadow on hover */
-.button-search:hover{
+.search__button:hover{
   box-shadow: 0 0 3pt 0.5pt yellow;
 }
 /* Image styles and sizing */

@@ -1,13 +1,30 @@
 <template>
   <div id="product-card">
-    <p v-if="amountBadge" class="badge">{{ amountBadge }}</p>
-    <div class="product-card--padding-all">
-      <img :src="image" :alt='name + " تصویر "' class="product-image">
+    <p
+      v-if="amountBadge"
+      class="badge"
+    >
+      {{ toFarsiNumber(amountBadge) }}
+    </p>
+    <div class="product-card__padding-all">
+      <img
+        :src="image"
+        :alt="name + 'تصویر'"
+        class="product-image"
+      >
       <h3>{{ name }}</h3>
-      <h4 class="category-title">{{ category }}</h4>
+      <h4 class="category-title">
+        {{ category }}
+      </h4>
       <div class="bottom">
-        <p style="justify-content: center">{{formattedPrice}}
-          <button class="btn" @click="buttonFunction">{{buttonTitle}}</button>
+        <p style="justify-content: center">
+          {{ formattedPrice }}
+          <button
+            class="btn"
+            @click="buttonFunction"
+          >
+            {{ buttonTitle }}
+          </button>
         </p>
       </div>
     </div>
@@ -15,52 +32,58 @@
 </template>
 
 <script>
-import formatter from '../../utils/formatter';
-import language from '../../utils/language';
+import formatter from "../../utils/formatter";
+import language from "../../utils/language";
 
 export default {
-  name: 'product-card',
-  props: {
-    name: {
-      type: String,
-      default: '',
-    },
-    category: {
-      type: String,
-      default: '',
-    },
-    price: {
-      type: Number,
-      default: 0,
-    },
-    image: {
-      type: String,
-      default: '',
-    },
-    buttonTitle: {
-      type: String,
-      default: 'خرید محصول',
-    },
-    buttonFunction: {
-      type: Function,
-      default: () => {},
-    },
-    amountBadge: {
-      type: Number,
-      default: undefined,
-    },
-  },
-  computed: {
-    formattedPrice() {
-      return language.toFarsiNumber(formatter.formatToRial(this.price));
-    },
-  },
+	name: "ProductCard",
+	props: {
+		name: {
+			type: String,
+			default: ""
+		},
+		category: {
+			type: String,
+			default: ""
+		},
+		price: {
+			type: Number,
+			default: 0
+		},
+		image: {
+			type: String,
+			default: ""
+		},
+		buttonTitle: {
+			type: String,
+			default: "خرید محصول"
+		},
+		buttonFunction: {
+			type: Function,
+			default: () => {}
+		},
+		amountBadge: {
+			type: Number,
+			default: undefined
+		}
+	},
+	computed: {
+		formattedPrice() {
+			return language.toFarsiNumber(formatter.formatToRial(this.price));
+		}
+	},
+	methods: {
+	  toFarsiNumber(num){
+			return language.toFarsiNumber(num);
+		}
+	}
 };
 </script>
 
 <style scoped>
 /* Overall styles */
 #product-card {
+  position: relative;
   background: white;
   direction: rtl;
   text-align: right;
@@ -69,7 +92,7 @@ export default {
   width: 100%;
 }
 /* Inside padding */
-.product-card--padding-all {
+.product-card__padding-all {
   padding: 15px;
   align-content: center;
 }
@@ -85,6 +108,8 @@ export default {
   padding-bottom: 45px;
   border-top-style: none;
   border-right-style: none;
+  font-size: 14px;
+  color: silver;
 }
 /* Bottom part styles */
 .bottom {
@@ -134,13 +159,14 @@ export default {
   background: white;
   color: #00A1FF;
   border-radius: 100%;
-  padding: 15px;
+  padding: 10px;
   height: 15px;
   width: 15px;
   box-shadow: 10px 10px 10px rgba(192, 192, 192, 0.99);
   /* Badge position */
-  position: relative;
+  position: absolute;
   top: -35px;
   left: -15px;
+  font-size: 14px;
 }
 </style>

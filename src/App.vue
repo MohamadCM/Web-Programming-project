@@ -1,20 +1,29 @@
 <template>
-  <div id="app" class="container">
-    <header class="header--stick-top"><my-header /></header>
-    <router-view />
-    <footer class="footer--stick-bottom"><my-footer /></footer>
+  <div
+    id="app"
+    class="container"
+  >
+    <div class="container__top">
+      <header class="header__stick-top">
+        <my-header />
+      </header>
+      <router-view />
+    </div>
+    <footer class="footer__stick-bottom">
+      <my-footer />
+    </footer>
   </div>
 </template>
 
 <script>
-import myFooter from './components/my-footer.vue';
-import myHeader from './components/my-header.vue';
+import myFooter from "./components/my-footer.vue";
+import myHeader from "./components/my-header.vue";
 
 export default {
-  components: {
-    myFooter,
-    myHeader,
-  },
+	components: {
+		myFooter,
+		myHeader
+	}
 };
 </script>
 <style lang="scss">
@@ -26,13 +35,13 @@ export default {
   margin-top: -7px;
   display: block;
 }
-.footer--stick-bottom { /* Stick footer to bottom of the window */
+.footer__stick-bottom { /* Stick footer to bottom of the window */
   position: sticky;
   bottom: 0;
   width: 100%;
   max-width: 1280px;
 }
-.header--stick-top {
+.header__stick-top {
   top: 0;
   width: 100%;
   max-width: 1280px;
@@ -47,5 +56,8 @@ export default {
   display: flex;
   flex-direction: row;
 }
-
+/* Fixing upper parts to top */
+.container__top {
+  min-height: 100vh;
+}
 </style>
