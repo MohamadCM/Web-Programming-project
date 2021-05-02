@@ -6,7 +6,7 @@
     >
       {{ toFarsiNumber(amountBadge) }}
     </p>
-    <div class="product-card--padding-all">
+    <div class="product-card__padding-all">
       <img
         :src="image"
         :alt="name + 'تصویر'"
@@ -92,7 +92,7 @@ export default {
   width: 100%;
 }
 /* Inside padding */
-.product-card--padding-all {
+.product-card__padding-all {
   padding: 15px;
   align-content: center;
 }

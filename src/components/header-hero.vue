@@ -15,7 +15,7 @@
       >
     </div>
     <div>
-      <button class="button-search">
+      <button class="search__button">
         جستجو کنید
       </button>
     </div>
@@ -77,7 +77,7 @@ export default {
   box-shadow: 0 0 3pt 0.5pt #D3D3D3;
 }
 /* Search button overall style */
-.button-search{
+.search__button{
   background: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   font-family: inherit;
@@ -92,7 +92,7 @@ export default {
   -webkit-transition: 0.3s;
 }
 /* Box shadow on hover */
-.button-search:hover{
+.search__button:hover{
   box-shadow: 0 0 3pt 0.5pt yellow;
 }
 /* Image styles and sizing */

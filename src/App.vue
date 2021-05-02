@@ -4,12 +4,12 @@
     class="container"
   >
     <div class="container__top">
-      <header class="header--stick-top">
+      <header class="header__stick-top">
         <my-header />
       </header>
       <router-view />
     </div>
-    <footer class="footer--stick-bottom">
+    <footer class="footer__stick-bottom">
       <my-footer />
     </footer>
   </div>
@@ -35,13 +35,13 @@ export default {
   margin-top: -7px;
   display: block;
 }
-.footer--stick-bottom { /* Stick footer to bottom of the window */
+.footer__stick-bottom { /* Stick footer to bottom of the window */
   position: sticky;
   bottom: 0;
   width: 100%;
   max-width: 1280px;
 }
-.header--stick-top {
+.header__stick-top {
   top: 0;
   width: 100%;
   max-width: 1280px;

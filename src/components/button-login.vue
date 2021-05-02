@@ -17,6 +17,7 @@
         <div
           class="dropdown__content-item"
           style="margin-top: 20px"
+          @click="$router.push('/profile')"
         >
           <p
             class="dropdown__content-item__text"
