@@ -91,7 +91,7 @@ export default {
 .btn__margin {
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 /* Selection button hover */
 .btn:hover {
