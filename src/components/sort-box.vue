@@ -82,6 +82,7 @@ export default {
   padding: 10px 20px;
   font-family: inherit;
   font-size: inherit;
+  -webkit-transition: 200ms;
 }
 /* Selection button box shadow */
 .btn__box-shadow {
@@ -91,7 +92,7 @@ export default {
 .btn__margin {
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 2px;
+  margin-top: 5px;
 }
 /* Selection button hover */
 .btn:hover {

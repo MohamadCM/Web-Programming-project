@@ -26,7 +26,7 @@ export default {
 	}
 };
 </script>
-<style lang="scss">
+<style>
 #app {
   max-width: 1280px;
   width: 100%;
