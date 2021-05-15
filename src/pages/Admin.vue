@@ -10,11 +10,10 @@
         :tabs="tabs"
       />
     </div>
-
-    <transition
-      name="slide-fade"
-    >
-      <div style="display: flex; justify-content: center">
+    <div style="display: flex; justify-content: center">
+      <transition
+        name="slide-fade"
+      >
         <category-tab v-if="selectedTab === 1" />
         <products-tab v-if="selectedTab === 0" />
         <receipt-tab
@@ -22,8 +21,8 @@
           is-admin
           style="width: 95%"
         />
-      </div>
-    </transition>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -93,12 +92,9 @@ export default {
     font-size: 12px;
   }
 }
-/* Enter and leave animation */
+/* Entering animation */
 .slide-fade-enter-active {
-  transition: all 500ms ease;
-}
-.slide-fade-leave-active {
-  transition: all 300ms cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 1s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to {
   transform: translateX(10px);

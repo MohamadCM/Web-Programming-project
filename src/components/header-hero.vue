@@ -20,22 +20,71 @@
       </button>
     </div>
     <div>
-      <img
-        id="image-clock"
-        src="../assets/clock.png"
-        alt="Tick toc..."
+      <div
+        v-if="imageIndex !== imageIndexMax"
+        class="arrow__box"
+        style="float: right;"
+        @click="changeImage(false)"
       >
+        <i
+          class="fas fa-chevron-right"
+        />
+      </div>
+      <div
+        v-if="imageIndex !== 0"
+        class="arrow__box"
+        style="float: left;"
+        @click="changeImage(true)"
+      >
+        <i class="fas fa-chevron-left" />
+      </div>
+    </div>
+    <div>
+      <transition
+        name="slide-fade"
+      >
+        <img
+          id="header__image"
+          :key="images[imageIndex]"
+          :src="images[imageIndex]"
+          alt="Header image!!"
+        >
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
+import clock from "../assets/clock.png";
+import home from "../assets/home.png";
+import homer from "../assets/homer.png";
 export default {
 	name: "HeaderHero",
 	data() {
 		return {
-			placeholder: "نام محصول خود را وارد کنید..."
+			placeholder: "نام محصول خود را وارد کنید...",
+			imageIndex: 0,
+			images:[
+				clock,
+				homer,
+				home
+			],
+			imageIndexMax: 2
 		};
+	},
+	mounted() {
+	  this.imageIndexMax = this.images.length - 1;
+	  setInterval(() => {
+	    this.imageIndex = (this.imageIndex + 1) % this.images.length;
+		}, 10000);
+	},
+	methods: {
+	  changeImage(reduce){
+			if(reduce)
+				this.imageIndex--;
+			else
+				this.imageIndex++;
+		}
 	}
 };
 </script>
@@ -96,10 +145,33 @@ export default {
   box-shadow: 0 0 3pt 0.5pt yellow;
 }
 /* Image styles and sizing */
-#image-clock{
+#header__image{
   position: relative;
   bottom: -10px;
   max-width: 100%;
   height: auto;
+}
+/* Left and right arrow box styles */
+.arrow__box{
+  display: grid;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  margin: 15px;
+  background: #FFC80A;
+  border-radius: 100%;
+  -webkit-transition: 0.3s;
+}
+/* Arrow box on hover style */
+.arrow__box:hover{
+  box-shadow: 0 0 3pt 0.5pt #FFC80A;
+}
+/* Enter image animation */
+.slide-fade-enter-active {
+  transition: all 1.5s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>

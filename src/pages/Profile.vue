@@ -140,12 +140,9 @@ export default {
 .profile-info-edit {
   padding-right: 10%;
 }
-/* Enter and leave animation */
+/* Entering animation */
 .slide-fade-enter-active {
-  transition: all 500ms ease;
-}
-.slide-fade-leave-active {
-  transition: all 300ms cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 1s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to {
   transform: translateX(10px);
