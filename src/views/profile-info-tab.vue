@@ -2,13 +2,13 @@
   <div>
     <div class="text-field__row">
       <text-field
-        v-model="profileInfo.name"
+        v-model="info.name"
         class="profile-tab__text-field"
         :placeholder="profileInfo.name"
         title="نام"
       />
       <text-field
-        v-model="profileInfo.lastName"
+        v-model="info.lastName"
         class="profile-tab__text-field"
         :placeholder="profileInfo.lastName"
         title="نام خوانوادگی"
@@ -16,7 +16,7 @@
     </div>
     <template>
       <text-field
-        v-model="profileInfo.password"
+        v-model="info.password"
         style="width: 89.1%"
         class="profile-tab__text-field"
         placeholder="پسورد خود را وارد کنید..."
@@ -25,11 +25,11 @@
     </template>
     <template>
       <text-field
-        v-model="profileInfo.address"
+        v-model="info.address"
         area
         style="height: 128px; width: 89%"
         class="profile-tab__text-field"
-        :placeholder="profileInfo.address"
+        :placeholder="info.address"
         title="آدرس"
       />
     </template>

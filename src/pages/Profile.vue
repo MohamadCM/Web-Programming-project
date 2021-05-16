@@ -1,7 +1,7 @@
 <template>
   <div style="padding-top: 17%;">
     <span class="welcome-name">
-      {{ profileInfo.name }} عزیز، خوش آمدید
+      {{ name }} عزیز، خوش آمدید
     </span>
     <transition
       name="slide-fade"
@@ -79,6 +79,7 @@ export default {
 	},
 	data(){
 	  return {
+	    name: "",
 			tabs: [
 				{name: "پروفایل"},
 				{name: "رسیدها"}
@@ -91,6 +92,9 @@ export default {
 		credit() {
 			return language.toFarsiNumber(formatter.formatToRial(this.profileInfo.credit));
 		}
+	},
+	mounted() {
+		this.name = this.profileInfo.name;
 	},
 	methods: {
 	  increaseCredit(){
