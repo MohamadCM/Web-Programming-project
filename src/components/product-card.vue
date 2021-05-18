@@ -1,16 +1,17 @@
 <template>
   <div id="product-card">
     <p
-      v-if="amountBadge"
+      v-if="amountBadge !== undefined"
       class="badge"
     >
       {{ toFarsiNumber(amountBadge) }}
     </p>
     <div class="product-card__padding-all">
       <img
-        :src="image"
+        :src="image || noImage"
         :alt="name + 'تصویر'"
         class="product-image"
+        @error="image = noImage"
       >
       <h3>{{ name }}</h3>
       <h4 class="category-title">
@@ -34,6 +35,7 @@
 <script>
 import formatter from "../../utils/formatter";
 import language from "../../utils/language";
+import noImage from "../assets/no_image_available.png";
 
 export default {
 	name: "ProductCard",
@@ -66,6 +68,11 @@ export default {
 			type: Number,
 			default: undefined
 		}
+	},
+	data(){
+	  return {
+	    noImage
+		};
 	},
 	computed: {
 		formattedPrice() {
@@ -162,7 +169,7 @@ export default {
   padding: 10px;
   height: 15px;
   width: 15px;
-  box-shadow: 10px 10px 10px rgba(192, 192, 192, 0.99);
+  box-shadow: 0 9px 12px rgba(0,0,0,0.16), 0 9px 12px rgba(0,0,0,0.23);
   /* Badge position */
   position: absolute;
   top: -35px;

@@ -10,7 +10,7 @@
         :tabs="tabs"
       />
     </div>
-    <div style="display: flex; justify-content: center">
+    <div style="display: flex; justify-content: center; height: 100%; margin-left: 10px; margin-right: 10px">
       <transition
         name="slide-fade"
       >

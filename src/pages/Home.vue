@@ -27,12 +27,12 @@
     >
       <pagination
         v-model="page"
+        style="  margin-left: 10px; margin-right: 10px;"
         :length="numberOfPages"
       />
     </span>
     <div
       v-if="hover"
-      class="custom-select"
     >
       تعداد محصولات هر صفحه:
       <select
@@ -70,7 +70,7 @@ export default {
 	},
 	data() {
 		return {
-		  page: 1,
+			page: 1,
 			fullProducts: [],
 			pageLength: 15,
 			numberOfPages: 3,
@@ -78,24 +78,24 @@ export default {
 			hover: false
 		};
 	},
-	watch:{
-	  page(val){
+	watch: {
+		page(val) {
 			this.products = [];
 			for (let i = (val - 1) * this.pageLength;
 				i < Math.min(val * this.pageLength, this.fullProducts.length); i++) {
 				this.products.push(this.fullProducts[i]);
 			}
 		},
-		pageLength(){
+		pageLength() {
 			this.page = 1;
 			this.init();
 		}
 	},
 	mounted() {
-	  this.init();
+		this.init();
 	},
-	methods:{
-		init(){
+	methods: {
+		init() {
 			this.fullProducts = [];
 			for (let i = 0; i < 40; i++) {
 				this.fullProducts.push({
@@ -121,6 +121,7 @@ export default {
   margin-left: 10px;
   margin-right: 10px;
 }
+
 /* Overall spacing */
 #main-part {
   margin-left: 10px;
@@ -129,11 +130,13 @@ export default {
   flex-direction: row;
   margin-top: 15px;
 }
+
 /* Filter box sizing */
 .filter-box {
   min-width: 360px;
   margin-left: 15px;
 }
+
 /* Product container sizing */
 .product-container {
   display: grid;
@@ -141,20 +144,24 @@ export default {
   grid-column-gap: 15px;
   grid-row-gap: 15px;
 }
+
 @media (max-width: 990px) {
   .product-container {
     grid-template-columns: auto auto; /*Two columns*/
   }
 }
+
 /* Sizing in smaller screens */
 @media (max-width: 768px) {
-  #main-part{
+  #main-part {
     flex-direction: column;
   }
-  .filter-box{
+
+  .filter-box {
     width: 100%;
   }
 }
+
 @media (max-width: 580px) {
   .product-container {
     grid-template-columns: auto; /*One column*/
