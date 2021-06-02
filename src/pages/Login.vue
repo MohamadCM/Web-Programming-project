@@ -100,6 +100,20 @@
         :on-click-function="isSignupMode ? signup : login"
       />
     </form>
+    <p
+      v-if="!isSignupMode"
+      class="switch__pages"
+      @click="isSignupMode = true;"
+    >
+      حساب کاربری ندارید؟ ثبت نام کنید!
+    </p>
+    <p
+      v-if="isSignupMode"
+      class="switch__pages"
+      @click="isSignupMode = false;"
+    >
+      قبلا ثبت نام کرده اید؟ وارد حساب کاربری خود شوید!
+    </p>
   </div>
 </template>
 
@@ -118,7 +132,7 @@ export default {
 	},
 	data() {
 		return {
-			isSignupMode: true, // TODO: Place link/button to change this (And Change page title)
+			isSignupMode: false, // TODO: Place link/button to change this (And Change page title)
 			email: "", // TODO: Add validation
 			password: "",
 			name: "",
@@ -205,5 +219,14 @@ export default {
   flex-direction: row;
   align-items: center;
   width: 90%;
+}
+.switch__pages {
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+  -webkit-transition: 300ms;
+}
+.switch__pages:hover{
+  color: #0EBAC5;
 }
 </style>
