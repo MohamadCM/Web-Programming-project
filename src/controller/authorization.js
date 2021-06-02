@@ -12,4 +12,9 @@ function signup(email, password, name, lastname, address){
 		return false;
 	return true;
 }
-export default { isLoggedIn, login, signup };
+function updateInfo(name, lastname, password, address){
+	if(name === "abcd")
+		return false;
+	return true;
+}
+export default { isLoggedIn, login, signup, updateInfo };
