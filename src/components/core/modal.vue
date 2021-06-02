@@ -34,6 +34,11 @@ export default {
 	    localShowParameter: false
 		};
 	},
+	watch: {
+		localShowParameter(val){
+			this.$emit("input", val);
+		}
+	},
 	mounted() {
 	  this.localShowParameter = this.show;
 	  document.addEventListener("click",

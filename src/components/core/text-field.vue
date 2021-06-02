@@ -14,7 +14,6 @@
       :placeholder="placeholder"
       :minlength="minLength"
       :maxlength="maxLength"
-      :pattern="pattern"
       @focus="focusFlag = true"
       @blur="focusFlag = false"
     >
@@ -72,7 +71,7 @@ export default {
 		},
 		pattern:{
 		  type: String,
-			default: ""
+			default: undefined
 		}
 	},
 	data() {
@@ -100,6 +99,7 @@ export default {
 	},
 	mounted() {
 	  this.value = this.initialValue;
+	  if(this.isPassword) this.pattern = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})";
 	},
 	methods: {
 	  isDataValid(){
@@ -114,7 +114,7 @@ export default {
 				message = `${this.title} باید کمتر از ${this.maxLength} کاراکتر باشد.`;
 				res = false;
 			}
-			if(this.pattern.length > 0 && !this.value.match(this.pattern)){
+			if(this.pattern.length > 0 && !new RegExp(this.pattern).test(this.value)){
 			  message = `${this.title} معتبر نمی‌باشد.`;
 				if(this.isPassword){
 				  message = "پسورد حداقل ۸ کاراکتر، و شامل اعداد، حروف";
