@@ -1,36 +1,57 @@
 <template>
   <div>
+    <modal
+      :key="showModal"
+      v-model="showModal"
+      :show="showModal"
+    >
+      <p style="white-space: pre-line">
+        {{ modalInfo }}
+      </p>
+    </modal>
     <div class="text-field__row">
       <text-field
-        v-model="profileInfo.name"
+        v-model="info.name"
         class="profile-tab__text-field"
         :placeholder="profileInfo.name"
         title="نام"
+        :min-length="6"
+        :max-length="255"
+        pattern=""
       />
       <text-field
-        v-model="profileInfo.lastName"
+        v-model="info.lastName"
         class="profile-tab__text-field"
         :placeholder="profileInfo.lastName"
         title="نام خوانوادگی"
+        :min-length="6"
+        :max-length="255"
+        pattern=""
       />
     </div>
     <template>
       <text-field
-        v-model="profileInfo.password"
+        v-model="info.password"
         style="width: 89.1%"
         class="profile-tab__text-field"
         placeholder="پسورد خود را وارد کنید..."
+        :is-password="true"
         title="پسورد"
+        :min-length="6"
+        :max-length="255"
       />
     </template>
     <template>
       <text-field
-        v-model="profileInfo.address"
+        v-model="info.address"
         area
         style="height: 128px; width: 89%"
         class="profile-tab__text-field"
-        :placeholder="profileInfo.address"
+        :placeholder="info.address"
         title="آدرس"
+        :min-length="6"
+        :max-length="1000"
+        pattern=""
       />
     </template>
     <my-button
@@ -47,11 +68,14 @@
 <script>
 import textField from "../components/core/text-field.vue";
 import myButton from "../components/core/my-button.vue";
+import authorization from "../controller/authorization";
+import modal from "../components/core/modal";
 export default {
 	name: "ProfileInfoTab",
 	components: {
 		textField,
-		myButton
+		myButton,
+		modal
 	},
 	props: {
 	  profileInfo: {
@@ -61,7 +85,9 @@ export default {
 	},
 	data() {
 	  return {
-			info: {}
+			info: {},
+			showModal:false,
+			modalInfo: ""
 		};
 	},
 	watch: {
@@ -85,7 +111,11 @@ export default {
 	},
 	methods: {
 	  changeUserInfo(){
-
+	    this.showModal = true;
+			if(authorization.updateInfo(this.info.name, this.info.lastName,this.info.password, this.info.address))
+				this.modalInfo = "اطلاعات پروفایل شما با موفقیت به روز رسانی شد!";
+			else
+				this.modalInfo = "به روز رسانی ناموفق بود!";
 		}
 	}
 };
