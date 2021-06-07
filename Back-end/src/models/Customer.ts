@@ -5,6 +5,7 @@ import {
 
 import { User } from "../interface/User";
 import { DatabaseObject, DBResponse } from "../interface/Database";
+import {logError} from "../config/Logger";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 class Customer
@@ -61,8 +62,8 @@ implements User, DatabaseObject {
     			result.setPayload(this).setMessage("Admin found successfully").setSuccess(true);
     		}
 		} catch (e) {
-    		// logError(`Input: ${username}\n${e}`,
-    		//     "Class Admin -> getFromDB");
+    		logError(`Input: ${username}\n${e}`,
+    		    "Class Admin -> getFromDB");
 			result.setPayload(undefined).setMessage("Something went wrong trying to find the admin").setSuccess(false);
 		}
 		return result;
@@ -80,8 +81,8 @@ implements User, DatabaseObject {
 				result.setPayload(this).setMessage("Admin created successfully").setSuccess(true);
     		}
 		} catch (e) {
-    		/*            logError(`Input: ${this}\n${e}`,
-                            "Class Admin -> saveToDB"); */
+    		            logError(`Input: ${this}\n${e}`,
+				"Class Admin -> saveToDB");
 			result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
 		}
 		return result;
