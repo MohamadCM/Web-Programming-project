@@ -1,130 +1,133 @@
-import {ModelType} from "@typegoose/typegoose/lib/types";
+import { ModelType } from "@typegoose/typegoose/lib/types";
 import {
-    getModelForClass, modelOptions, prop, Severity
+	getModelForClass, modelOptions, prop, Severity
 } from "@typegoose/typegoose";
 
-import {User} from "../interface/User";
-import {DatabaseObject, DBResponse} from "../interface/Database";
+import { User } from "../interface/User";
+import { DatabaseObject, DBResponse } from "../interface/Database";
 
-@modelOptions({options: {allowMixed: Severity.ALLOW}})
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 class Customer
-    implements User, DatabaseObject {
-    @prop({required: true, unique: true})
-    _username: string;
-    @prop({required: true})
-    _password: string;
-    @prop({required: true})
-    private _name: string | undefined;
-    @prop({required: true})
-    private _lastName: string | undefined;
-    @prop({required: true})
-    private _address: string | undefined;
-    @prop({required: true})
-    private _credit = 0;
+implements User, DatabaseObject {
+	@prop({ required: true, unique: true })
+	_username: string;
 
-    public constructor(username: string, password: string) {
-        this._username = username;
-        this._password = password;
-    }
+	@prop({ required: true })
+	_password: string;
 
-    public getToken(): string {
-        return "";
-    }
+	@prop({ required: true })
+	private _name: string | undefined;
 
-    public verify(): boolean {
-        return false;
-    }
+	@prop({ required: true })
+	private _lastName: string | undefined;
 
-    public wrap(customer: Record<string, string | number | undefined>): DatabaseObject {
-        this._username = <string>customer._username || this._username;
-        this._password = <string>customer._password || this._password;
-        this._name = <string | undefined>customer._name || this._name;
-        this._lastName = <string | undefined>customer._lastName || this._lastName;
-        this._address = <string | undefined>customer._address || this._address;
-        this._credit = <number>customer._credit || this._credit;
-        return this;
-    }
+	@prop({ required: true })
+	private _address: string | undefined;
 
-    public async getFromDB(username: string): Promise<DBResponse> {
-        const result: DBResponse = new DBResponse();
-        try {
-            const user = await customerModel.findOne({_username: username});
-            if (!user) {
-                result.setPayload(undefined).setMessage("Customer was not found in Database").setSuccess(false);
-            } else {
-                this.wrap(<Record<string, string | number | undefined>><unknown>user);
-                result.setPayload(this).setMessage("Admin found successfully").setSuccess(true);
-            }
-        } catch (e) {
-            // logError(`Input: ${username}\n${e}`,
-            //     "Class Admin -> getFromDB");
-            result.setPayload(undefined).setMessage("Something went wrong trying to find the admin").setSuccess(false);
-        }
-        return result;
+	@prop({ required: true })
+	private _credit = 0;
 
-    }
+	public constructor(username: string, password: string) {
+    	this._username = username;
+    	this._password = password;
+	}
 
-    public async saveToDB(): Promise<DBResponse> {
-        const result: DBResponse = new DBResponse();
-        try {
-            const user = await customerModel.findOne({_username: this._username});
-            if (user) {
-                await customerModel.updateOne({_username: this._username}, <Record<string, unknown>><unknown>this);
-                result.setPayload(this).setMessage("Admin replaced successfully").setSuccess(true);
-            } else {
-                await customerModel.create(this);
-                result.setPayload(this).setMessage("Admin created successfully").setSuccess(true);
-            }
-        } catch (e) {
-            /*            logError(`Input: ${this}\n${e}`,
-                            "Class Admin -> saveToDB");*/
-            result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
-        }
-        return result;
+	public getToken(): string {
+    	return "";
+	}
 
-    }
+	public verify(): boolean {
+    	return false;
+	}
 
-    // Getters and Setters
-    public get credit(): number {
-        return this._credit;
-    }
+	public wrap(customer: Record<string, unknown>): DatabaseObject {
+		this._username = <string>customer._username || this._username;
+    	this._password = <string>customer._password || this._password;
+		this._name = <string | undefined>customer._name || this._name;
+    	this._lastName = <string | undefined>customer._lastName || this._lastName;
+		this._address = <string | undefined>customer._address || this._address;
+    	this._credit = <number>customer._credit || this._credit;
+    	return this;
+	}
 
-    public set credit(value: number) {
-        this._credit = value;
-    }
+	public async getFromDB(username: string): Promise<DBResponse> {
+		const result: DBResponse = new DBResponse();
+		try {
+			const user = await customerModel.findOne({ _username: username });
+    		if (!user) {
+    			result.setPayload(undefined).setMessage("Customer was not found in Database").setSuccess(false);
+    		} else {
+    			this.wrap(<Record<string, string | number | undefined>><unknown>user);
+    			result.setPayload(this).setMessage("Admin found successfully").setSuccess(true);
+    		}
+		} catch (e) {
+    		// logError(`Input: ${username}\n${e}`,
+    		//     "Class Admin -> getFromDB");
+			result.setPayload(undefined).setMessage("Something went wrong trying to find the admin").setSuccess(false);
+		}
+		return result;
+	}
 
-    public get address(): string | undefined {
-        return this._address;
-    }
+	public async saveToDB(): Promise<DBResponse> {
+    	const result: DBResponse = new DBResponse();
+		try {
+    		const user = await customerModel.findOne({ _username: this._username });
+    		if (user) {
+    			await customerModel.updateOne({ _username: this._username }, <Record<string, unknown>><unknown> this);
+				result.setPayload(this).setMessage("Admin replaced successfully").setSuccess(true);
+			} else {
+				await customerModel.create(this);
+				result.setPayload(this).setMessage("Admin created successfully").setSuccess(true);
+    		}
+		} catch (e) {
+    		/*            logError(`Input: ${this}\n${e}`,
+                            "Class Admin -> saveToDB"); */
+			result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
+		}
+		return result;
+	}
 
-    public set address(value: string | undefined) {
-        this._address = value;
-    }
+	// Getters and Setters
+	public get credit(): number {
+    	return this._credit;
+	}
 
-    public get lastName(): string | undefined {
-        return this._lastName;
-    }
+	public set credit(value: number) {
+		this._credit = value;
+	}
 
-    public set lastName(value: string | undefined) {
-        this._lastName = value;
-    }
+	public get address(): string | undefined {
+    	return this._address;
+	}
 
-    public get name(): string | undefined {
-        return this._name;
-    }
+	public set address(value: string | undefined) {
+    	this._address = value;
+	}
 
-    public set name(value: string | undefined) {
-        this._name = value;
-    }
+	public get lastName(): string | undefined {
+    	return this._lastName;
+	}
 
-    public get username(): string {
-        return this._username;
-    }
+	public set lastName(value: string | undefined) {
+		this._lastName = value;
+	}
 
-    public set username(value: string) {
-        this._username = value;
-    }
+	public get name(): string | undefined {
+    	return this._name;
+	}
+
+	public set name(value: string | undefined) {
+    	this._name = value;
+	}
+
+	public get username(): string {
+    	return this._username;
+	}
+
+	public set username(value: string) {
+    	this._username = value;
+	}
 }
 
 const customerModel: ModelType<Customer> = getModelForClass(Customer);
-export {Customer};
+export { Customer };

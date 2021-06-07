@@ -1,9 +1,9 @@
-//General User Interface
+// General User Interface
 interface User {
-    _username: string,
-    _password: string,
-    verify(): boolean,
-    getToken(): string
+	_username: string
+	_password: string
+	verify: () => boolean
+	getToken: () => string
 }
 
-export {User};
+export { User };
