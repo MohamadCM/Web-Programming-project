@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const DBUser: string = "mohamad" || process.env.dbuser;
 const DBPass: string = "1234" || process.env.dbpass;
-const DBAddress: string = "localhost/Test" || process.env.dbaddress;
+const DBAddress: string = "localhost/wpp" || process.env.dbaddress;
 
 /**
  * This is singleton database class
@@ -17,8 +17,9 @@ class Database {
         "@" + this._DBAddress;
 
     private static _instance: Database;
-    public static getInstance(){
-        if(Database._instance) {
+
+    public static getInstance() {
+        if (Database._instance) {
             return this._instance;
         }
         return new Database();
@@ -27,16 +28,19 @@ class Database {
     private constructor() {
         // Connecting to Database
         mongoose
-            .connect(this._mongoURI, {useNewUrlParser: true, useUnifiedTopology: true })
-            .then(()=> console.log("Mongo connected"))
+            .connect(this._mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
+            .then(() => console.log("Mongo connected"))
             .catch(err => console.log("Error in mongo connection", err));
         //
     }
-    public get DBAddress(): string{
+
+    public get DBAddress(): string {
         return this._DBAddress;
     }
-    public get DBUser(): string{
-        return  this._DBUser;
+
+    public get DBUser(): string {
+        return this._DBUser;
     }
 }
+
 export {Database};

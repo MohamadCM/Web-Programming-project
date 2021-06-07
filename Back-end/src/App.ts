@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
-import {Database} from "../config/Database";
+import {Database} from "./config/Database";
 
 //importing route files
 import auth from "./routes/api/users/auth";
