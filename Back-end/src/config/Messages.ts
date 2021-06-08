@@ -1,7 +1,7 @@
 const messages = {
 	success: { msg: "Success" },
 	created: { msg: "Entity created successfully" },
-	unauthorized_access: { msg: "Unauthorized access" },
+	unauthorizedAccess: { msg: "Unauthorized access" },
 	cantUpdate: { msg: "Unable to update" },
 	notFound: { msg: "Requested entity was not found" },
 	wrongInput: { msg: "Wrong info" },
