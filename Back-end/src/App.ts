@@ -5,8 +5,8 @@ import envSetup from "./config/EnvironmentSetup";
 import dotenv from "dotenv";
 dotenv.config();
 
-// importing route files
-import auth from "./routes/api/users/auth";
+// importing route file
+import routes from "./routes/routes";
 
 const app: Application = express();
 const port: number = Number.parseInt(process.env.PORT || "5000");
@@ -29,4 +29,4 @@ app.listen(port, () => {
 envSetup();
 
 // Routes
-app.use("/api/users/auth", auth);
+app.use("/", routes);
