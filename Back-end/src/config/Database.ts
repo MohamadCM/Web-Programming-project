@@ -1,9 +1,11 @@
 import * as process from "process";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
-const DBUser: string = "mohamad" || process.env.dbuser;
-const DBPass: string = "1234" || process.env.dbpass;
-const DBAddress: string = "localhost/wpp" || process.env.dbaddress;
+const DBUser: string = process.env.DB_USERNAME || "";
+const DBPass: string = process.env.DB_PASSWORD || "";
+const DBAddress: string = process.env.DB_ADDRESS || "";
 
 /**
  * This is singleton database class
