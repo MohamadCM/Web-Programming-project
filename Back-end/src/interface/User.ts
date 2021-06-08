@@ -2,8 +2,10 @@
 interface User {
 	_username: string
 	_password: string
-	verify: () => boolean
+	verify: (token: string) => boolean
 	getToken: () => string
 }
-
-export { User };
+enum UserRoles {
+	CUSTOMER = 0
+}
+export { User, UserRoles };

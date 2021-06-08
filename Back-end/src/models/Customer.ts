@@ -2,10 +2,12 @@ import { ModelType } from "@typegoose/typegoose/lib/types";
 import {
 	getModelForClass, modelOptions, prop, Severity
 } from "@typegoose/typegoose";
+import jwt from "jsonwebtoken";
 
-import { User } from "../interface/User";
+import {User, UserRoles} from "../interface/User";
 import { DatabaseObject, DBResponse } from "../interface/Database";
 import {logError} from "../config/Logger";
+import Constants from "../config/Constants";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 class Customer
@@ -16,13 +18,13 @@ implements User, DatabaseObject {
 	@prop({ required: true })
 	_password: string;
 
-	@prop({ required: true })
+	@prop({ required: false })
 	private _name: string | undefined;
 
-	@prop({ required: true })
+	@prop({ required: false })
 	private _lastName: string | undefined;
 
-	@prop({ required: true })
+	@prop({ required: false })
 	private _address: string | undefined;
 
 	@prop({ required: true })
@@ -34,11 +36,19 @@ implements User, DatabaseObject {
 	}
 
 	public getToken(): string {
-    	return "";
+		const payload: Record<string, string | number> = {
+			username: this._username,
+			role: UserRoles.CUSTOMER
+		};
+    	return jwt.sign(payload, Constants.SECRET_KEY);
 	}
 
-	public verify(): boolean {
-    	return false;
+	public verify(token: string): boolean {
+		if(jwt.verify(token, Constants.SECRET_KEY))
+			return false;
+		const payload = jwt.decode(token);
+		return JSON.parse(<string>payload).role >= UserRoles.CUSTOMER;
+
 	}
 
 	public wrap(customer: Record<string, unknown>): DatabaseObject {
@@ -87,7 +97,6 @@ implements User, DatabaseObject {
 		}
 		return result;
 	}
-
 	// Getters and Setters
 	public get credit(): number {
     	return this._credit;

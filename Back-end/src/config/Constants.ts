@@ -3,11 +3,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 interface PARAMETERS {
-	SECRET_KEY: string
+	UNKNOWN: string,
+	SECRET_KEY: string,
+	HASH_SALT_ROUNDS: number
 }
 
 const parameters: PARAMETERS = {
-	SECRET_KEY: process.env.SECRET_KEY || "KEY"
+	UNKNOWN: "NOT_SET",
+	SECRET_KEY: process.env.SECRET_KEY || "KEY",
+	HASH_SALT_ROUNDS: Number.parseInt(process.env.HASH_SALT_ROUNDS || "1")
 };
 
-export {parameters};
+export default parameters;
