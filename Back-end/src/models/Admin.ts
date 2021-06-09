@@ -8,6 +8,7 @@ import {User, UserRoles} from "../interface/User";
 import { DatabaseObject, DBResponse } from "../interface/Database";
 import {logError} from "../config/Logger";
 import Constants from "../config/Constants";
+import {Customer} from "./Customer";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 class Admin
@@ -67,7 +68,10 @@ implements User, DatabaseObject {
 		const result: DBResponse = new DBResponse();
     	try {
     		const user = await adminModel.findOne({ _username: this._username });
-    		if (user) {
+    		const customerResponse = await new Customer(Constants.UNKNOWN, Constants.UNKNOWN).getFromDB(this._username);
+    		if(customerResponse.getSuccess())
+				result.setPayload(undefined).setMessage("User already exists!").setSuccess(false);
+    		else if (user) {
     			await adminModel.updateOne({ _username: this._username }, <Record<string, unknown>><unknown> this);
     			result.setPayload(this).setMessage("Admin replaced successfully").setSuccess(true);
     		} else {
