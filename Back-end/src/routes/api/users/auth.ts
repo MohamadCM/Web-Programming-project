@@ -1,9 +1,11 @@
 import express, {Request, Response, Router} from "express";
 import messages from "../../../config/Messages";
-import {DBResponse} from "../../../interface/Database";
+import {DatabaseObject, DBResponse} from "../../../interface/Database";
 import {Customer} from "../../../models/Customer";
 import Constants from "../../../config/Constants";
 import bcrypt from "bcryptjs";
+import {User} from "../../../interface/User";
+import {Admin} from "../../../models/Admin";
 
 const router: Router = express.Router();
 
@@ -54,8 +56,7 @@ router.post("/register", async (req: Request, res: Response) => {
 	}
 
 	const userResponse: DBResponse = await new Customer(_username, _password)
-		.wrap({_username, _password: bcrypt.hashSync(_password, bcrypt.genSaltSync(Constants.HASH_SALT_ROUNDS))
-			, _address, _name, _lastName})
+		.wrap({_username, _password, _address, _name, _lastName})
 		.saveToDB();
 	if(!userResponse.getSuccess()){
 		res.status(500).json(
@@ -65,6 +66,36 @@ router.post("/register", async (req: Request, res: Response) => {
 	}
 	res.status(201).json(
 		{...messages.created, token: (<Customer> userResponse.getPayload()).getToken()}
+	);
+	return;
+});
+
+//  @route  GET api/users/auth/
+//  @decs   login for Customers or admins
+//  @access Public
+router.post("/", async (req: Request, res: Response) => {
+	const {_username, _password}: Record<string, string> = req.body;
+	if(!_username || !_password){
+		res.status(422).json({...messages.wrongInput, message: "Username or password is not provided"});
+		return;
+	}
+	const users: User[] = [new Admin(Constants.UNKNOWN, Constants.UNKNOWN),
+		new Customer(Constants.UNKNOWN, Constants.UNKNOWN)];
+	for (const user of users){
+		const response = await (<DatabaseObject> <unknown> user).getFromDB(_username);
+		if(response.getSuccess()){
+			const u = <User> <unknown> response.getPayload();
+			const passIsRight = bcrypt.compareSync(_password, u._password);
+			if(!passIsRight)
+				break;
+			res.status(200).json(
+				{...messages.success, token: u.getToken()}
+			);
+			return;
+		}
+	}
+	res.status(422).json(
+		{...messages.wrongInput, message: "Provided username or password is wrong!"}
 	);
 	return;
 });

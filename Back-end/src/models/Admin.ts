@@ -9,6 +9,7 @@ import { DatabaseObject, DBResponse } from "../interface/Database";
 import {logError} from "../config/Logger";
 import Constants from "../config/Constants";
 import {Customer} from "./Customer";
+import bcrypt from "bcryptjs";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 class Admin
@@ -67,6 +68,7 @@ implements User, DatabaseObject {
 	public async saveToDB(): Promise<DBResponse> {
 		const result: DBResponse = new DBResponse();
     	try {
+			this._password = bcrypt.hashSync(this._password, bcrypt.genSaltSync(Constants.HASH_SALT_ROUNDS));
     		const user = await adminModel.findOne({ _username: this._username });
     		const customerResponse = await new Customer(Constants.UNKNOWN, Constants.UNKNOWN).getFromDB(this._username);
     		if(customerResponse.getSuccess())
