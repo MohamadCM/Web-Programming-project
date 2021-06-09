@@ -26,7 +26,7 @@ app.listen(port, () => {
 });
 
 // Run pre-configured functions
-envSetup();
+envSetup().then(() => console.log("\x1b[32m", "Environment has been configured!", "\x1b[0m"));
 
 // Routes
 app.use("/", routes);

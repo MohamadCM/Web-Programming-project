@@ -6,6 +6,7 @@ interface User {
 	getToken: () => string
 }
 enum UserRoles {
-	CUSTOMER = 0
+	CUSTOMER = 0,
+	ADMIN = 1
 }
 export { User, UserRoles };

@@ -51,7 +51,7 @@ implements User, DatabaseObject {
 
 	}
 
-	public wrap(customer: Record<string, unknown>): DatabaseObject {
+	public wrap(customer: Record<string, unknown>): Customer {
 		this._username = <string>customer._username || this._username;
     	this._password = <string>customer._password || this._password;
 		this._name = <string | undefined>customer._name || this._name;
