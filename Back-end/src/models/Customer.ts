@@ -94,10 +94,10 @@ implements User, DatabaseObject {
 				result.setPayload(undefined).setMessage("User already exists!").setSuccess(false);
     		else if (user) {
     			await customerModel.updateOne({ _username: this._username }, <Record<string, unknown>><unknown> this);
-				result.setPayload(this).setMessage("Admin replaced successfully").setSuccess(true);
+				result.setPayload(this).setMessage("Customer updated successfully!").setSuccess(true);
 			} else {
 				await customerModel.create(this);
-				result.setPayload(this).setMessage("Admin created successfully").setSuccess(true);
+				result.setPayload(this).setMessage("Customer created successfully!").setSuccess(true);
     		}
 		} catch (e) {
     		            logError(`Input: ${this}\n${e}`,

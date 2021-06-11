@@ -77,7 +77,7 @@ implements User, DatabaseObject {
 				result.setPayload(undefined).setMessage("User already exists!").setSuccess(false);
     		else if (user) {
     			await adminModel.updateOne({ _username: this._username }, <Record<string, unknown>><unknown> this);
-    			result.setPayload(this).setMessage("Admin replaced successfully!").setSuccess(true);
+    			result.setPayload(this).setMessage("Admin updated successfully!").setSuccess(true);
     		} else {
 				await adminModel.create(this);
 				result.setPayload(this).setMessage("Admin created successfully!").setSuccess(true);
