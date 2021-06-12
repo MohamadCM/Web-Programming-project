@@ -77,7 +77,7 @@ implements User, DatabaseObject {
     		}
 		} catch (e) {
     		logError(`Input: ${username}\n${e}`,
-    		    "Class Admin -> getFromDB");
+    		    "Class Customer -> getFromDB");
 			result.setPayload(undefined)
 				.setMessage("Something went wrong trying to find the customer.").setSuccess(false);
 		}
@@ -101,8 +101,8 @@ implements User, DatabaseObject {
     		}
 		} catch (e) {
     		            logError(`Input: ${this}\n${e}`,
-				"Class Admin -> saveToDB");
-			result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
+				"Class Customer -> saveToDB");
+			result.setPayload(undefined).setMessage("Error saving Customer").setSuccess(false);
 		}
 		return result;
 	}
