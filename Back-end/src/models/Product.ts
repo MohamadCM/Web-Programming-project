@@ -70,8 +70,8 @@ implements DatabaseObject {
 			}
     	} catch (e) {
     		logError(`Input: ${this}\n${e}`,
-    			"Class Admin -> saveToDB");
-			result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
+    			"Class Product -> saveToDB");
+			result.setPayload(undefined).setMessage("Error in saving product.").setSuccess(false);
 		}
 		return result;
 	}
