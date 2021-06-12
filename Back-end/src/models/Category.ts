@@ -1,0 +1,116 @@
+import { ModelType } from "@typegoose/typegoose/lib/types";
+import {
+	getModelForClass, modelOptions, prop, Severity
+} from "@typegoose/typegoose";
+import { DatabaseObject, DBResponse } from "../interface/Database";
+import {logError} from "../config/Logger";
+import Constants from "../config/Constants";
+
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
+class Category
+implements DatabaseObject {
+	@prop({ required: true, unique: true })
+	private _name: string;
+
+	public constructor(name: string) {
+		this._name = name;
+	}
+
+
+	public wrap(category: Record<string, unknown>): Category {
+    	this._name = <string | undefined>category._name || this._name;
+		return this;
+	}
+
+	public async getFromDB(name: string): Promise<DBResponse> {
+		const result: DBResponse = new DBResponse();
+		try {
+    		const category = await categoryModel.findOne({ _name: name });
+			if (!category) {
+    			result.setPayload(undefined).setMessage("Category was not found in Database.").setSuccess(false);
+			} else {
+    			this.wrap(<Record<string, string | number | undefined>><unknown>category);
+				result.setPayload(this).setMessage("Category was found successfully!").setSuccess(true);
+    		}
+		} catch (e) {
+    		logError(`Input: ${name}\n${e}`,
+				"Class Category -> getFromDB");
+    		result.setPayload(undefined)
+    			.setMessage("Something went wrong trying to find the category.").setSuccess(false);
+    	}
+    	return result;
+	}
+
+	public async saveToDB(): Promise<DBResponse> {
+    	const result: DBResponse = new DBResponse();
+    	try {
+    		const category = await categoryModel.findOne({ _name: this._name });
+			if (category) {
+    			result.setPayload(this).setMessage("Category Already exists!").setSuccess(true);
+    		} else {
+    			await categoryModel.create(this);
+    			result.setPayload(this).setMessage("Category created successfully!").setSuccess(true);
+			}
+    	} catch (e) {
+			logError(`Input: ${this}\n${e}`,
+				"Class Category -> saveToDB");
+    		result.setPayload(undefined).setMessage("Error saving Category").setSuccess(false);
+    	}
+    	return result;
+	}
+	// Getting count of categories
+	public static async getCount(params: Record<string, unknown>):
+	Promise<number | undefined> {
+    	try {
+    		Object.keys(params)
+    			.forEach((key) => params[key] === undefined && delete params[key]); // removing undefined values
+			const count: number = await categoryModel.countDocuments(params);
+			return Promise.resolve(count);
+		} catch (e) {
+    		logError(`Input: ${params.toString()}\n${e}`,
+    			"Class Category -> getCount method");
+			return Promise.resolve(undefined);
+		}
+	}
+
+	// Getting a list of categories
+	public static async getList(params: Record<string, unknown>,
+    	limit: number, offset: number,
+		fields: string | undefined, sort: Record<string, number>):
+		Promise<Category[] | undefined> {
+    	try {
+			if (limit === 0) return Promise.resolve([]);
+    		Object.keys(params)
+				.forEach((key) => params[key] === undefined && delete params[key]); // removing undefined values
+			const list = await categoryModel
+    			.find(params, fields || null)
+    			.skip(offset)
+    			.limit(limit)
+    			.sort(sort || null);
+    		const result: Category[] = new Array<Category>();
+			for (const category of list) {
+				result.push(
+					new Category(Constants.UNKNOWN).wrap(<Record<string, unknown>><unknown> category)
+    			);
+			}
+			return Promise.resolve(result);
+    	} catch (e) {
+    		logError(`Input${params.toString()}\n${e}`,
+    			"Class Category -> getList method");
+    		return Promise.resolve(undefined);
+    	}
+	}
+
+
+	// Getters and setters
+	get name(): string {
+    	return this._name;
+	}
+
+	set name(value: string) {
+    	this._name = value;
+	}
+}
+
+const categoryModel: ModelType<Category> = getModelForClass(Category);
+export { Category };

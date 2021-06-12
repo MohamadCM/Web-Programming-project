@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import {Admin} from "../models/Admin";
 import {getModelForClass} from "@typegoose/typegoose";
 import {logError} from "./Logger";
+import {Category} from "../models/Category";
+import {DBResponse} from "../interface/Database";
 dotenv.config();
 
 export default async function setup(): Promise<void> {
@@ -14,6 +16,13 @@ export default async function setup(): Promise<void> {
 		const adminResponse = await new Admin(adminUsername, adminPassword).saveToDB();
 		if(!adminResponse.getSuccess()){
 			logError(`Error in adding admin\n ${adminResponse.getMessage()}`,"Environment setup function");
+		}
+	}
+
+	{ // Creating default Category
+		const categoryResponse: DBResponse = await new Category("دسته‌بندی نشده").saveToDB();
+		if(!categoryResponse.getSuccess()){
+			logError(`Error in adding category\n ${categoryResponse.getMessage()}`,"Environment setup function");
 		}
 	}
 }

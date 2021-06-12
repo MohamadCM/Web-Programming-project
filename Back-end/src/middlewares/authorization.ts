@@ -8,7 +8,7 @@ function authorize(user: User) {
 		const authHeader = req.headers.authorization || <string>req.query.token;
 		let access = false;
 		if (authHeader) {
-			if(authHeader.split(" ")[0] !== "Bearer") {
+			if(authHeader.split(" ")[0] === "Bearer") {
 				const token = authHeader.split(" ")[1]; // Received token should be like: Bearer <jwt-token>
 				if (user.verify(token)) {
 					access = true;

@@ -34,11 +34,13 @@ implements User, DatabaseObject {
 	}
 
 	public verify(token: string): boolean {
-    	if(jwt.verify(token, Constants.SECRET_KEY))
+		try {
+			jwt.verify(token, Constants.SECRET_KEY);
+			const payload = <Record<string, unknown>>jwt.decode(token);
+			return <UserRoles>payload.role >= UserRoles.ADMIN;
+		}catch (e){
 			return false;
-		const payload = jwt.decode(token);
-    	return JSON.parse(<string>payload).role >= UserRoles.ADMIN;
-
+		}
 	}
 
 	public wrap(customer: Record<string, unknown>): Admin {
@@ -75,15 +77,15 @@ implements User, DatabaseObject {
 				result.setPayload(undefined).setMessage("User already exists!").setSuccess(false);
     		else if (user) {
     			await adminModel.updateOne({ _username: this._username }, <Record<string, unknown>><unknown> this);
-    			result.setPayload(this).setMessage("Admin replaced successfully").setSuccess(true);
+    			result.setPayload(this).setMessage("Admin updated successfully!").setSuccess(true);
     		} else {
 				await adminModel.create(this);
-				result.setPayload(this).setMessage("Admin created successfully").setSuccess(true);
+				result.setPayload(this).setMessage("Admin created successfully!").setSuccess(true);
 			}
     	} catch (e) {
     		logError(`Input: ${this}\n${e}`,
 				"Class Admin -> saveToDB");
-			result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
+			result.setPayload(undefined).setMessage("Error in saving Admin.").setSuccess(false);
 		}
 		return result;
 	}

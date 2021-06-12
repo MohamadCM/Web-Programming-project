@@ -46,11 +46,13 @@ implements User, DatabaseObject {
 	}
 
 	public verify(token: string): boolean {
-		if(jwt.verify(token, Constants.SECRET_KEY))
+		try {
+			jwt.verify(token, Constants.SECRET_KEY);
+			const payload = <Record<string, unknown>>jwt.decode(token);
+			return <UserRoles>payload.role >= UserRoles.CUSTOMER;
+		}catch (e){
 			return false;
-		const payload = jwt.decode(token);
-		return JSON.parse(<string>payload).role >= UserRoles.CUSTOMER;
-
+		}
 	}
 
 	public wrap(customer: Record<string, unknown>): Customer {
@@ -68,15 +70,16 @@ implements User, DatabaseObject {
 		try {
 			const user = await customerModel.findOne({ _username: username });
     		if (!user) {
-    			result.setPayload(undefined).setMessage("Customer was not found in Database").setSuccess(false);
+    			result.setPayload(undefined).setMessage("Customer was not found in Database.").setSuccess(false);
     		} else {
     			this.wrap(<Record<string, string | number | undefined>><unknown>user);
-    			result.setPayload(this).setMessage("Admin found successfully").setSuccess(true);
+    			result.setPayload(this).setMessage("Customer was found successfully!").setSuccess(true);
     		}
 		} catch (e) {
     		logError(`Input: ${username}\n${e}`,
-    		    "Class Admin -> getFromDB");
-			result.setPayload(undefined).setMessage("Something went wrong trying to find the admin").setSuccess(false);
+    		    "Class Customer -> getFromDB");
+			result.setPayload(undefined)
+				.setMessage("Something went wrong trying to find the customer.").setSuccess(false);
 		}
 		return result;
 	}
@@ -91,15 +94,15 @@ implements User, DatabaseObject {
 				result.setPayload(undefined).setMessage("User already exists!").setSuccess(false);
     		else if (user) {
     			await customerModel.updateOne({ _username: this._username }, <Record<string, unknown>><unknown> this);
-				result.setPayload(this).setMessage("Admin replaced successfully").setSuccess(true);
+				result.setPayload(this).setMessage("Customer updated successfully!").setSuccess(true);
 			} else {
 				await customerModel.create(this);
-				result.setPayload(this).setMessage("Admin created successfully").setSuccess(true);
+				result.setPayload(this).setMessage("Customer created successfully!").setSuccess(true);
     		}
 		} catch (e) {
     		            logError(`Input: ${this}\n${e}`,
-				"Class Admin -> saveToDB");
-			result.setPayload(undefined).setMessage("Error saving Admin").setSuccess(false);
+				"Class Customer -> saveToDB");
+			result.setPayload(undefined).setMessage("Error saving Customer").setSuccess(false);
 		}
 		return result;
 	}

@@ -9,7 +9,7 @@ import {Admin} from "../../../models/Admin";
 
 const router: Router = express.Router();
 
-//  @route  GET api/users/auth/register
+//  @route  POST api/users/auth/register
 //  @decs   post for customer registration
 //  @access Public
 router.post("/register", async (req: Request, res: Response) => {
@@ -70,7 +70,7 @@ router.post("/register", async (req: Request, res: Response) => {
 	return;
 });
 
-//  @route  GET api/users/auth/
+//  @route  POST api/users/auth/
 //  @decs   login for Customers or admins
 //  @access Public
 router.post("/", async (req: Request, res: Response) => {
