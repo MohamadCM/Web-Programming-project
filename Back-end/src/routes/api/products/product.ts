@@ -1,12 +1,14 @@
 import express, {Request, Response, Router} from "express";
 import messages from "../../../config/Messages";
 import {Product} from "../../../models/Product";
-import {logError} from "../../../config/Logger";
+import {logError, logInfo} from "../../../config/Logger";
 import authorize from "../../../middlewares/authorization";
 import {Admin} from "../../../models/Admin";
 import Constants from "../../../config/Constants";
 import {DBResponse} from "../../../interface/Database";
 import {Category} from "../../../models/Category";
+import multer, { Multer } from "multer";
+import fs from "fs";
 
 const router: Router = express.Router();
 
@@ -41,7 +43,8 @@ router.get("/", async (req: Request, res: Response) => {
 		res.status(200).json({...messages.success, count, products});
 		return;
 	} catch (e) {
-	    logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.query)}`, "GET products");
+	    logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.query)}, ${e}`,
+			"GET products");
 		res.status(500).json(messages.somethingWentWrong);
 		return;
 	}
@@ -96,9 +99,85 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 			res.status(400).json(messages.somethingWentWrong);
 			return;
 		} catch (e) {
-			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)}`, "POST products");
+			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)},
+			 ${e}`, "POST products");
 			res.status(500).json(messages.somethingWentWrong);
 			return;
 		}
 	});
+
+const upload: Multer = multer({
+	storage: multer.diskStorage({
+		destination(req, file, callback) {
+			callback(null, Constants.ASSETS_PATH.PRODUCT_PICTURES);
+		},
+		filename(req, file, callback) {
+			let extension = "";
+			const splitName = file.originalname.split(".");
+			if (file.originalname.includes(".")) extension = splitName[splitName.length - 1];
+			callback(null, `product-${Date.now()}-${splitName[0]}.${extension}`);
+		}
+	}),
+	fileFilter(req: Express.Request, file: Express.Multer.File, callback: multer.FileFilterCallback) {
+		if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+			callback(null, true);
+		} else {
+			callback(null, false);
+		}
+	},
+	limits: {
+		files: 1, // Allow only 1 file per request
+		fileSize: 1024 * 1024 * 20 // Max file size is 20 MB
+	}
+});
+//  @route  POST api/products/picture
+//  @decs   Upload a picture for product
+//  @access admin users
+router.post("/picture",
+	authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
+	upload.single("_picture"),
+	async (req: Request, res: Response) => {
+		try {
+			const { file } = req;
+			if (!file) res.status(415).json(messages.notSupported);
+			else {
+				const { _name } = req.body;
+				if (!_name) res.status(422).json({ ...messages.wrongInput, message: "Name is not provided!" });
+				else {
+					const productResponse: DBResponse = await
+					new Product(Constants.UNKNOWN).getFromDB(_name);
+					if (!productResponse.getSuccess()) {
+						res.status(404)
+							.json({ ...messages.notFound, message: productResponse.getMessage() });
+					} else {
+						const product: Product = <Product> productResponse.getPayload();
+						if (product.picture) { // Checking whether old picture exists
+							try {
+								fs.unlinkSync("public" + product.picture);
+							} catch (e){
+								if(e)
+									logInfo(`Unable to delete old product picture for product=${product.name}
+													pic=${JSON.stringify(product.picture)}`); // Removing old picture
+							}
+						}
+						product.picture = "/" + Constants.ASSETS_PATH.PRODUCT_PICTURES.split("/").pop()
+							+ "/" +file.filename;
+						const result: DBResponse = await product.saveToDB();
+						if (!result.getSuccess()) {
+							res.status(500).json({
+								...messages.somethingWentWrong,
+								message: result.getMessage()
+							});
+						} else res.status(200).json({ ...messages.success, message: result.getMessage() });
+					}
+				}
+			}
+			return;
+		} catch (e) {
+			logError(`Input:${JSON.stringify(req.body)}\n${e}`,
+				"POST api/order/check/picture");
+			res.status(500).json(messages.somethingWentWrong);
+		}
+	});
+
 export default router;

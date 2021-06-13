@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 import {Admin} from "../models/Admin";
 import {getModelForClass} from "@typegoose/typegoose";
-import {logError} from "./Logger";
+import {logError, logInfo} from "./Logger";
 import {Category} from "../models/Category";
 import {DBResponse} from "../interface/Database";
+import Constants from "./Constants";
+import mkdirp from "mkdirp";
 dotenv.config();
 
 export default async function setup(): Promise<void> {
@@ -23,6 +25,20 @@ export default async function setup(): Promise<void> {
 		const categoryResponse: DBResponse = await new Category("دسته‌بندی نشده").saveToDB();
 		if(!categoryResponse.getSuccess()){
 			logError(`Error in adding category\n ${categoryResponse.getMessage()}`,"Environment setup function");
+		}
+	}
+
+	{
+		for (const path of Object.values(Constants.ASSETS_PATH)) { // Create static assets folders
+			mkdirp(path).then(
+				() => {
+					logInfo(`${JSON.stringify(path)} folder created`);
+				}
+			).catch(
+				() => {
+					logInfo(`Error in creating ${JSON.stringify(path)} folder`);
+				}
+			);
 		}
 	}
 }

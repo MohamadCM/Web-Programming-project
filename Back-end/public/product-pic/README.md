@@ -1,0 +1,1 @@
+- ## Server saves product pictures here.
