@@ -24,6 +24,8 @@ implements DatabaseObject {
 	@prop({ required: false })
 	private _picture: string | undefined;
 
+	public updateObject: Record<string, unknown> | undefined;
+
 	public constructor(name: string) {
 		this._name = name;
 	}
@@ -62,7 +64,8 @@ implements DatabaseObject {
 		try {
     		const product = await productModel.findOne({ _name: this._name });
     		if (product) {
-    			await productModel.updateOne({ _name: this._name }, <Record<string, unknown>><unknown> this);
+    			await productModel.updateOne({ _name: this._name },
+					this.updateObject || <Record<string, unknown>><unknown> this);
 				result.setPayload(this).setMessage("Product updated successfully!").setSuccess(true);
     		} else {
 				await productModel.create(this);

@@ -28,5 +28,7 @@ app.listen(port, () => {
 // Run pre-configured functions
 envSetup().then(() => console.log("\x1b[32m", "Environment has been configured!", "\x1b[0m"));
 
+// Static files
+app.use(express.static("public"));
 // Routes
 app.use("/", routes);
