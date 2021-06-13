@@ -1,21 +1,3 @@
-# Web Programming course project
+### E-Commerce site using Vue.js (Pure CSS styling) as front-end and (Typescript + Express library) as back-end
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+- This project was originally developed as final project for "Web Engineering" course by Dr. Parham Alvani, but I've made some further adjustments and changes since then. 
