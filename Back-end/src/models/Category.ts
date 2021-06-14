@@ -13,6 +13,8 @@ implements DatabaseObject {
 	@prop({ required: true, unique: true })
 	private _name: string;
 
+	public updateObject: Record<string, unknown> | undefined;
+
 	public constructor(name: string) {
 		this._name = name;
 	}
@@ -47,7 +49,24 @@ implements DatabaseObject {
     	try {
     		const category = await categoryModel.findOne({ _name: this._name });
 			if (category) {
-    			result.setPayload(this).setMessage("Category Already exists!").setSuccess(true);
+				await categoryModel.updateOne({ _name: this._name },
+					this.updateObject || <Record<string, unknown>><unknown> this);
+				if(this.updateObject && this.updateObject._name) {
+					const products = await Product
+						.getList({_category: this._name}, Number.MAX_SAFE_INTEGER, 0, undefined, {});
+					if (products) {
+						for (const product of products) {
+							product.category = <string>this.updateObject._name;
+							const productResponse = await product.saveToDB();
+							if (!productResponse.getSuccess()) {
+								logError(productResponse.getMessage() ||
+									`Error resetting category for product ${product.name}`,
+								"Class Category -> saveToDB");
+							}
+						}
+					}
+				}
+    			result.setPayload(this).setMessage("Category updated successfully!").setSuccess(true);
     		} else {
     			await categoryModel.create(this);
     			result.setPayload(this).setMessage("Category created successfully!").setSuccess(true);
