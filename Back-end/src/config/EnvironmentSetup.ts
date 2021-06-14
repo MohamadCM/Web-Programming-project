@@ -22,7 +22,7 @@ export default async function setup(): Promise<void> {
 	}
 
 	{ // Creating default Category
-		const categoryResponse: DBResponse = await new Category("دسته‌بندی نشده").saveToDB();
+		const categoryResponse: DBResponse = await new Category(Constants.DEFAULT_CATEGORY_NAME).saveToDB();
 		if(!categoryResponse.getSuccess()){
 			logError(`Error in adding category\n ${categoryResponse.getMessage()}`,"Environment setup function");
 		}

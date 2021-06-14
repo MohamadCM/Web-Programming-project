@@ -36,10 +36,6 @@ router.get("/", async (req: Request, res: Response) => {
 		const products: Product[] | undefined = await Product
 			.getList({_name, _category, _picture, price: _qPrice, _soldCount},
 				qLimit, qOffset, <string | undefined>fields, JSON.parse(<string | undefined>sort || "{}"));
-		if(!products || products.length === 0){
-			res.status(404).json({...messages.wrongInput, message: "No product was found!"});
-			return;
-		}
 		res.status(200).json({...messages.success, count, products});
 		return;
 	} catch (e) {
