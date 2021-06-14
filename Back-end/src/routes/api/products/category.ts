@@ -83,4 +83,30 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 		}
 	});
 
+//  @route  DELETE api/products/category
+//  @decs   Delete a category
+//  @access admin users
+router.delete("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
+	async (req: Request, res: Response) => {
+		try {
+			const {_name} = req.body;
+			if(!_name){
+				res.status(422).json({...messages.wrongInput, message: "Category name is not provided!"});
+				return;
+			}
+			const categoryResponse = await new Category(<string> _name).removeFromDB();
+			if(!categoryResponse.getSuccess()){
+				res.status(404).json({...messages.notFound, message: categoryResponse.getMessage()});
+				return;
+			}
+			res.status(204).json(messages.noContent);
+			return;
+		} catch (e) {
+			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.query)}, ${e}`,
+				"GET categories");
+			res.status(500).json(messages.somethingWentWrong);
+			return;
+		}
+	});
+
 export default router;
