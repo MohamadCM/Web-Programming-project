@@ -24,6 +24,12 @@ implements DatabaseObject {
 	@prop({ required: false })
 	private _picture: string | undefined;
 
+	@prop({required: true})
+	private _date: Date = new Date();
+
+	@prop({required: false})
+	private _inventory: number = 1;
+
 	public updateObject: Record<string, unknown> | undefined;
 
 	public constructor(name: string) {
@@ -37,6 +43,8 @@ implements DatabaseObject {
     	this._price = <number | undefined>product._price || this._price;
 		this._soldCount = <number | undefined>product._soldCount || this._soldCount;
     	this._picture = <string | undefined>product._picture || this._picture;
+    	this._date = <Date | undefined> product._date || this._date;
+    	this._inventory = <number | undefined> product._inventory || this._inventory;
 		return this;
 	}
 
@@ -157,6 +165,14 @@ implements DatabaseObject {
 
 	set name(value: string) {
 		this._name = value;
+	}
+
+	public get inventory(): number {
+		return this._inventory;
+	}
+
+	public set inventory(value: number) {
+		this._inventory = value;
 	}
 }
 

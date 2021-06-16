@@ -9,6 +9,7 @@ import {DBResponse} from "../../../interface/Database";
 import {Category} from "../../../models/Category";
 import multer, { Multer } from "multer";
 import fs from "fs";
+import {removeFields} from "../../../config/Utils";
 
 const router: Router = express.Router();
 
@@ -18,25 +19,29 @@ const router: Router = express.Router();
 router.get("/", async (req: Request, res: Response) => {
 	try {
 		const {_name, _category, _picture, _soldCount, fields, sort} = req.query;
-		const {limit, offset, _price} = req.query;
+		const {limit, offset, _price, _inventory} = req.query;
 		if(!limit || !offset){
 			res.status(422).json({...messages.wrongInput, message: "Limit or offset is not provided!"});
 			return;
 		}
 		const qLimit = Number.parseInt(<string>limit);
 		const qOffset = Number.parseInt(<string>offset);
-		let _qPrice;
+		let _qPrice, _qInventory;
 		if(_price) _qPrice = Number.parseInt(<string>_price);
+		if(_inventory) _qInventory = Number.parseInt(<string>_inventory);
 		const count: number | undefined = await Product
-			.getCount({_name, _category, _picture, price: _qPrice, _soldCount});
+			.getCount({_name, _category, _picture, price: _qPrice, _soldCount, _inventory: _qInventory});
 		if(!count){
 			res.status(404).json({...messages.wrongInput, message: "No product was found!"});
 			return;
 		}
 		const products: Product[] | undefined = await Product
-			.getList({_name, _category, _picture, price: _qPrice, _soldCount},
+			.getList({_name, _category, _picture, price: _qPrice, _soldCount, _inventory: _qInventory},
 				qLimit, qOffset, <string | undefined>fields, JSON.parse(<string | undefined>sort || "{}"));
-		res.status(200).json({...messages.success, count, products});
+		let result = <Array<Record<string, unknown>>><unknown>products;
+		if(fields && products)
+			result = removeFields(products, <string>fields);
+		res.status(200).json({...messages.success, count, products: result});
 		return;
 	} catch (e) {
 	    logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.query)}, ${e}`,
@@ -52,7 +57,7 @@ router.get("/", async (req: Request, res: Response) => {
 router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 	async (req: Request, res: Response) => {
 		try {
-			let {_name, _category, _picture, _soldCount, _price, _newName} = req.body;
+			let {_name, _category, _picture, _soldCount, _price, _newName, _inventory} = req.body;
 			let updateObject = {};
 			if(_name){ // Will update if name is provided
 			    const productResponse: DBResponse = await new Product(Constants.UNKNOWN).getFromDB(_name);
@@ -67,6 +72,7 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 			    _soldCount = _soldCount || product.soldCount;
 			    _price = _price || product.price;
 			    _newName = _newName || product.name;
+			    _inventory = _inventory || product.inventory;
 			}
 			if(!_category || !_price || !_newName) {
 				res.status(422)
@@ -75,7 +81,8 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 			}
 			updateObject = {_name: _newName, _category, _picture,
 				_soldCount: _soldCount ? Number.parseInt(_soldCount) : undefined,
-				_price: Number.parseInt(<string>_price)};
+				_price: Number.parseInt(<string>_price),
+				_inventory: _inventory ? Number.parseInt(<string> _inventory) : 1};
 			if(_category){
 			    const categoryResponse: DBResponse = await new Category(Constants.UNKNOWN).getFromDB(_category);
 			    if(!categoryResponse.getSuccess()){
@@ -84,7 +91,7 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 				}
 			}
 			const product = new Product(Constants.UNKNOWN)
-				.wrap(!_name ? updateObject : {_name, _category, _picture, _soldCount, _price});
+				.wrap(!_name ? updateObject : {_name, _category, _picture, _soldCount, _price, _inventory});
 			product.updateObject = updateObject;
 			const productResponse: DBResponse = await product.saveToDB();
 			if(productResponse.getSuccess()){
