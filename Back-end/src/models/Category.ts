@@ -119,7 +119,7 @@ implements DatabaseObject {
 			const count: number = await categoryModel.countDocuments(params);
 			return Promise.resolve(count);
 		} catch (e) {
-    		logError(`Input: ${params.toString()}\n${e}`,
+    		logError(`Input: ${JSON.stringify(params)}\n${e}`,
     			"Class Category -> getCount method");
 			return Promise.resolve(undefined);
 		}
@@ -147,7 +147,7 @@ implements DatabaseObject {
 			}
 			return Promise.resolve(result);
     	} catch (e) {
-    		logError(`Input${params.toString()}\n${e}`,
+    		logError(`Input${JSON.stringify(params)}\n${e}`,
     			"Class Category -> getList method");
     		return Promise.resolve(undefined);
     	}

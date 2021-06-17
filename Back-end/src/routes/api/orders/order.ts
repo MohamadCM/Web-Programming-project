@@ -63,9 +63,9 @@ router.post("/", authorize(new Customer(Constants.UNKNOWN, Constants.UNKNOWN)),
 			}
 			const _username = <string>(<Record<string, unknown>>jwt
 				.decode((<string>(req.headers.authorization || <string>req.query.token)).split(" ")[1])).username;
-			const product = new Order(Constants.UNKNOWN, Constants.UNKNOWN)
+			const order = new Order(Constants.UNKNOWN, Constants.UNKNOWN)
 				.wrap({_product, _count: Number.parseInt(_count), _username});
-			const orderResponse: DBResponse = await product.saveToDB();
+			const orderResponse: DBResponse = await order.saveToDB();
 			if(orderResponse.getSuccess()){
 				res.status(201)
 					.json({...messages.success, message: orderResponse.getMessage()});

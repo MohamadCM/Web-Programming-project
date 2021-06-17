@@ -95,7 +95,7 @@ implements DatabaseObject {
 			const count: number = await productModel.countDocuments(params);
 			return Promise.resolve(count);
 		} catch (e) {
-			logError(`Input: ${params.toString()}\n${e}`,
+			logError(`Input: ${JSON.stringify(params)}\n${e}`,
 				"Class Products -> getCount method");
 			return Promise.resolve(undefined);
 		}
@@ -123,7 +123,7 @@ implements DatabaseObject {
 			}
 			return Promise.resolve(result);
 		} catch (e) {
-			logError(`Input${params.toString()}\n${e}`,
+			logError(`Input${JSON.stringify(params)}\n${e}`,
 				"Class Products -> getList method");
 			return Promise.resolve(undefined);
 		}

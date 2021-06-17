@@ -144,7 +144,7 @@ implements DatabaseObject {
     		const count: number = await orderModel.countDocuments(params);
     		return Promise.resolve(count);
 		} catch (e) {
-    		logError(`Input: ${params.toString()}\n${e}`,
+    		logError(`Input: ${JSON.stringify(params)}\n${e}`,
     			"Class Order -> getCount method");
     		return Promise.resolve(undefined);
     	}
