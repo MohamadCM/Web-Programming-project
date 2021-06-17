@@ -6,6 +6,8 @@ import uniqid from "uniqid";
 import { DatabaseObject, DBResponse } from "../interface/Database";
 import {logError} from "../config/Logger";
 import Constants from "../config/Constants";
+import {Customer} from "./Customer";
+import {Product} from "./Product";
 
 enum ORDER_STATUS {
 	IN_PROGRESS = "درحال انجام",
@@ -88,13 +90,43 @@ implements DatabaseObject {
 	public async saveToDB(): Promise<DBResponse> {
 		const result: DBResponse = new DBResponse();
 		try {
-			const order = await orderModel.findOne({ _trackingCode: this._trackingCode });
-    		if (order) {
-				await orderModel.updateOne({ _name: this._name }, <Record<string, unknown>><unknown> this);
-				result.setPayload(this).setMessage("Order updated successfully!").setSuccess(true);
-			} else {
-    			await orderModel.create(this);
-    			result.setPayload(this).setMessage("Order created successfully!").setSuccess(true);
+			const userResponse = await new Customer(Constants.UNKNOWN, Constants.UNKNOWN).getFromDB(this._username);
+			if(!userResponse.getSuccess())
+				result.setPayload(undefined).setMessage(userResponse.getMessage()).setSuccess(false);
+			else {
+				const user = <Customer> userResponse.getPayload();
+				this._name = user.name;
+				this._lastName = user.lastName;
+				this.address = user.address;
+				const productResponse = await new Product(Constants.UNKNOWN)
+					.getFromDB(this._product);
+				if(!productResponse.getSuccess())
+					result.setPayload(undefined).setMessage(productResponse.getMessage()).setSuccess(false);
+				else {
+					const product = <Product> productResponse.getPayload();
+					this._totalCost = this._count * <number>product.price;
+					if(product.inventory <= this._count)
+						result.setPayload(undefined).setMessage("Not enough products in inventory!").setSuccess(false);
+					else if (user.credit < this._totalCost)
+						result.setPayload(undefined).setMessage("User doesn't have enough credit").setSuccess(false);
+					else {
+						product.inventory = product.inventory - this.count;
+						const productSaveResponse = await product.saveToDB();
+						if(!productSaveResponse.getSuccess())
+							result.setPayload(undefined).setMessage(productResponse.getMessage()).setSuccess(false);
+						else {
+							user.credit = user.credit - this._totalCost;
+							const userSaveResponse = await user.saveToDB();
+							if (!userSaveResponse.getSuccess())
+								result.setPayload(undefined)
+									.setMessage(userSaveResponse.getMessage()).setSuccess(false);
+							else {
+								await orderModel.create(this);
+								result.setPayload(this).setMessage("Order created successfully!").setSuccess(true);
+							}
+						}
+					}
+				}
 			}
 		} catch (e) {
 			logError(`Input: ${this}\n${e}`,

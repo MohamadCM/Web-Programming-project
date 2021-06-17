@@ -8,6 +8,7 @@ import Constants from "../../../config/Constants";
 import {Order} from "../../../models/Order";
 import {Admin} from "../../../models/Admin";
 import jwt from "jsonwebtoken";
+import {DBResponse} from "../../../interface/Database";
 
 const router: Router = express.Router();
 
@@ -43,6 +44,38 @@ router.get("/", authorize(new Customer(Constants.UNKNOWN, Constants.UNKNOWN)),
 		} catch (e) {
 			logError(`Something went wrong during API call, Input query: ${req.query}, ${e}`,
 				"GET orders");
+			res.status(500).json(messages.somethingWentWrong);
+			return;
+		}
+	});
+
+//  @route  POST api/orders/
+//  @decs   add an order
+//  @access Customer users
+router.post("/", authorize(new Customer(Constants.UNKNOWN, Constants.UNKNOWN)),
+	async (req: Request, res: Response) => {
+		try {
+			const {_product, _count} = req.body;
+			if(!_product || !_count) {
+				res.status(422)
+					.json({...messages.wrongInput, message: "Required fields are not provided"});
+				return;
+			}
+			const _username = <string>(<Record<string, unknown>>jwt
+				.decode((<string>(req.headers.authorization || <string>req.query.token)).split(" ")[1])).username;
+			const product = new Order(Constants.UNKNOWN, Constants.UNKNOWN)
+				.wrap({_product, _count: Number.parseInt(_count), _username});
+			const orderResponse: DBResponse = await product.saveToDB();
+			if(orderResponse.getSuccess()){
+				res.status(201)
+					.json({...messages.success, message: orderResponse.getMessage()});
+				return;
+			}
+			res.status(400).json({...messages.somethingWentWrong, messages: orderResponse.getMessage()});
+			return;
+		} catch (e) {
+			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)},
+			 ${e}`, "POST products");
 			res.status(500).json(messages.somethingWentWrong);
 			return;
 		}

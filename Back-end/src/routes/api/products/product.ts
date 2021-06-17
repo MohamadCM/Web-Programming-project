@@ -99,7 +99,7 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 					.json({...messages.success, message: productResponse.getMessage()});
 			    return;
 			}
-			res.status(400).json(messages.somethingWentWrong);
+			res.status(400).json({...messages.somethingWentWrong, message: productResponse.getMessage()});
 			return;
 		} catch (e) {
 			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)},
