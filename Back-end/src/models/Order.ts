@@ -47,7 +47,7 @@ implements DatabaseObject {
 	private _status: ORDER_STATUS = ORDER_STATUS.IN_PROGRESS;
 
 	public constructor(product: string, username: string) {
-		this._product = name;
+		this._product = product;
 		this._username = username;
 	}
 
@@ -140,7 +140,7 @@ implements DatabaseObject {
 			}
 			return Promise.resolve(result);
     	} catch (e) {
-    		logError(`Input${params.toString()}\n${e}`,
+    		logError(`Input${JSON.stringify(params)}\n${e}`,
 				"Class Order -> getList method");
     		return Promise.resolve(undefined);
     	}
