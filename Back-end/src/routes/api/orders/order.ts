@@ -81,4 +81,42 @@ router.post("/", authorize(new Customer(Constants.UNKNOWN, Constants.UNKNOWN)),
 		}
 	});
 
+
+//  @route  POST api/orders/status
+
+//  @decs   add an order
+//  @access Customer users
+router.put("/status", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
+	async (req: Request, res: Response) => {
+		try {
+			const {_status, _order} = req.body;
+			if(!_order || _status === undefined || typeof Number(_status) !== "number") {
+				res.status(422)
+					.json({...messages.wrongInput, message: "Required fields are not provided"});
+				return;
+			}
+			const orderResponse = await new Order(Constants.UNKNOWN, Constants.UNKNOWN).getFromDB(<string> _order);
+			if(!orderResponse.getSuccess()){
+				res.status(404)
+					.json({...messages.notFound, message: orderResponse.getMessage()});
+				return;
+			}
+			const orderSaveResponse: DBResponse = await (<Order> orderResponse.getPayload())
+				.updateStatus(Number.parseInt(_status));
+			if(orderSaveResponse.getSuccess()){
+				res.status(200)
+					.json({...messages.success, message: orderSaveResponse.getMessage()});
+				return;
+			}
+			res.status(400).json({...messages.somethingWentWrong, messages: orderSaveResponse.getMessage()});
+			return;
+		} catch (e) {
+			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)},
+			 ${e}`, "PUT products");
+			res.status(500).json(messages.somethingWentWrong);
+			return;
+		}
+	});
+
+
 export default router;

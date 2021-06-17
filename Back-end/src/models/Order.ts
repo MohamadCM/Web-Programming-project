@@ -177,7 +177,37 @@ implements DatabaseObject {
     		return Promise.resolve(undefined);
     	}
 	}
-
+	//update status of an Order
+	public async updateStatus(status: number): Promise<DBResponse>{
+		const result: DBResponse = new DBResponse();
+		try {
+			if(status > 1 || status < -1)
+				result.setPayload(undefined).setMessage("Wrong status number!").setSuccess(false);
+			else {
+				switch (status) {
+					case -1:
+						this.status = ORDER_STATUS.CANCELLED;
+						break;
+					case 0:
+						this.status = ORDER_STATUS.IN_PROGRESS;
+						break;
+					case 1:
+						this.status = ORDER_STATUS.DONE;
+						break;
+					default:
+						break;
+				}
+				await orderModel.updateOne({_trackingCode: this._trackingCode}, <Record<string, unknown>><unknown>this);
+				result.setPayload(this).setMessage("Order status has been updated successfully.").setSuccess(true);
+			}
+			return Promise.resolve(result);
+		} catch (e) {
+			logError(`Input${status}\n${e}`,
+				"Class Order -> updateStatus method");
+			result.setPayload(undefined).setMessage("Error in updating order status.").setSuccess(false);
+			return Promise.resolve(result);
+		}
+	}
 
 	// Getters and setters
 	get status(): ORDER_STATUS {
