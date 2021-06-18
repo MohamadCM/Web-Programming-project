@@ -27,7 +27,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 //  @route  PUT api/users/profile
 //  @decs   update profile
-//  @access Public
+//  @access private to users
 router.put("/", async (req: Request, res: Response) => {
 	const {_password, _address, _name, _lastName}: Record<string, string> = req.body;
 	const token: string = <string>req.headers.authorization?.split(" ")[1];
@@ -63,9 +63,36 @@ router.put("/", async (req: Request, res: Response) => {
 		return;
 	}
 	res.status(200).json(
-		{...messages.created, message: userSaveResponse.getMessage()}
+		{...messages.success, message: userSaveResponse.getMessage()}
 	);
 	return;
 });
 
+//  @route  PUT api/users/credit
+//  @decs   increase credit
+//  @access private to users
+router.put("/credit", async (req: Request, res: Response) => {
+	const token: string = <string>req.headers.authorization?.split(" ")[1];
+	const username = <string>(<Record<string, unknown>>jwt.decode(token)).username;
+	const userResponse = await new Customer(Constants.UNKNOWN, Constants.UNKNOWN).getFromDB(username);
+	if(!userResponse.getSuccess()){
+		res.status(404).json(
+			{...messages.notFound, message: userResponse.getMessage()}
+		);
+		return;
+	}
+	const customer = <Customer> userResponse.getPayload();
+	customer.credit = customer.credit + Constants.CREDIT_INCREMENT_VALUE;
+	const userSaveResponse = await customer.saveToDB();
+	if(!userSaveResponse.getSuccess()){
+		res.status(500).json(
+			{...messages.somethingWentWrong, message: userResponse.getMessage()}
+		);
+		return;
+	}
+	res.status(200).json(
+		{...messages.success, message: userSaveResponse.getMessage()}
+	);
+	return;
+});
 export default router;
