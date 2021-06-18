@@ -7,7 +7,8 @@ interface PARAMETERS {
 	SECRET_KEY: string,
 	HASH_SALT_ROUNDS: number,
 	ASSETS_PATH: Record<"PRODUCT_PICTURES", string>;
-	DEFAULT_CATEGORY_NAME: string
+	DEFAULT_CATEGORY_NAME: string,
+	CREDIT_INCREMENT_VALUE: number
 }
 
 const parameters: PARAMETERS = {
@@ -17,7 +18,10 @@ const parameters: PARAMETERS = {
 	ASSETS_PATH: {
 		PRODUCT_PICTURES: "public/product-pic"
 	},
-	DEFAULT_CATEGORY_NAME: process.env.DEFAULT_CATEGORY_NAME || "دسته‌بندی نشده"
+	DEFAULT_CATEGORY_NAME: process.env.DEFAULT_CATEGORY_NAME || "دسته‌بندی نشده",
+	CREDIT_INCREMENT_VALUE: Number
+		.parseInt(process.env.CREDIT_INCREMENT_VALUE && Number(process.env.CREDIT_INCREMENT_VALUE) ?
+			process.env.CREDIT_INCREMENT_VALUE : "10000")
 };
 
 export default parameters;
