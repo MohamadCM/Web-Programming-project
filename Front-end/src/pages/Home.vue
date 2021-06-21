@@ -4,7 +4,7 @@
       <header-hero />
     </div>
     <div class="sort-box--margin">
-      <sort-box />
+      <sort-box v-model="sort" />
     </div>
     <div id="main-part">
       <div class="filter-box">
@@ -75,7 +75,8 @@ export default {
 			pageLength: 15,
 			numberOfPages: 3,
 			products: [],
-			hover: false
+			hover: false,
+			sort: 0
 		};
 	},
 	watch: {
@@ -89,6 +90,12 @@ export default {
 		pageLength() {
 			this.page = 1;
 			this.init();
+		},
+		sort(val){
+		  // 0: Most sold
+			// 1: Cost
+			// 2: Date
+		  console.log(val);
 		}
 	},
 	mounted() {

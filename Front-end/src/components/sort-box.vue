@@ -37,6 +37,10 @@ export default {
 				text: "قیمت",
 				backGroundColor: "white",
 				color: "black"
+			}, {
+				text: "تاریخ ایجاد محصول",
+				backGroundColor: "white",
+				color: "black"
 			}]
 		};
 	},
@@ -45,9 +49,13 @@ export default {
 			// Selection logic and requests
 			this.buttons[buttonIndex].color = "white";
 			this.buttons[buttonIndex].backGroundColor = "#00A1FF";
-			const changeIndex = buttonIndex === 1 ? 0 : 1;
-			this.buttons[changeIndex].color = "black";
-			this.buttons[changeIndex].backGroundColor = "white";
+			for (let i = 0; i < this.buttons.length; i++) {
+				if(i !== buttonIndex){
+					this.buttons[i].color = "black";
+					this.buttons[i].backGroundColor = "white";
+				}
+			}
+			this.$emit("input", buttonIndex);
 		},
 		style(index) {
 			return `color: ${this.buttons[index].color};
@@ -92,16 +100,17 @@ export default {
 .btn__margin {
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 5px;
+  margin-top: 3px;
 }
 /* Selection button hover */
 .btn:hover {
   box-shadow: 0 0 3pt 0.5pt silver;
 }
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .btn {
     padding: 5px 10px;
-    margin-top: 10px;
+    margin-top: 12px;
+    font-size: 12px;
   }
 }
 /*Flex container*/
