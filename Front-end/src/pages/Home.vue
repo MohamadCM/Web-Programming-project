@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <header-hero />
+      <header-hero v-model="searchValue" />
     </div>
     <div class="sort-box--margin">
       <sort-box v-model="sort" />
@@ -76,7 +76,8 @@ export default {
 			numberOfPages: 3,
 			products: [],
 			hover: false,
-			sort: 0
+			sort: 0,
+			searchValue: undefined
 		};
 	},
 	watch: {
@@ -95,6 +96,9 @@ export default {
 		  // 0: Most sold
 			// 1: Cost
 			// 2: Date
+		  console.log(val);
+		},
+		searchValue(val){
 		  console.log(val);
 		}
 	},
