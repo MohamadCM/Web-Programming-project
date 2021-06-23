@@ -1,10 +1,61 @@
 <template>
   <div>
+    <modal
+      :key="showModal"
+      v-model="showModal"
+      :show="showModal"
+    >
+      <div style="display: flex; flex-direction: column; margin-left: 10px; align-items: center">
+        <p style="white-space: pre-line;">
+          <i
+            class="fas fa-info-circle"
+            style="color: #FFC80C; font-size: 20px"
+          />
+          خرید محصول
+          "{{ selectedProduct.name }}"
+        </p>
+        <p style="white-space: pre-line;">
+          <i
+            class="fas fa-money-bill-wave"
+            style="color: green; font-size: 20px"
+          />
+          قیمت واحد:
+          {{ formattedPrice(selectedProduct.price) }}
+        </p>
+        <p>
+          <i
+            class="fas fa-flag"
+            style="color: red; font-size: 20px"
+          />
+          تعداد خرید:
+          {{ orderAmount }}
+        </p>
+        <input
+          id="myRange"
+          v-model="orderAmount"
+          type="range"
+          min="0"
+          :max="selectedProduct.inventory"
+          value="1"
+          class="slider"
+        >
+        <p style="margin-top: 30px">
+          قیمت کل:
+          {{ formattedPrice(orderAmount * selectedProduct.price) }}
+        </p>
+        <button
+          class="btn"
+          @click="completeOrder"
+        >
+          ارسال سفارش
+        </button>
+      </div>
+    </modal>
     <div>
-      <header-hero />
+      <header-hero v-model="searchValue" />
     </div>
     <div class="sort-box--margin">
-      <sort-box />
+      <sort-box v-model="sort" />
     </div>
     <div id="main-part">
       <div class="filter-box">
@@ -19,6 +70,7 @@
           :price="product.price"
           :image="product.image"
           class="product-box__item"
+          :button-function="() => order(product)"
         />
       </div>
     </div>
@@ -58,6 +110,9 @@ import sortBox from "../components/sort-box.vue";
 import filterBox from "../components/filter-box.vue";
 import productCard from "../components/product-card.vue";
 import pagination from "../components/core/pagination";
+import modal from "../components/core/modal";
+import language from "../../utils/language";
+import formatter from "../../utils/formatter";
 
 export default {
 	name: "Home",
@@ -66,7 +121,8 @@ export default {
 		sortBox,
 		filterBox,
 		productCard,
-		pagination
+		pagination,
+		modal
 	},
 	data() {
 		return {
@@ -75,7 +131,12 @@ export default {
 			pageLength: 15,
 			numberOfPages: 3,
 			products: [],
-			hover: false
+			hover: false,
+			sort: 0,
+			searchValue: undefined,
+			showModal: false,
+			selectedProduct: {},
+			orderAmount: 1
 		};
 	},
 	watch: {
@@ -89,6 +150,15 @@ export default {
 		pageLength() {
 			this.page = 1;
 			this.init();
+		},
+		sort(val){
+		  // 0: Most sold
+			// 1: Cost
+			// 2: Date
+		  console.log(val);
+		},
+		searchValue(val){
+		  console.log(val);
 		}
 	},
 	mounted() {
@@ -100,10 +170,11 @@ export default {
 			for (let i = 0; i < 40; i++) {
 				this.fullProducts.push({
 					id: i,
-					name: `name ${i}`,
+					name: `نام محصول ${i}`,
 					category: "دسته بندی",
 					price: 10000,
-					image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG"
+					image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG",
+					inventory: 5
 				});
 			}
 			this.numberOfPages = Math.ceil(this.fullProducts.length / this.pageLength);
@@ -111,6 +182,18 @@ export default {
 			for (let i = 0; i < Math.min(this.pageLength, this.fullProducts.length); i++) {
 				this.products.push(this.fullProducts[i]);
 			}
+		},
+		order(product){ // TODO: Add login logic
+		  this.showModal = true;
+		  this.selectedProduct = product;
+		  console.log(product.inventory);
+		},
+		formattedPrice(val) {
+			return language.toFarsiNumber(formatter.formatToRial(val));
+		},
+		completeOrder(){
+		  console.log("Order has been fulfilled!");
+		  this.showModal = false;
 		}
 	}
 };
@@ -166,5 +249,55 @@ export default {
   .product-container {
     grid-template-columns: auto; /*One column*/
   }
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: #d3d3d3;
+}
+
+.slider::-webkit-slider-thumb {
+  border: none;
+  -webkit-appearance: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  background: #00A1FF;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  background: #00A1FF;
+  cursor: pointer;
+}
+/* Button styles */
+.btn {
+  color: white;
+  background: #00A1FF;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 24px;
+  border: 0 solid;
+  padding: 10px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  -webkit-transition: 300ms;
+  /* Position */
+  position: relative;
+  float: left;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+}
+
+/* Button shadow on hover */
+.btn:hover {
+  box-shadow: 0 0 3pt 0.5pt green;
 }
 </style>

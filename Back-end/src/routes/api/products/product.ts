@@ -29,15 +29,24 @@ router.get("/", async (req: Request, res: Response) => {
 		let _qPrice, _qInventory;
 		if(_price) _qPrice = Number.parseInt(<string>_price);
 		if(_inventory) _qInventory = Number.parseInt(<string>_inventory);
+		const categoryIsArray = Array.isArray(_category);
+		const catArr = [];
+		if(categoryIsArray)
+			for (const cat of <Array<string>>_category)
+				catArr.push({_category: cat});
+		if(catArr.length === 0)
+			catArr.push({});
 		const count: number | undefined = await Product
-			.getCount({_name, _category, _picture, price: _qPrice, _soldCount, _inventory: _qInventory});
+			.getCount({_name, _category: categoryIsArray ? undefined : _category,
+				_picture, price: _qPrice, _soldCount, _inventory: _qInventory}, catArr);
 		if(!count){
 			res.status(404).json({...messages.wrongInput, message: "No product was found!"});
 			return;
 		}
 		const products: Product[] | undefined = await Product
-			.getList({_name, _category, _picture, price: _qPrice, _soldCount, _inventory: _qInventory},
-				qLimit, qOffset, <string | undefined>fields, JSON.parse(<string | undefined>sort || "{}"));
+			.getList({_name, _category: categoryIsArray ? undefined : _category, _picture,
+				price: _qPrice, _soldCount, _inventory: _qInventory},
+			qLimit, qOffset, <string | undefined>fields, JSON.parse(<string | undefined>sort || "{}"), catArr);
 		let result = <Array<Record<string, unknown>>><unknown>products;
 		if(fields && products)
 			result = removeFields(products, <string>fields);

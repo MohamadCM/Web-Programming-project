@@ -33,7 +33,10 @@ export default {
 				{ text: "صفحه اول", onClickFunction: () => { this.$router.push("/"); } },
 				{ text: "تماس با ما", onClickFunction: () => { this.$router.push("/"); } },
 				{ text: "پشتیبانی", onClickFunction: () => { this.$router.push("/"); } },
-				{ text: "محصولات", onClickFunction: () => { this.$router.push("/"); } }
+				{ text: "محصولات", onClickFunction: () => {
+					this.$router.push("/");
+					window.location.href = "#main-part";
+				} }
 			]
 		};
 	}

@@ -7,6 +7,7 @@
     </div>
     <div>
       <input
+        v-model="searchValue"
         type="text"
         class="text-field"
         onfocus="placeholder = ''"
@@ -15,7 +16,10 @@
       >
     </div>
     <div>
-      <button class="search__button">
+      <button
+        class="search__button"
+        @click="search"
+      >
         جستجو کنید
       </button>
     </div>
@@ -69,7 +73,8 @@ export default {
 				homer,
 				home
 			],
-			imageIndexMax: 2
+			imageIndexMax: 2,
+			searchValue: undefined
 		};
 	},
 	mounted() {
@@ -84,6 +89,9 @@ export default {
 				this.imageIndex--;
 			else
 				this.imageIndex++;
+		},
+		search(){
+			this.$emit("input", this.searchValue);
 		}
 	}
 };

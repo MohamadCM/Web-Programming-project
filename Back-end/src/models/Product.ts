@@ -87,12 +87,13 @@ implements DatabaseObject {
 		return result;
 	}
 	// Getting count of products
-	public static async getCount(params: Record<string, unknown>):
+	public static async getCount(params: Record<string, unknown>, catArr: Array<Record<string, string>> = [{}]):
 	Promise<number | undefined> {
 		try {
 			Object.keys(params)
 				.forEach((key) => params[key] === undefined && delete params[key]); // removing undefined values
-			const count: number = await productModel.countDocuments(params);
+			const count: number = await productModel.countDocuments(params)
+				.or(catArr);
 			return Promise.resolve(count);
 		} catch (e) {
 			logError(`Input: ${JSON.stringify(params)}\n${e}`,
@@ -104,7 +105,8 @@ implements DatabaseObject {
 	// Getting a list of products
 	public static async getList(params: Record<string, unknown>,
 		limit: number, offset: number,
-		fields: string | undefined, sort: Record<string, number>):
+		fields: string | undefined, sort: Record<string, number>,
+		catArr: Array<Record<string, string>> = [{}]):
 		Promise<Product[] | undefined> {
 		try {
 			if (limit === 0) return Promise.resolve([]);
@@ -114,7 +116,8 @@ implements DatabaseObject {
 				.find(params, fields || null)
 				.skip(offset)
 				.limit(limit)
-				.sort(sort || null);
+				.sort(sort || null)
+				.or(catArr);
 			const result: Product[] = new Array<Product>();
 			for (const product of list) {
 				result.push(

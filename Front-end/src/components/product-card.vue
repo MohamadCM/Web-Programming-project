@@ -76,7 +76,7 @@ export default {
 	},
 	computed: {
 		formattedPrice() {
-			return language.toFarsiNumber(formatter.formatToRial(this.price)) + " تومان";
+			return language.toFarsiNumber(formatter.formatToRial(this.price));
 		}
 	},
 	methods: {
