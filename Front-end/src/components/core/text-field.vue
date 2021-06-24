@@ -10,12 +10,14 @@
       v-if="!area"
       v-model="value"
       class="text-field"
-      :type="isPassword ? 'password' : 'text'"
+      :type="isPassword ? 'password' : type"
       :placeholder="placeholder"
       :minlength="minLength"
       :maxlength="maxLength"
+      min="0"
       @focus="focusFlag = true"
       @blur="focusFlag = false"
+      @keypress="type === 'number' ? isNumber($event) : () => {}"
     >
     <textarea
       v-else
@@ -72,6 +74,10 @@ export default {
 		pattern:{
 		  type: String,
 			default: undefined
+		},
+		type: {
+		  type: String,
+			default: "text"
 		}
 	},
 	data() {
@@ -124,6 +130,15 @@ export default {
 			this.message = message;
 			this.$emit("validation", message);
 			return res;
+		},
+		isNumber(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+				evt.preventDefault();;
+			} else {
+				return true;
+			}
 		}
 	}
 };

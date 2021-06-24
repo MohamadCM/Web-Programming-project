@@ -19,6 +19,7 @@
           class="text-field"
           :initial-value="inventory"
           placeholder="تعداد کالا را وارد کنید..."
+          type="number"
         />
         <text-field
           v-model="category"
@@ -33,6 +34,7 @@
           class="text-field"
           :initial-value="price"
           placeholder="قیمت کالا کالا را وارد کنید..."
+          type="number"
         />
         <p
           style="margin-top: 20px;"
