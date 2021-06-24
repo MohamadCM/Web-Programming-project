@@ -59,7 +59,11 @@
     </div>
     <div id="main-part">
       <div class="filter-box">
-        <filter-box />
+        <filter-box
+          @min="minFunc"
+          @max="maxFunc"
+          @category="categoryFunc"
+        />
       </div>
       <div class="product-container">
         <product-card
@@ -136,7 +140,10 @@ export default {
 			searchValue: undefined,
 			showModal: false,
 			selectedProduct: {},
-			orderAmount: 1
+			orderAmount: 1,
+			min: 0,
+			max: 50000,
+			category: []
 		};
 	},
 	watch: {
@@ -194,6 +201,18 @@ export default {
 		completeOrder(){
 		  console.log("Order has been fulfilled!");
 		  this.showModal = false;
+		},
+		minFunc(val){
+		  this.min = val;
+		  console.log(val);
+		},
+		maxFunc(val){
+		  this.max = val;
+		  console.log(val);
+		},
+		categoryFunc(val){
+		  this.category = val;
+		  console.log(val);
 		}
 	}
 };
