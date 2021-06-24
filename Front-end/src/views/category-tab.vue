@@ -54,9 +54,10 @@
       >
         <div
           v-if="selected"
-          style="display: flex; align-items: center; flex-direction: column"
+          style="display: flex; align-items: center; flex-direction: column; margin-right: 5px"
         >
           <text-field
+            v-model="editName"
             title="ویرایش نام دسته‌بندی"
             class="text-field"
             placeholder="نام جدید را وارد کنید"
@@ -96,6 +97,7 @@ export default {
 	data() {
 	  return {
 	    newCategory: "",
+			editName: "",
 	    selected: false,
 	    selectedName: undefined,
 			categories: [
@@ -111,10 +113,10 @@ export default {
 			this.selectedName = name;
 		},
 	  remove(name){
-			console.log("Removed!");
+			console.log(`${name} Removed!`);
 		},
 		edit() {
-			console.log("Edited!");
+			console.log(`${this.selectedName} changed to ${this.editName}`);
 		},
 		create(){
 			console.log("HERE");
