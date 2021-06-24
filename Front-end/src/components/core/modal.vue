@@ -70,7 +70,7 @@ export default {
 
 /* Modal Content */
 .modal-content {
-  background-color: #fefefe;
+  background-color: #F7F7F7;
   margin: auto;
   padding: 5px;
   width: 100%;
