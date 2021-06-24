@@ -20,6 +20,7 @@
             نام خریدار
           </th>
           <th>آدرس ارسال شده</th>
+          <th>وضعیت سفارش</th>
         </tr>
         <tr
           v-for="receipt of receipts"
@@ -33,6 +34,17 @@
             {{ receipt.username }}
           </td>
           <td>{{ receipt.address }}</td>
+          <td>{{ receipt.status }}</td>
+          <td
+            style="border: none"
+          >
+            <button
+              class="status__button"
+              @click="changeStatus(receipt)"
+            >
+              پیشروی سفارش
+            </button>
+          </td>
         </tr>
       </table>
     </div>
@@ -56,11 +68,18 @@ export default {
 	  return {
 			receipts: [
 				{trackingCode: "SHOP102312",
-					product: "کیف صورتی", price: 5000, address: "تهران، تهران، خونه", username: "محمد"},
+					product: "کیف صورتی", price: 5000,
+					address: "تهران، تهران، خونه", username: "محمد", status: "در حال انجام"},
 				{trackingCode: "SHOP202312",
-					product: "کیف قرمز", price: 10000, address: "تهران، تهران، خونه", username: "محمد"}
+					product: "کیف قرمز", price: 10000, address: "تهران، تهران، خونه", username: "محمد",
+					status: "در حال انجام"}
 			]
 		};
+	},
+	methods: {
+		changeStatus(val){
+			console.log(`${JSON.stringify(val)} edited!`);
+		}
 	}
 };
 </script>
@@ -108,5 +127,21 @@ th {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.status__button{
+  background: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 24px;
+  border: 0 solid;
+  background: #FFC80C;
+  padding: 13px 20px;
+  /* Animation */
+  -webkit-transition: 0.4s;
+}
+/* Box shadow on hover */
+.status__button:hover{
+  box-shadow: 0 0 5pt 1.5pt #FFC80C;
 }
 </style>
