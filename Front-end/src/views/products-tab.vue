@@ -137,7 +137,8 @@ export default {
 			category: "",
 			price: undefined,
 			image: undefined,
-			editingMode: false
+			editingMode: false,
+			oldName: ""
 		};
 	},
 	watch: {
@@ -158,6 +159,7 @@ export default {
 				this.price = undefined;
 				this.newName = undefined;
 				this.inventory = undefined;
+				this.oldName = undefined;
 				this.editingMode = false;
 			}
 		}
@@ -186,6 +188,7 @@ export default {
 			}
 		},
 		editProduct(val){
+		  this.oldName = val.name;
 		  this.category = val.category;
 		  this.price = val.price;
 		  this.newName = val.name;
