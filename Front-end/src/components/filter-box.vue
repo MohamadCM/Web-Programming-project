@@ -71,7 +71,7 @@ export default {
 		},
 		initialSliderMax: {
 			type: Number,
-			default: 50
+			default: 50000
 		}
 	},
 	data() {
@@ -92,7 +92,8 @@ export default {
 			],
 			selectedCategory: [],
 			min: this.initialSliderMin,
-			max: this.initialSliderMax
+			max: this.initialSliderMax,
+			result: {}
 		};
 	},
 	computed: {
@@ -104,6 +105,20 @@ export default {
 				max: language.toFarsiNumber(this.max),
 				min: language.toFarsiNumber(this.min)
 			};
+		}
+	},
+	watch: {
+		selectedCategory(val) {
+			this.result.categories = val;
+			this.$emit("category", val);
+		},
+		min(val){
+			this.result.min = Number.parseInt(val);
+			this.$emit("min", val);
+		},
+		max(val){
+			this.result.max = Number.parseInt(val);
+			this.$emit("max", val);
 		}
 	}
 };
