@@ -52,9 +52,9 @@ router.put("/", async (req: Request, res: Response) => {
 		);
 		return;
 	}
-
 	const userSaveResponse: DBResponse = await (<Customer> userResponse.getPayload())
 		.wrap({_password, _address, _name, _lastName})
+		.setPasswordChanged(!!_password)
 		.saveToDB();
 	if(!userSaveResponse.getSuccess()){
 		res.status(500).json(
@@ -63,7 +63,10 @@ router.put("/", async (req: Request, res: Response) => {
 		return;
 	}
 	res.status(200).json(
-		{...messages.success, message: userSaveResponse.getMessage()}
+		{...messages.success,
+			message: userSaveResponse.getMessage(),
+			token: (<Customer>userSaveResponse.getPayload()).getToken()
+		}
 	);
 	return;
 });

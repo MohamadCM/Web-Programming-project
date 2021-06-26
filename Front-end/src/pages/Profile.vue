@@ -49,7 +49,6 @@
       <profile-info-tab
         v-if="selectedTab === 0"
         class="profile-info-edit"
-        :profile-info="profileInfo"
       />
       <div style="display: flex; justify-content: center">
         <receipt-tab
@@ -69,6 +68,7 @@ import language from "../utils/language";
 import formatter from "../utils/formatter";
 import myButton from "../components/core/my-button";
 import auth from "../controller/authorization";
+import profileController from "../controller/profile";
 
 export default {
 	name: "Profile",
@@ -86,7 +86,7 @@ export default {
 				{name: "رسیدها"}
 			],
 			selectedTab: 0,
-			profileInfo: {name: "محمد", lastName: "جمن مطلق", address: "1234", credit: 10000}
+			profileInfo: {}
 		};
 	},
 	computed: {
@@ -99,7 +99,8 @@ export default {
 		if(!res || res.role !== 0)
 			this.$router.go(-1);
 	},
-	mounted() {
+	async mounted() {
+		this.profileInfo  = await profileController.getInfo();
 		this.name = this.profileInfo.name;
 	},
 	methods: {

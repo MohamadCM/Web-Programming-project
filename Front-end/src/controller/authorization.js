@@ -30,7 +30,7 @@ async function login(email, password){
 
 function logOut(){
 	localStorage.removeItem("token");
-	location.reload();
+	location.href = "/";
 }
 
 async function signup(email, password, name, lastname, address){
@@ -48,16 +48,10 @@ async function signup(email, password, name, lastname, address){
 		return true;
 	}
 	else {
-		console.log(result.status);
 		if(result.status !== 422)
 			alert(result.data.msg + "\n" + result.data.message || "");
 		return false;
 	}
 }
 
-function updateInfo(name, lastname, password, address){
-	if(name === "abcd")
-		return false;
-	return true;
-}
-export default { isLoggedIn, login, logOut, signup, updateInfo };
+export default { isLoggedIn, login, logOut, signup };

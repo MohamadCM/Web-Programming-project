@@ -160,8 +160,8 @@ export default {
 			if(await authorization.login(this.email, this.password)) {
 				this.modalInfo = "ورود موفقیت آمیز بود!";
 				setTimeout(() => {
-					location.reload();
-				}, 4000);
+					location.href = "/";
+				}, 5000);
 			}
 			else
 				this.modalInfo = "ورود ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید.";
@@ -171,8 +171,8 @@ export default {
 			if(await authorization.signup(this.email, this.password, this.name, this.lastName, this.address )) {
 				this.modalInfo = "ثبت نام موفقیت آمیز بود!";
 				setTimeout(() => {
-					location.reload();
-				}, 4000);
+					location.href = "/";
+				}, 5000);
 			}
 			else
 				this.modalInfo = "ثبت نام ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید."
