@@ -17,14 +17,30 @@ async function login(email, password){
 	else {
 	  console.log(result.status);
 	  if(result.status !== 422)
-	    alert(result.data.msg + "\n" + result.data.message);
+	    alert(result.data.msg + "\n" + result.data.message || "");
 		return false;
 	}
 }
-function signup(email, password, name, lastname, address){
-	if(email === "a@b.com")
+async function signup(email, password, name, lastname, address){
+	const result = await sendRequest(RequestTypes.POST, "/api/users/auth/register",{},
+		{
+			_username: email,
+			_password: password,
+			_name: name,
+			_lastName: lastname,
+			_address: address
+		});
+	if(result.status === 200 || result.status === 201) {
+		const token = result.data.token;
+		localStorage.setItem("token", token);
+		return true;
+	}
+	else {
+		console.log(result.status);
+		if(result.status !== 422)
+			alert(result.data.msg + "\n" + result.data.message || "");
 		return false;
-	return true;
+	}
 }
 function updateInfo(name, lastname, password, address){
 	if(name === "abcd")

@@ -159,10 +159,12 @@ export default {
 			else
 				this.modalInfo = "ورود ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید.";
 		},
-		signup() {
+		async signup() {
 			this.showModal = true;
-			if(authorization.signup(this.email, this.password, this.name, this.lastName ))
+			if(await authorization.signup(this.email, this.password, this.name, this.lastName, this.address )) {
 				this.modalInfo = "ثبت نام موفقیت آمیز بود!";
+				setTimeout(() => this.$router.push("/profile"), 5000);
+			}
 			else
 				this.modalInfo = "ثبت نام ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید."
         +"\n ایمیل شما در سیستم موجود است";
