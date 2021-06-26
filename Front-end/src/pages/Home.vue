@@ -117,6 +117,7 @@ import pagination from "../components/core/pagination";
 import modal from "../components/core/modal";
 import language from "../utils/language";
 import formatter from "../utils/formatter";
+import authorization from "../controller/authorization";
 
 export default {
 	name: "Home",
@@ -190,10 +191,14 @@ export default {
 				this.products.push(this.fullProducts[i]);
 			}
 		},
-		order(product){ // TODO: Add login logic
-		  this.showModal = true;
-		  this.selectedProduct = product;
-		  console.log(product.inventory);
+		async order(product){
+		  const logged = await authorization.isLoggedIn();
+		  if(!logged || logged.role !== 0)
+		    alert("برای ثبت سفارش، ابتدا به پروفایل کاربری خود وارد شوید!");
+		  else {
+				this.showModal = true;
+				this.selectedProduct = product;
+			}
 		},
 		formattedPrice(val) {
 			return language.toFarsiNumber(formatter.formatToRial(val));
