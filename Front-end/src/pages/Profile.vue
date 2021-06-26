@@ -19,6 +19,7 @@
       <span
         v-if="selectedTab === 0"
         id="credit-title"
+        :key="credit"
       >
         موجودی حساب شما: {{ credit }}
       </span>
@@ -69,6 +70,7 @@ import formatter from "../utils/formatter";
 import myButton from "../components/core/my-button";
 import auth from "../controller/authorization";
 import profileController from "../controller/profile";
+import profile from "../controller/profile";
 
 export default {
 	name: "Profile",
@@ -104,8 +106,13 @@ export default {
 		this.name = this.profileInfo.name;
 	},
 	methods: {
-	  increaseCredit(){
-			console.log("Increase credit");
+	  async increaseCredit(){
+			if(await profile.increaseCredit()) {
+				alert("اعتبار شما با موفقیت افزایش یافت!");
+				this.profileInfo  = await profileController.getInfo();
+			}
+			else
+				alert("افزایش اعتبار موفقیت آمیز نبود!");
 		}
 	}
 };

@@ -37,5 +37,15 @@ async function getInfo() {
 		return {};
 	}
 }
-
-export default {updateInfo, getInfo};
+async function increaseCredit() {
+	const result = await sendRequest(RequestTypes.PUT, "/api/users/profile/credit");
+	if(result.status === 200){
+		return true;
+	}
+	else {
+		if(result.status !== 422)
+			alert(result.data.msg + "\n" + result.data.message || "");
+		return false;
+	}
+}
+export default {updateInfo, getInfo, increaseCredit};
