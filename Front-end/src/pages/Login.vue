@@ -150,11 +150,12 @@ export default {
 		};
 	},
 	methods: {
-		login() {
-			console.log();
+		async login() {
 			this.showModal = true;
-			if(authorization.login(this.email, this.password))
-			  this.modalInfo = "ورود موفقیت آمیز بود!";
+			if(await authorization.login(this.email, this.password)) {
+				this.modalInfo = "ورود موفقیت آمیز بود!";
+				setTimeout(() => this.$router.push("/"), 5000);
+			}
 			else
 				this.modalInfo = "ورود ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید.";
 		},

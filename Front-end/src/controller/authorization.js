@@ -1,11 +1,25 @@
+import { RequestTypes, sendRequest } from "../utils/request";
+
 function isLoggedIn() {
 	const a = Math.random() * 10;
 	return a >= 5;
 }
-function login(email, password){
-	if(email === "a@b.com" && password === "abcd1234")
+async function login(email, password){
+	const result = await sendRequest(RequestTypes.POST, "/api/users/auth",{}, {
+	  _username: email,
+		_password: password
+	});
+	if(result.status === 200) {
+	  const token = result.data.token;
+	  localStorage.setItem("token", token);
 		return true;
-	return false;
+	}
+	else {
+	  console.log(result.status);
+	  if(result.status !== 422)
+	    alert(result.data.msg + "\n" + result.data.message);
+		return false;
+	}
 }
 function signup(email, password, name, lastname, address){
 	if(email === "a@b.com")

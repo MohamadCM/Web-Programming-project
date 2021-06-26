@@ -1,11 +1,10 @@
 import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
+import config from "../../config";
 const RequestTypes = Object.freeze({"GET":"get", "POST":"post", "PUT":"put", "DELETE": "delete"});
 
 const token = localStorage.getItem("token");
 const instance = axios.create({
-	baseURL: process.env.BASE_URL || "http://localhost:5000",
+	baseURL: config.BASE_URL,
 	timeout: 5000,
 	headers: {"Authorization": `Bearer ${token}`}
 });
