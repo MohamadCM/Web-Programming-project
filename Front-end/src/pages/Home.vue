@@ -115,8 +115,8 @@ import filterBox from "../components/filter-box.vue";
 import productCard from "../components/product-card.vue";
 import pagination from "../components/core/pagination";
 import modal from "../components/core/modal";
-import language from "../../utils/language";
-import formatter from "../../utils/formatter";
+import language from "../utils/language";
+import formatter from "../utils/formatter";
 
 export default {
 	name: "Home",

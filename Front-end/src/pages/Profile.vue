@@ -65,8 +65,8 @@
 import tabSelector from "../components/core/tab-selector";
 import profileInfoTab from "../views/profile-info-tab";
 import receiptTab from "../views/receipt-tap";
-import language from "../../utils/language";
-import formatter from "../../utils/formatter";
+import language from "../utils/language";
+import formatter from "../utils/formatter";
 import myButton from "../components/core/my-button";
 
 export default {

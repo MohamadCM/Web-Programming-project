@@ -29,8 +29,8 @@
 <script>
 import tabSelector from "../components/core/tab-selector";
 import receiptTab from "../views/receipt-tap";
-import language from "../../utils/language";
-import formatter from "../../utils/formatter";
+import language from "../utils/language";
+import formatter from "../utils/formatter";
 import categoryTab from "../views/category-tab";
 import productsTab from "../views/products-tab";
 
