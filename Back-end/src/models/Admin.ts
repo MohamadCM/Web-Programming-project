@@ -28,7 +28,8 @@ implements User, DatabaseObject {
 	public getToken(): string {
 		const payload: Record<string, string | number> = {
     		username: this._username,
-    		role: UserRoles.ADMIN
+    		role: UserRoles.ADMIN,
+			name: "ادمین"
     	};
     	return jwt.sign(payload, Constants.SECRET_KEY);
 	}

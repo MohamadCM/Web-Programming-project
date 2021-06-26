@@ -40,7 +40,8 @@ implements User, DatabaseObject {
 	public getToken(): string {
 		const payload: Record<string, string | number> = {
 			username: this._username,
-			role: UserRoles.CUSTOMER
+			role: UserRoles.CUSTOMER,
+			name: this._name || "کاربر"
 		};
     	return jwt.sign(payload, Constants.SECRET_KEY);
 	}
