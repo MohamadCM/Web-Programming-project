@@ -1,9 +1,16 @@
 import { RequestTypes, sendRequest } from "../utils/request";
+import jwt from "jsonwebtoken";
 
-function isLoggedIn() {
-	const a = Math.random() * 10;
-	return a >= 5;
+async function isLoggedIn() {
+	const token = localStorage.getItem("token");
+	if(!token)
+		return false;
+	const result = await sendRequest(RequestTypes.GET, "/api/users/profile",{}, {});
+	if(result.status === 401)
+	  return false;
+	return jwt.decode(token);
 }
+
 async function login(email, password){
 	const result = await sendRequest(RequestTypes.POST, "/api/users/auth",{}, {
 	  _username: email,
@@ -15,7 +22,6 @@ async function login(email, password){
 		return true;
 	}
 	else {
-	  console.log(result.status);
 	  if(result.status !== 422)
 	    alert(result.data.msg + "\n" + result.data.message || "");
 		return false;

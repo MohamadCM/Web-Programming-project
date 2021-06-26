@@ -122,6 +122,7 @@ import textField from "../components/core/text-field.vue";
 import myButton from "../components/core/my-button.vue";
 import authorization from "../controller/authorization";
 import modal from "../components/core/modal";
+import auth from "../controller/authorization";
 
 export default {
 	name: "Login",
@@ -132,8 +133,8 @@ export default {
 	},
 	data() {
 		return {
-			isSignupMode: false, // TODO: Place link/button to change this (And Change page title)
-			email: "", // TODO: Add validation
+			isSignupMode: false,
+			email: "",
 			password: "",
 			name: "",
 			lastName: "",
@@ -148,6 +149,10 @@ export default {
 			showModal:false,
 			modalInfo: ""
 		};
+	},
+	async created() {
+	  if(await auth.isLoggedIn())
+	    this.$router.go(-1);
 	},
 	methods: {
 		async login() {
