@@ -6,7 +6,7 @@
       id="dropdown"
       @mouseenter="hover = true"
     >
-      {{ username }}
+      {{ name }}
       <i
         id="arrow"
         class="fas fa-chevron-down"
@@ -21,15 +21,18 @@
         <div
           class="dropdown__content-item"
           style="margin-top: 20px"
-          @click="$router.push('/profile')"
+          @click="$router.push(`${isAdmin ? '/admin' : '/profile'}`)"
         >
           <p
             class="dropdown__content-item__text"
           >
-            پروفایل
+            {{ isAdmin ? "صفحه ادمین" : "پروفایل" }}
           </p>
         </div>
-        <div class="dropdown__content-item">
+        <div
+          class="dropdown__content-item"
+          @click="logOut"
+        >
           <p class="dropdown__content-item__text">
             خروج از حساب
           </p>
@@ -48,22 +51,37 @@
 
 <script>
 import auth from "../controller/authorization";
+import authorization from "../controller/authorization";
 
 export default {
 	name: "ButtonLogin",
 	data() {
 		return {
-			isLogged: true,
-			username: "محمد",
-			hover: false
+			isLogged: false,
+			name: "",
+			hover: false,
+			isAdmin: false
 		};
 	},
-	mounted() {
-		this.isLogged = auth.isLoggedIn();
+	async mounted() {
+	  const res = await auth.isLoggedIn();
+	  if(!res)
+	    this.isLogged = false;
+	  else {
+	    this.name = res.name;
+			this.isLogged = true;
+			this.isAdmin = !!res.role;
+		}
 	},
 	methods: {
 		loginOnClick() {
 			if (!this.$router.currentRoute.path.includes("login")) this.$router.push("/login");
+		},
+		logOut(){
+		  authorization.logOut();
+		  this.isLogged = false;
+		  this.name = "";
+		  this.isAdmin = false;
 		}
 	}
 };

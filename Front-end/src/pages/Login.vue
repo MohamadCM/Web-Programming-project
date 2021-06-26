@@ -43,7 +43,7 @@
             class="profile-tab__text-field"
             placeholder="نام خود را وارد کنید..."
             title="نام"
-            :min-length="6"
+            :min-length="2"
             :max-length="255"
             pattern=""
           />
@@ -122,6 +122,7 @@ import textField from "../components/core/text-field.vue";
 import myButton from "../components/core/my-button.vue";
 import authorization from "../controller/authorization";
 import modal from "../components/core/modal";
+import auth from "../controller/authorization";
 
 export default {
 	name: "Login",
@@ -132,8 +133,8 @@ export default {
 	},
 	data() {
 		return {
-			isSignupMode: false, // TODO: Place link/button to change this (And Change page title)
-			email: "", // TODO: Add validation
+			isSignupMode: false,
+			email: "",
 			password: "",
 			name: "",
 			lastName: "",
@@ -149,19 +150,30 @@ export default {
 			modalInfo: ""
 		};
 	},
+	async created() {
+	  if(await auth.isLoggedIn())
+	    this.$router.go(-1);
+	},
 	methods: {
-		login() {
-			console.log();
+		async login() {
 			this.showModal = true;
-			if(authorization.login(this.email, this.password))
-			  this.modalInfo = "ورود موفقیت آمیز بود!";
+			if(await authorization.login(this.email, this.password)) {
+				this.modalInfo = "ورود موفقیت آمیز بود!";
+				setTimeout(() => {
+					location.href = "/";
+				}, 5000);
+			}
 			else
 				this.modalInfo = "ورود ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید.";
 		},
-		signup() {
+		async signup() {
 			this.showModal = true;
-			if(authorization.signup(this.email, this.password, this.name, this.lastName ))
+			if(await authorization.signup(this.email, this.password, this.name, this.lastName, this.address )) {
 				this.modalInfo = "ثبت نام موفقیت آمیز بود!";
+				setTimeout(() => {
+					location.href = "/";
+				}, 5000);
+			}
 			else
 				this.modalInfo = "ثبت نام ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید."
         +"\n ایمیل شما در سیستم موجود است";

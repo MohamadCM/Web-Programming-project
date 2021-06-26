@@ -19,6 +19,7 @@
       <span
         v-if="selectedTab === 0"
         id="credit-title"
+        :key="credit"
       >
         موجودی حساب شما: {{ credit }}
       </span>
@@ -49,7 +50,6 @@
       <profile-info-tab
         v-if="selectedTab === 0"
         class="profile-info-edit"
-        :profile-info="profileInfo"
       />
       <div style="display: flex; justify-content: center">
         <receipt-tab
@@ -65,9 +65,12 @@
 import tabSelector from "../components/core/tab-selector";
 import profileInfoTab from "../views/profile-info-tab";
 import receiptTab from "../views/receipt-tap";
-import language from "../../utils/language";
-import formatter from "../../utils/formatter";
+import language from "../utils/language";
+import formatter from "../utils/formatter";
 import myButton from "../components/core/my-button";
+import auth from "../controller/authorization";
+import profileController from "../controller/profile";
+import profile from "../controller/profile";
 
 export default {
 	name: "Profile",
@@ -85,7 +88,7 @@ export default {
 				{name: "رسیدها"}
 			],
 			selectedTab: 0,
-			profileInfo: {name: "محمد", lastName: "جمن مطلق", address: "1234", credit: 10000}
+			profileInfo: {}
 		};
 	},
 	computed: {
@@ -93,12 +96,23 @@ export default {
 			return language.toFarsiNumber(formatter.formatToRial(this.profileInfo.credit));
 		}
 	},
-	mounted() {
+	async created() {
+		const res = await auth.isLoggedIn();
+		if(!res || res.role !== 0)
+			this.$router.go(-1);
+	},
+	async mounted() {
+		this.profileInfo  = await profileController.getInfo();
 		this.name = this.profileInfo.name;
 	},
 	methods: {
-	  increaseCredit(){
-			console.log("Increase credit");
+	  async increaseCredit(){
+			if(await profile.increaseCredit()) {
+				alert("اعتبار شما با موفقیت افزایش یافت!");
+				this.profileInfo  = await profileController.getInfo();
+			}
+			else
+				alert("افزایش اعتبار موفقیت آمیز نبود!");
 		}
 	}
 };

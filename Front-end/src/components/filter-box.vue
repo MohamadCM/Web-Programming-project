@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import language from "../../utils/language";
+import language from "../utils/language";
 
 export default {
 	name: "FilterBox",

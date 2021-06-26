@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import formatter from "../../utils/formatter";
-import language from "../../utils/language";
+import formatter from "../utils/formatter";
+import language from "../utils/language";
 import noImage from "../assets/no_image_available.png";
 
 export default {

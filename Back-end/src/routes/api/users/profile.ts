@@ -38,7 +38,7 @@ router.put("/", async (req: Request, res: Response) => {
 		);
 		return;
 	}if((_address &&( _address.length > 1000 || _address.length < 6))
-		|| (_name && (_name.length > 255 || _name.length < 6))
+		|| (_name && (_name.length > 255 || _name.length < 2))
 		|| (_lastName && (_lastName.length > 255 || _lastName.length < 6))){
 		res.status(422).json(
 			{...messages.wrongInput, message: "Incorrect message length"}
@@ -52,9 +52,9 @@ router.put("/", async (req: Request, res: Response) => {
 		);
 		return;
 	}
-
 	const userSaveResponse: DBResponse = await (<Customer> userResponse.getPayload())
 		.wrap({_password, _address, _name, _lastName})
+		.setPasswordChanged(!!_password)
 		.saveToDB();
 	if(!userSaveResponse.getSuccess()){
 		res.status(500).json(
@@ -63,7 +63,10 @@ router.put("/", async (req: Request, res: Response) => {
 		return;
 	}
 	res.status(200).json(
-		{...messages.success, message: userSaveResponse.getMessage()}
+		{...messages.success,
+			message: userSaveResponse.getMessage(),
+			token: (<Customer>userSaveResponse.getPayload()).getToken()
+		}
 	);
 	return;
 });

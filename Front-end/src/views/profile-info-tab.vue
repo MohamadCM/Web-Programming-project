@@ -13,16 +13,16 @@
       <text-field
         v-model="info.name"
         class="profile-tab__text-field"
-        :placeholder="profileInfo.name"
+        :placeholder="info.name"
         title="نام"
-        :min-length="6"
+        :min-length="2"
         :max-length="255"
         pattern=""
       />
       <text-field
         v-model="info.lastName"
         class="profile-tab__text-field"
-        :placeholder="profileInfo.lastName"
+        :placeholder="info.lastName"
         title="نام خوانوادگی"
         :min-length="6"
         :max-length="255"
@@ -34,7 +34,7 @@
         v-model="info.password"
         style="width: 89.1%"
         class="profile-tab__text-field"
-        placeholder="پسورد خود را وارد کنید..."
+        placeholder="پسورد جدید خود را وارد کنید..."
         :is-password="true"
         title="پسورد"
         :min-length="6"
@@ -68,8 +68,9 @@
 <script>
 import textField from "../components/core/text-field.vue";
 import myButton from "../components/core/my-button.vue";
-import authorization from "../controller/authorization";
+import profile from "../controller/profile";
 import modal from "../components/core/modal";
+import profileController from "../controller/profile";
 export default {
 	name: "ProfileInfoTab",
 	components: {
@@ -90,30 +91,21 @@ export default {
 			modalInfo: ""
 		};
 	},
-	watch: {
-	  "profileInfo.address"(val) {
-	    console.log(val);
-		},
-		"profileInfo.name"(val) {
-			console.log(val);
-		},
-		"profileInfo.lastName"(val) {
-			console.log(val);
-		},
-		"profileInfo.password"(val) {
-			console.log(val);
-		}
-	},
-	mounted() {
+	async mounted() {
 		for (const [key, value] of Object.entries(this.profileInfo)) {
 			this.info[key] = value;
 		}
+		this.info = await profileController.getInfo();
 	},
 	methods: {
-	  changeUserInfo(){
+	  async changeUserInfo(){
 	    this.showModal = true;
-			if(authorization.updateInfo(this.info.name, this.info.lastName,this.info.password, this.info.address))
+			if(await profile.updateInfo(this.info.name, this.info.lastName,this.info.password, this.info.address)) {
 				this.modalInfo = "اطلاعات پروفایل شما با موفقیت به روز رسانی شد!";
+				setTimeout(() => {
+					location.reload();
+				}, 3000);
+			}
 			else
 				this.modalInfo = "به روز رسانی ناموفق بود!";
 		}

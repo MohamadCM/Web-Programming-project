@@ -40,7 +40,7 @@ router.post("/register", async (req: Request, res: Response) => {
 		return;
 	}if(_username.length > 255 || _password.length > 255
         || (_address &&( _address.length > 1000 || _address.length < 6))
-        || (_name && (_name.length > 255 || _name.length < 6))
+        || (_name && (_name.length > 255 || _name.length < 2))
         || (_lastName && (_lastName.length > 255 || _lastName.length < 6))){
 		res.status(422).json(
 			{...messages.wrongInput, message: "Incorrect message length"}

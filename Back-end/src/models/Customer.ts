@@ -32,6 +32,8 @@ implements User, DatabaseObject {
 	@prop({ required: true })
 	private _credit = 0;
 
+	passwordChanged = false;
+
 	public constructor(username: string, password: string) {
     	this._username = username;
     	this._password = password;
@@ -40,7 +42,8 @@ implements User, DatabaseObject {
 	public getToken(): string {
 		const payload: Record<string, string | number> = {
 			username: this._username,
-			role: UserRoles.CUSTOMER
+			role: UserRoles.CUSTOMER,
+			name: this._name || "کاربر"
 		};
     	return jwt.sign(payload, Constants.SECRET_KEY);
 	}
@@ -87,7 +90,8 @@ implements User, DatabaseObject {
 	public async saveToDB(): Promise<DBResponse> {
     	const result: DBResponse = new DBResponse();
 		try {
-			this._password = bcrypt.hashSync(this._password, bcrypt.genSaltSync(Constants.HASH_SALT_ROUNDS));
+			if(this.passwordChanged)
+				this._password = bcrypt.hashSync(this._password, bcrypt.genSaltSync(Constants.HASH_SALT_ROUNDS));
     		const user = await customerModel.findOne({ _username: this._username });
 			const adminResponse = await new Admin(Constants.UNKNOWN, Constants.UNKNOWN).getFromDB(this._username);
 			if(adminResponse.getSuccess())
@@ -145,6 +149,10 @@ implements User, DatabaseObject {
 
 	public set username(value: string) {
     	this._username = value;
+	}
+	public setPasswordChanged(value: boolean): Customer{
+		this.passwordChanged = value;
+		return this;
 	}
 }
 
