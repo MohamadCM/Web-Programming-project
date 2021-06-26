@@ -14,7 +14,6 @@
       :placeholder="placeholder"
       :minlength="minLength"
       :maxlength="maxLength"
-      min="0"
       @focus="focusFlag = true"
       @blur="focusFlag = false"
       @keypress="type === 'number' ? isNumber($event) : () => {}"
@@ -111,16 +110,16 @@ export default {
 	  isDataValid(){
 	    let res = true;
 	    let message = undefined;
-	    this.value = this.value.trim();
-	    if(this.value.length < this.minLength){
+	    const trimmedValue = this.value.trim();
+	    if(trimmedValue.length < this.minLength){
 	      message = `${this.title} باید بیشتر از ${this.minLength} کاراکتر باشد.`;
 	      res = false;
 			}
-			if(this.value.length > this.maxLength){
+			if(trimmedValue.length > this.maxLength){
 				message = `${this.title} باید کمتر از ${this.maxLength} کاراکتر باشد.`;
 				res = false;
 			}
-			if(this.pattern.length > 0 && !new RegExp(this.pattern).test(this.value)){
+			if(this.pattern.length > 0 && !new RegExp(this.pattern).test(trimmedValue)){
 			  message = `${this.title} معتبر نمی‌باشد.`;
 				if(this.isPassword){
 				  message = "پسورد حداقل ۸ کاراکتر، و شامل اعداد، حروف";
