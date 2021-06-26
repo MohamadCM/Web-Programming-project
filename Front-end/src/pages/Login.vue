@@ -159,7 +159,9 @@ export default {
 			this.showModal = true;
 			if(await authorization.login(this.email, this.password)) {
 				this.modalInfo = "ورود موفقیت آمیز بود!";
-				setTimeout(() => this.$router.push("/"), 5000);
+				setTimeout(() => {
+					location.reload();
+				}, 4000);
 			}
 			else
 				this.modalInfo = "ورود ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید.";
@@ -168,7 +170,9 @@ export default {
 			this.showModal = true;
 			if(await authorization.signup(this.email, this.password, this.name, this.lastName, this.address )) {
 				this.modalInfo = "ثبت نام موفقیت آمیز بود!";
-				setTimeout(() => this.$router.push("/profile"), 5000);
+				setTimeout(() => {
+					location.reload();
+				}, 4000);
 			}
 			else
 				this.modalInfo = "ثبت نام ناموفق بود، ایمیل و پسورد خود را مجددا چک کنید."

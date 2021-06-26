@@ -27,6 +27,11 @@ async function login(email, password){
 		return false;
 	}
 }
+
+function logOut(){
+	localStorage.removeItem("token");
+}
+
 async function signup(email, password, name, lastname, address){
 	const result = await sendRequest(RequestTypes.POST, "/api/users/auth/register",{},
 		{
@@ -48,9 +53,10 @@ async function signup(email, password, name, lastname, address){
 		return false;
 	}
 }
+
 function updateInfo(name, lastname, password, address){
 	if(name === "abcd")
 		return false;
 	return true;
 }
-export default { isLoggedIn, login, signup, updateInfo };
+export default { isLoggedIn, login, logOut, signup, updateInfo };

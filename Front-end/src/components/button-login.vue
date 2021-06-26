@@ -29,7 +29,10 @@
             {{ isAdmin ? "صفحه ادمین" : "پروفایل" }}
           </p>
         </div>
-        <div class="dropdown__content-item">
+        <div
+          class="dropdown__content-item"
+          @click="logOut"
+        >
           <p class="dropdown__content-item__text">
             خروج از حساب
           </p>
@@ -48,6 +51,7 @@
 
 <script>
 import auth from "../controller/authorization";
+import authorization from "../controller/authorization";
 
 export default {
 	name: "ButtonLogin",
@@ -72,6 +76,12 @@ export default {
 	methods: {
 		loginOnClick() {
 			if (!this.$router.currentRoute.path.includes("login")) this.$router.push("/login");
+		},
+		logOut(){
+		  authorization.logOut();
+		  this.isLogged = false;
+		  this.name = "";
+		  this.isAdmin = false;
 		}
 	}
 };
