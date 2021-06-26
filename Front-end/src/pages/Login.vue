@@ -43,7 +43,7 @@
             class="profile-tab__text-field"
             placeholder="نام خود را وارد کنید..."
             title="نام"
-            :min-length="6"
+            :min-length="2"
             :max-length="255"
             pattern=""
           />
