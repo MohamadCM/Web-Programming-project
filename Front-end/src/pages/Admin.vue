@@ -33,6 +33,7 @@ import language from "../utils/language";
 import formatter from "../utils/formatter";
 import categoryTab from "../views/category-tab";
 import productsTab from "../views/products-tab";
+import auth from "../controller/authorization";
 
 export default {
 	name: "Admin",
@@ -56,6 +57,11 @@ export default {
 		credit() {
 			return language.toFarsiNumber(formatter.formatToRial(this.profileInfo.credit));
 		}
+	},
+	async created() {
+	  const res = await auth.isLoggedIn();
+		if(!res || res.role !== 1)
+			this.$router.go(-1);
 	},
 	methods: {
 		increaseCredit(){

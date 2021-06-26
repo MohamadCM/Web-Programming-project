@@ -68,6 +68,7 @@ import receiptTab from "../views/receipt-tap";
 import language from "../utils/language";
 import formatter from "../utils/formatter";
 import myButton from "../components/core/my-button";
+import auth from "../controller/authorization";
 
 export default {
 	name: "Profile",
@@ -92,6 +93,11 @@ export default {
 		credit() {
 			return language.toFarsiNumber(formatter.formatToRial(this.profileInfo.credit));
 		}
+	},
+	async created() {
+		const res = await auth.isLoggedIn();
+		if(!res || res.role !== 0)
+			this.$router.go(-1);
 	},
 	mounted() {
 		this.name = this.profileInfo.name;

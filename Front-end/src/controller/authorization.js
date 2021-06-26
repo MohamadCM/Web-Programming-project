@@ -30,6 +30,7 @@ async function login(email, password){
 
 function logOut(){
 	localStorage.removeItem("token");
+	location.reload();
 }
 
 async function signup(email, password, name, lastname, address){
