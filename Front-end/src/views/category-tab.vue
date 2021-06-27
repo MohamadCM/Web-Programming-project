@@ -18,6 +18,12 @@
       >
         <i class="fas fa-plus" />
       </my-button>
+      <p
+        v-if="postInfo"
+        style="color: #FFC80A"
+      >
+        {{ postInfo }}
+      </p>
     </div>
     <div class="container">
       <table>
@@ -88,6 +94,7 @@
 <script>
 import textField from "../components/core/text-field";
 import myButton from "../components/core/my-button";
+import category from "../controller/category";
 export default {
 	name: "CategoryTab",
 	components: {
@@ -100,27 +107,48 @@ export default {
 			editName: "",
 	    selected: false,
 	    selectedName: undefined,
-			categories: [
-			  {name: "دسته بندی ۱"},
-			  {name: "دسته بندی ۲"},
-			  {name: "دسته بندی ۳"}
-			]
+			categories: [],
+			postInfo: undefined
 		};
+	},
+	async mounted(){
+	  this.categories = await category.getCategories();
 	},
 	methods: {
 	  select(name){
 	    this.selected = true;
 			this.selectedName = name;
 		},
-	  remove(name){
-			console.log(`${name} Removed!`);
+	  async remove(name){
+			const res = await category.removeCategory(name);
+			if(res) {
+				this.postInfo = "حذف دسته‌بندی با موفقیت انجام شد.";
+				setTimeout(() => {
+					this.postInfo = "";
+				}, 5000);
+				this.categories = await  category.getCategories();
+			}
 		},
-		edit() {
-			console.log(`${this.selectedName} changed to ${this.editName}`);
+		async edit() {
+			const res = await category.updateCategory(this.selectedName, this.editName);
+			if(res) {
+				this.postInfo = "ویرایش دسته‌بندی با موفقیت انجام شد.";
+				setTimeout(() => {
+					this.postInfo = "";
+				}, 5000);
+				this.categories = await category.getCategories();
+				this.selectedName = this.editName;
+			}
 		},
-		create(){
-			console.log("HERE");
-			console.log(this.newCategory);
+		async create(){
+	    const res = await category.updateCategory(undefined, this.newCategory);
+	    if(res) {
+				this.postInfo = "افزودن دسته‌بندی با موفقیت انجام شد.";
+				setTimeout(() => {
+					this.postInfo = "";
+				}, 5000);
+				this.categories = await  category.getCategories();
+			}
 		}
 	}
 };

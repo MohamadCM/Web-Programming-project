@@ -7,7 +7,7 @@
       <div class="category-container__all">
         <div
           v-for="category of categories"
-          :key="category.id"
+          :key="category.name"
           class="category-container"
         >
           <input
@@ -15,12 +15,12 @@
             v-model="selectedCategory"
             class="category"
             type="checkbox"
-            :value="category.title"
+            :value="category.name"
           >
           <label
             :for="category.id"
             class="category__label"
-          >{{ category.title }}</label>
+          >{{ category.name }}</label>
         </div>
       </div>
       <br>
@@ -68,6 +68,7 @@
 
 <script>
 import language from "../utils/language";
+import category from "../controller/category";
 
 export default {
 	name: "FilterBox",
@@ -83,20 +84,7 @@ export default {
 	},
 	data() {
 		return {
-			categories: [
-				{
-					id: 1,
-					title: "category2"
-				},
-				{
-					id: 2,
-					title: "category3"
-				},
-				{
-					id: 3,
-					title: "دسته‌بندی نشده"
-				}
-			],
+			categories: [],
 			selectedCategory: [],
 			min: this.initialSliderMin,
 			max: this.initialSliderMax,
@@ -127,6 +115,9 @@ export default {
 			this.result.max = Number.parseInt(val);
 			this.$emit("max", val);
 		}
+	},
+	async mounted(){
+		this.categories = await category.getCategories();
 	},
 	methods: {
 	  sendPriceRange(){
