@@ -33,7 +33,7 @@ async function getInfo() {
 		};
 	}
 	else {
-	  alert(response.data.msg + "\n" + response.data.message || "");
+		alert("خطایی به وجود آمده است" + "\n" + response.data.msg + "\n" + response.data.message || "");
 		return {};
 	}
 }
@@ -44,7 +44,7 @@ async function increaseCredit() {
 	}
 	else {
 		if(result.status !== 422)
-			alert(result.data.msg + "\n" + result.data.message || "");
+			alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
 		return false;
 	}
 }

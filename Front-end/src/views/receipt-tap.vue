@@ -3,6 +3,7 @@
     <div class="text-field__center">
       <text-field
         v-if="isAdmin"
+        v-model="searchCode"
         placeholder="کد پیگیری را برای جستجو وارد کنید..."
         title="جستجوی کد پیگیری"
         class="receipt-tab__text-field"
@@ -24,18 +25,19 @@
         </tr>
         <tr
           v-for="receipt of receipts"
-          :key="receipt.trackingCode"
+          :key="receipt.status"
           class="border_bottom"
         >
           <td>{{ receipt.trackingCode }}</td>
           <td>{{ receipt.product }}</td>
-          <td>{{ receipt.price }}</td>
+          <td>{{ formatPrice(receipt.price) }}</td>
           <td v-if="isAdmin">
             {{ receipt.username }}
           </td>
           <td>{{ receipt.address }}</td>
           <td>{{ receipt.status }}</td>
           <td
+            v-if="isAdmin"
             style="border: none"
           >
             <button
@@ -52,6 +54,9 @@
 </template>
 <script>
 import textField from "../components/core/text-field";
+import receipt from "../controller/receipt";
+import language from "../utils/language";
+import formatter from "../utils/formatter";
 
 export default {
 	name: "ReceiptTap",
@@ -67,18 +72,25 @@ export default {
 	data(){
 	  return {
 			receipts: [
-				{trackingCode: "SHOP102312",
-					product: "کیف صورتی", price: 5000,
-					address: "تهران، تهران، خونه", username: "محمد", status: "در حال انجام"},
-				{trackingCode: "SHOP202312",
-					product: "کیف قرمز", price: 10000, address: "تهران، تهران، خونه", username: "محمد",
-					status: "در حال انجام"}
-			]
+			],
+			searchCode: ""
 		};
+	},
+	watch: {
+		async searchCode(val){
+		  const code = val && val.length > 0 ? val : undefined;
+			this.receipts = await receipt.getReceipts(Number.MAX_SAFE_INTEGER, 0, code);
+		}
+	},
+	async mounted() {
+		this.receipts = await receipt.getReceipts();
 	},
 	methods: {
 		changeStatus(val){
 			console.log(`${JSON.stringify(val)} edited!`);
+		},
+		formatPrice(val) {
+			return language.toFarsiNumber(formatter.formatToRial(val));
 		}
 	}
 };
