@@ -8,10 +8,10 @@
     </p>
     <div class="product-card__padding-all">
       <img
-        :src="image || noImage"
+        :src="shownImage"
         :alt="name + 'تصویر'"
         class="product-image"
-        @error="image = noImage"
+        @error="shownImage = noImage"
       >
       <h3>{{ name }}</h3>
       <h4 class="category-title">
@@ -71,13 +71,17 @@ export default {
 	},
 	data(){
 	  return {
-	    noImage
+			shownImage: noImage,
+	    noImage: noImage
 		};
 	},
 	computed: {
 		formattedPrice() {
 			return language.toFarsiNumber(formatter.formatToRial(this.price));
 		}
+	},
+	created() {
+	  this.shownImage = this.image || noImage;
 	},
 	methods: {
 	  toFarsiNumber(num){

@@ -14,6 +14,7 @@
       :placeholder="placeholder"
       :minlength="minLength"
       :maxlength="maxLength"
+      :readonly="readonly"
       @focus="focusFlag = true"
       @blur="focusFlag = false"
       @keypress="type === 'number' ? isNumber($event) : () => {}"
@@ -77,6 +78,10 @@ export default {
 		type: {
 		  type: String,
 			default: "text"
+		},
+		readonly: {
+		  type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -132,9 +137,9 @@ export default {
 		},
 		isNumber(evt) {
 			evt = (evt) ? evt : window.event;
-			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			const charCode = (evt.which) ? evt.which : evt.keyCode;
 			if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-				evt.preventDefault();;
+				evt.preventDefault();
 			} else {
 				return true;
 			}

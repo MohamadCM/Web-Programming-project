@@ -71,7 +71,7 @@ router.post("/", authorize(new Customer(Constants.UNKNOWN, Constants.UNKNOWN)),
 					.json({...messages.success, message: orderResponse.getMessage()});
 				return;
 			}
-			res.status(400).json({...messages.somethingWentWrong, messages: orderResponse.getMessage()});
+			res.status(400).json({...messages.somethingWentWrong, message: orderResponse.getMessage()});
 			return;
 		} catch (e) {
 			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)},
@@ -108,7 +108,7 @@ router.put("/status", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN))
 					.json({...messages.success, message: orderSaveResponse.getMessage()});
 				return;
 			}
-			res.status(400).json({...messages.somethingWentWrong, messages: orderSaveResponse.getMessage()});
+			res.status(400).json({...messages.somethingWentWrong, message: orderSaveResponse.getMessage()});
 			return;
 		} catch (e) {
 			logError(`Something went wrong during API call, Input query: ${JSON.stringify(req.body)},

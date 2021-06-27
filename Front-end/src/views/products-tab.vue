@@ -22,12 +22,26 @@
           type="number"
         />
         <text-field
-          v-model="category"
+          :key="category"
           title="دسته‌بندی کالا"
           class="text-field"
           :initial-value="category"
           placeholder="دسته‌بندی کالا را وارد کنید..."
+          readonly
         />
+        <div class="dropdown">
+          <button class="dropdown__btn">
+            دسته‌بندی‌ها
+          </button>
+          <div class="dropdown__content">
+            <a
+              v-for="cat of categories"
+              :key="cat.name"
+              @click="category = cat.name"
+            >{{ cat.name }}</a>
+          </div>
+        </div>
+
         <text-field
           v-model="price"
           title="قیمت کالا"
@@ -62,6 +76,12 @@
           />
           {{ editingMode ? "ویرایش محصول" : "ایجاد محصول جدید" }}
         </button>
+        <p
+          v-if="postResult"
+          style="color: #FFC80A"
+        >
+          {{ postResult }}
+        </p>
       </div>
     </modal>
     <button
@@ -74,13 +94,13 @@
     <div class="product__container">
       <product-card
         v-for="product of products"
-        :key="product.id"
+        :key="product.name"
         :category="product.category"
         :name="product.name"
         :price="product.price"
         :image="product.image"
         button-title="ویرایش محصول"
-        :amount-badge="product.amountBadge"
+        :amount-badge="product.inventory"
         :button-function="() => editProduct(product)"
         class="product-box__item"
       />
@@ -120,6 +140,8 @@ import productCard from "../components/product-card";
 import pagination from "../components/core/pagination";
 import modal from "../components/core/modal";
 import textField from "../components/core/text-field";
+import product from "../controller/product";
+import category from "../controller/category";
 export default {
 	name: "ProductsTab",
 	components: {productCard, pagination, modal, textField},
@@ -138,7 +160,9 @@ export default {
 			price: undefined,
 			image: undefined,
 			editingMode: false,
-			oldName: ""
+			oldName: "",
+			postResult: undefined,
+			categories: []
 		};
 	},
 	watch: {
@@ -168,24 +192,14 @@ export default {
 		this.init();
 	},
 	methods: {
-		init() {
-			this.fullProducts = [];
-			for (let i = 0; i < 40; i++) {
-				this.fullProducts.push({
-					id: i,
-					name: `name ${i}`,
-					category: "دسته بندی",
-					price: 10000,
-					amountBadge: i,
-					image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG",
-					inventory: 5
-				});
-			}
+		async init() {
+			this.fullProducts = await product.getProducts(Number.MAX_SAFE_INTEGER, 0);
 			this.numberOfPages = Math.ceil(this.fullProducts.length / this.pageLength);
 			this.products = [];
 			for (let i = 0; i < Math.min(this.pageLength, this.fullProducts.length); i++) {
 				this.products.push(this.fullProducts[i]);
 			}
+			this.categories = await category.getCategories();
 		},
 		editProduct(val){
 		  this.oldName = val.name;
@@ -195,17 +209,18 @@ export default {
 		  this.inventory = val.inventory;
 		  this.showModal = true;
 		  this.editingMode = true;
-		  console.log(val.name);
 		},
 		previewFile(event) {
 		  this.image = event.target.files[0];
-			console.log(this.image);
 		},
-		addOrEdit(){
-		  if(this.editingMode)
-		    console.log("Edited!");
-		  else
-		    console.log("Created!");
+		async addOrEdit(){
+			const res = await product
+				.updateProduct(this.oldName, this.category, this.price, this.inventory, this.newName, this.image);
+			await this.init();
+			if(res) {
+				this.postResult = "عملیات موفقیت آمیز بود!";
+			  setTimeout(() => {this.showModal = false; this.postResult = undefined;}, 5000);
+			}
 		}
 	}
 };
@@ -285,5 +300,47 @@ export default {
 }
 .product__button:hover {
   box-shadow: 0 9px 12px rgba(0,0,0,0.16), 0 9px 12px rgba(0,0,0,0.23);
+}
+/* Category dropdown styles */
+.dropdown__btn {
+  background-color: #0EBAC5;
+  color: white;
+  padding: 16px;
+  border: none;
+  cursor: pointer;
+  width: 200px;
+  margin-top: 10px;
+  margin-bottom: -10px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown__content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+  width: 100%;
+}
+
+.dropdown__content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown__content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown__content {
+  display: block;
+}
+
+.dropdown:hover .dropdown__btn {
+  box-shadow: 0 3px 6px lightskyblue, 0 3px 6px lightskyblue;
 }
 </style>

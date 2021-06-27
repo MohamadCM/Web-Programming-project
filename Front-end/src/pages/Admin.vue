@@ -62,11 +62,6 @@ export default {
 	  const res = await auth.isLoggedIn();
 		if(!res || res.role !== 1)
 			this.$router.go(-1);
-	},
-	methods: {
-		increaseCredit(){
-			console.log("Increase credit");
-		}
 	}
 };
 </script>

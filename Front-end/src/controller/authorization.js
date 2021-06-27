@@ -23,7 +23,7 @@ async function login(email, password){
 	}
 	else {
 	  if(result.status !== 422)
-	    alert(result.data.msg + "\n" + result.data.message || "");
+			alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
 		return false;
 	}
 }
@@ -49,7 +49,7 @@ async function signup(email, password, name, lastname, address){
 	}
 	else {
 		if(result.status !== 422)
-			alert(result.data.msg + "\n" + result.data.message || "");
+			alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
 		return false;
 	}
 }

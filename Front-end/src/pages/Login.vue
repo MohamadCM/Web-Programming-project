@@ -157,10 +157,11 @@ export default {
 	methods: {
 		async login() {
 			this.showModal = true;
-			if(await authorization.login(this.email, this.password)) {
+			const res = await authorization.login(this.email, this.password);
+			if(res) {
 				this.modalInfo = "ورود موفقیت آمیز بود!";
 				setTimeout(() => {
-					location.href = "/";
+					location.reload();
 				}, 5000);
 			}
 			else
@@ -171,7 +172,7 @@ export default {
 			if(await authorization.signup(this.email, this.password, this.name, this.lastName, this.address )) {
 				this.modalInfo = "ثبت نام موفقیت آمیز بود!";
 				setTimeout(() => {
-					location.href = "/";
+					location.reload();
 				}, 5000);
 			}
 			else

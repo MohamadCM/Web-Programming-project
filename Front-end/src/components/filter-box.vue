@@ -7,7 +7,7 @@
       <div class="category-container__all">
         <div
           v-for="category of categories"
-          :key="category.id"
+          :key="category.name"
           class="category-container"
         >
           <input
@@ -15,12 +15,12 @@
             v-model="selectedCategory"
             class="category"
             type="checkbox"
-            :value="category.id"
+            :value="category.name"
           >
           <label
             :for="category.id"
             class="category__label"
-          >{{ category.title }}</label>
+          >{{ category.name }}</label>
         </div>
       </div>
       <br>
@@ -46,7 +46,7 @@
           id="b"
           v-model="min"
           type="range"
-          min="0"
+          min="1"
           :max="initialSliderMax"
         >
       </div>
@@ -55,19 +55,27 @@
         <span>  تا </span>
         <span style="float: left; margin-left: 5px">{{ shownMinMax.max }}</span>
       </div>
+
+      <button
+        class="btn"
+        @click="sendPriceRange"
+      >
+        اعمال
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import language from "../utils/language";
+import category from "../controller/category";
 
 export default {
 	name: "FilterBox",
 	props: {
 		initialSliderMin: {
 			type: Number,
-			default: 0
+			default: 1
 		},
 		initialSliderMax: {
 			type: Number,
@@ -76,20 +84,7 @@ export default {
 	},
 	data() {
 		return {
-			categories: [
-				{
-					id: 1,
-					title: "دسته‌بندی یک"
-				},
-				{
-					id: 2,
-					title: "دسته‌بندی دو"
-				},
-				{
-					id: 3,
-					title: "دسته‌بندی سه"
-				}
-			],
+			categories: [],
 			selectedCategory: [],
 			min: this.initialSliderMin,
 			max: this.initialSliderMax,
@@ -119,6 +114,17 @@ export default {
 		max(val){
 			this.result.max = Number.parseInt(val);
 			this.$emit("max", val);
+		}
+	},
+	async mounted(){
+		this.categories = await category.getCategories();
+	},
+	methods: {
+	  sendPriceRange(){
+	    this.$emit("range", {
+	      max: this.max,
+	      min: this.min
+			});
 		}
 	}
 };
@@ -190,7 +196,7 @@ export default {
 #price-card {
   background: white;
   direction: rtl;
-  text-align: right;
+  text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
   margin-top: 15px;
@@ -250,5 +256,25 @@ input[type='range'] {
   font-family: inherit;
   font-size: 16px;
   direction: rtl;
+}
+/* Button styles */
+.btn {
+  color: white;
+  background: #00A1FF;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 24px;
+  border: 0 solid;
+  padding: 10px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  -webkit-transition: 300ms;
+  /* Position */
+  width: 120px;
+  margin: 10px;
+}
+
+/* Button shadow on hover */
+.btn:hover {
+  box-shadow: 0 0 3pt 0.5pt #00A1FF;
 }
 </style>

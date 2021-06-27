@@ -105,10 +105,12 @@ implements DatabaseObject {
 				else {
 					const product = <Product> productResponse.getPayload();
 					this._totalCost = this._count * <number>product.price;
-					if(product.inventory <= this._count)
-						result.setPayload(undefined).setMessage("Not enough products in inventory!").setSuccess(false);
+					if(product.inventory < this._count)
+						result.setPayload(undefined)
+							.setMessage("به تعداد کافی از محصول مشخص شده در انبار موجود نمی‌باشد.").setSuccess(false);
 					else if (user.credit < this._totalCost)
-						result.setPayload(undefined).setMessage("User doesn't have enough credit").setSuccess(false);
+						result.setPayload(undefined)
+							.setMessage("شما برای این سفارش به اندازه کافی اعتبار ندارید.").setSuccess(false);
 					else {
 						product.inventory = product.inventory - this.count;
 						const productSaveResponse = await product.saveToDB();
