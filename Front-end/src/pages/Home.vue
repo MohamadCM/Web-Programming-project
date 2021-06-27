@@ -249,7 +249,6 @@ export default {
 		      this.showModal = false;
 		      }, 5000);
 			} else {
-		    console.log(result);
 				this.postInfo = result.message;
 			}
 		},

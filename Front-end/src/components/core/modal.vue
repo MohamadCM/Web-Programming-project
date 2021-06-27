@@ -44,7 +44,6 @@ export default {
 	  document.addEventListener("click",
 			(event) => {
 	    if(event.target.id === "modal-id"){
-	      console.log(this.localShowParameter);
 	      this.localShowParameter = false;
 				}
 			});

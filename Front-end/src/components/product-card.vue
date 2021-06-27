@@ -81,7 +81,7 @@ export default {
 		}
 	},
 	created() {
-	  this.shownImage = this.image;
+	  this.shownImage = this.image || noImage;
 	},
 	methods: {
 	  toFarsiNumber(num){
