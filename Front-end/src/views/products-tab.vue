@@ -62,6 +62,12 @@
           />
           {{ editingMode ? "ویرایش محصول" : "ایجاد محصول جدید" }}
         </button>
+        <p
+          v-if="postResult"
+          style="color: #FFC80A"
+        >
+          {{ postResult }}
+        </p>
       </div>
     </modal>
     <button
@@ -80,7 +86,7 @@
         :price="product.price"
         :image="product.image"
         button-title="ویرایش محصول"
-        :amount-badge="product.amountBadge"
+        :amount-badge="product.inventory"
         :button-function="() => editProduct(product)"
         class="product-box__item"
       />
@@ -120,6 +126,7 @@ import productCard from "../components/product-card";
 import pagination from "../components/core/pagination";
 import modal from "../components/core/modal";
 import textField from "../components/core/text-field";
+import product from "../controller/product";
 export default {
 	name: "ProductsTab",
 	components: {productCard, pagination, modal, textField},
@@ -138,7 +145,8 @@ export default {
 			price: undefined,
 			image: undefined,
 			editingMode: false,
-			oldName: ""
+			oldName: "",
+			postResult: undefined
 		};
 	},
 	watch: {
@@ -168,19 +176,8 @@ export default {
 		this.init();
 	},
 	methods: {
-		init() {
-			this.fullProducts = [];
-			for (let i = 0; i < 40; i++) {
-				this.fullProducts.push({
-					id: i,
-					name: `name ${i}`,
-					category: "دسته بندی",
-					price: 10000,
-					amountBadge: i,
-					image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG",
-					inventory: 5
-				});
-			}
+		async init() {
+			this.fullProducts = await product.getProducts(Number.MAX_SAFE_INTEGER, 0);
 			this.numberOfPages = Math.ceil(this.fullProducts.length / this.pageLength);
 			this.products = [];
 			for (let i = 0; i < Math.min(this.pageLength, this.fullProducts.length); i++) {
@@ -195,17 +192,18 @@ export default {
 		  this.inventory = val.inventory;
 		  this.showModal = true;
 		  this.editingMode = true;
-		  console.log(val.name);
 		},
 		previewFile(event) {
 		  this.image = event.target.files[0];
-			console.log(this.image);
 		},
-		addOrEdit(){
-		  if(this.editingMode)
-		    console.log("Edited!");
-		  else
-		    console.log("Created!");
+		async addOrEdit(){
+			const res = await product
+				.updateProduct(this.oldName, this.category, this.price, this.inventory, this.newName, this.image);
+			await this.init();
+			if(res) {
+				this.postResult = "عملیات موفقیت آمیز بود!";
+			  setTimeout(() => {this.showModal = false; this.postResult = undefined;}, 5000);
+			}
 		}
 	}
 };

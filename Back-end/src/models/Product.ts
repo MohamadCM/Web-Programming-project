@@ -70,6 +70,8 @@ implements DatabaseObject {
 	public async saveToDB(): Promise<DBResponse> {
 		const result: DBResponse = new DBResponse();
 		try {
+			if(!this._category)
+				this._category = Constants.DEFAULT_CATEGORY_NAME;
     		const product = await productModel.findOne({ _name: this._name });
     		if (product) {
     			await productModel.updateOne({ _name: this._name },

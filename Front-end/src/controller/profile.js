@@ -17,7 +17,7 @@ async function updateInfo(name, lastname, password, address) {
 	}
 	else {
 		if(result.status !== 422)
-			alert(result.data.msg + "\n" + result.data.message || "");
+			alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
 		return false;
 	}
 }

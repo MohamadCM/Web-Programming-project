@@ -28,4 +28,23 @@ async function sendRequest(method, url, params, body) {
 		};
 	}
 }
-export {RequestTypes, sendRequest};
+
+async function uploadFile(url, formData){
+	try {
+		const result = await instance.post(url, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data"
+			}
+		});
+		return {
+			status: result.status,
+			data: result.data
+		};
+	} catch (e) {
+		return {
+			status: e.response.status,
+			data: e.response.data
+		};
+	}
+}
+export {RequestTypes, sendRequest, uploadFile};

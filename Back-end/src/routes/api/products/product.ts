@@ -84,7 +84,7 @@ router.post("/", authorize(new Admin(Constants.UNKNOWN, Constants.UNKNOWN)),
 			    _newName = _newName || product.name;
 			    _inventory = _inventory || product.inventory;
 			}
-			if(!_category || !_price || !_newName) {
+			if(!_price || !_newName) {
 				res.status(422)
 					.json({...messages.wrongInput, message: "Required fields are not provided"});
 				return;

@@ -1,4 +1,4 @@
-import { RequestTypes, sendRequest } from "../utils/request";
+import { RequestTypes, sendRequest, uploadFile } from "../utils/request";
 import config from "../../config";
 
 async function getProducts(limit = Number.MAX_SAFE_INTEGER,
@@ -33,5 +33,32 @@ async function getProducts(limit = Number.MAX_SAFE_INTEGER,
 	}
 	return {};
 }
-
-export default {getProducts};
+async function updateProduct(name, category, price, inventory, newName, image) {
+	const body = {
+		_name: name,
+		_newName: newName,
+		_inventory: inventory,
+		_price: price,
+		_category: category
+	};
+	const formData = new FormData();
+	Object.keys(body)
+		.forEach((key) => body[key] === undefined && delete body[key]); // removing undefined values
+	const result = await sendRequest(RequestTypes.POST, "/api/products",{}, body);
+	if(result.status === 200 || result.status === 201){
+	  if(image) {
+			formData.append("_picture", image);
+			formData.append("_name", newName);
+			const response = await uploadFile("/api/products/picture", formData);
+			if (response.status !== 200) {
+				alert("در آپلود تصویر خطایی به وجود آمد!");
+			}
+		}
+		return true;
+	}
+	else {
+		alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
+		return false;
+	}
+}
+export default {getProducts, updateProduct};
