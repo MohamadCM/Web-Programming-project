@@ -118,10 +118,8 @@ export default {
   }
 }
 @media (max-width: 600px) {
-  .btn {
-    padding: 4px 8px;
-    margin-top: 14px;
-    font-size: 10px;
+  #sort-box {
+    height: 80px;
   }
 }
 /*Flex container*/

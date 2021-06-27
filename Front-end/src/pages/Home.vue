@@ -34,9 +34,8 @@
           id="myRange"
           v-model="orderAmount"
           type="range"
-          min="0"
+          :min="1"
           :max="selectedProduct.inventory"
-          value="1"
           class="slider"
         >
         <p style="margin-top: 30px">
@@ -49,6 +48,12 @@
         >
           ارسال سفارش
         </button>
+        <p
+          v-if="postInfo"
+          style="color: #FFC80A"
+        >
+          {{ postInfo }}
+        </p>
       </div>
     </modal>
     <div>
@@ -70,7 +75,7 @@
       <div class="product-container">
         <product-card
           v-for="product of products"
-          :key="product.id"
+          :key="product.name"
           :category="product.category"
           :name="product.name"
           :price="product.price"
@@ -121,6 +126,7 @@ import language from "../utils/language";
 import formatter from "../utils/formatter";
 import authorization from "../controller/authorization";
 import product from "../controller/product";
+import receipt from "../controller/receipt";
 
 export default {
 	name: "Home",
@@ -151,7 +157,8 @@ export default {
 			initialMax: 50000,
 			category: [],
 			sortObject: {"_soldCount": -1},
-			firstTime: true
+			firstTime: true,
+			postInfo: undefined
 		};
 	},
 	watch: {
@@ -192,6 +199,12 @@ export default {
 		},
 		category(){
 		  this.init();
+		},
+		showModal(val){
+		  if(val) {
+				this.orderAmount = 1;
+				this.postInfo = undefined;
+			}
 		}
 	},
 	mounted() {
@@ -228,9 +241,17 @@ export default {
 		formattedPrice(val) {
 			return language.toFarsiNumber(formatter.formatToRial(val));
 		},
-		completeOrder(){
-		  console.log("Order has been fulfilled!");
-		  this.showModal = false;
+		async completeOrder(){
+		  const result = await receipt.createOrder(this.selectedProduct.name, Number.parseInt(this.orderAmount));
+		  if(result === true){
+		    this.postInfo = "سفارش شما با موفقیت به ثبت رسید";
+		    setTimeout(()=>{
+		      this.showModal = false;
+		      }, 5000);
+			} else {
+		    console.log(result);
+				this.postInfo = result.message;
+			}
 		},
 		setRange(val){
 		  this.min = Number.parseInt(val.min);

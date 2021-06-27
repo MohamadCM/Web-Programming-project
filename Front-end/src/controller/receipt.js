@@ -1,4 +1,4 @@
-import { RequestTypes, sendRequest } from "../utils/request";
+import { RequestTypes, sendRequest} from "../utils/request";
 
 async function getReceipts(limit = Number.MAX_SAFE_INTEGER,
 	offset = 0, trackingCode= undefined, sort = {"_date": -1}, fields){
@@ -29,6 +29,27 @@ async function getReceipts(limit = Number.MAX_SAFE_INTEGER,
 	}
 	return {};
 }
+
+async function createOrder(product, count){
+	const body = {
+		_product: product,
+		_count: count
+	};
+	Object.keys(body)
+		.forEach((key) => body[key] === undefined && delete body[key]); // removing undefined values
+	const result = await sendRequest(RequestTypes.POST, "/api/orders",{}, body);
+	if(result.status === 200 || result.status === 201){
+		return true;
+	}
+	else {
+		if(result.status !== 400)
+			alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
+		return {
+			message: result.data.message
+		};
+	}
+}
+
 async function updateStatus(trackingCode, status) {
 	const result = await sendRequest(RequestTypes.PUT, "/api/orders/status", {}, {
 	  _order: trackingCode,
@@ -42,4 +63,5 @@ async function updateStatus(trackingCode, status) {
 		return false;
 	}
 }
-export default {getReceipts, updateStatus};
+
+export default {getReceipts, createOrder, updateStatus};
