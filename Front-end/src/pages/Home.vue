@@ -60,8 +60,10 @@
     <div id="main-part">
       <div class="filter-box">
         <filter-box
-          @min="minFunc"
-          @max="maxFunc"
+          :key="initialMax"
+          :initial-slider-min="initialMin"
+          :initial-slider-max="initialMax"
+          @range="setRange"
           @category="categoryFunc"
         />
       </div>
@@ -118,6 +120,7 @@ import modal from "../components/core/modal";
 import language from "../utils/language";
 import formatter from "../utils/formatter";
 import authorization from "../controller/authorization";
+import product from "../controller/product";
 
 export default {
 	name: "Home",
@@ -142,9 +145,13 @@ export default {
 			showModal: false,
 			selectedProduct: {},
 			orderAmount: 1,
-			min: 0,
-			max: 50000,
-			category: []
+			min: 1,
+			max: Number.MAX_SAFE_INTEGER,
+			initialMin: 1,
+			initialMax: 50000,
+			category: [],
+			sortObject: {"_soldCount": -1},
+			firstTime: true
 		};
 	},
 	watch: {
@@ -161,35 +168,53 @@ export default {
 		},
 		sort(val){
 		  // 0: Most sold
-			// 1: Cost
-			// 2: Date
-		  console.log(val);
+			// 1: Cost upward
+			// 2: Cost downward
+			// 3: Date
+			switch (val){
+				case 0:
+				  this.sortObject = {"_soldCount": -1};
+					break;
+				case 1:
+					this.sortObject = {"_price": -1};
+					break;
+				case 2:
+					this.sortObject = {"_price": +1};
+					break;
+				case 3:
+					this.sortObject = {"_date": -1};
+					break;
+			}
+		  this.init();
 		},
-		searchValue(val){
-		  console.log(val);
+		searchValue(){
+		  this.init();
+		},
+		category(){
+		  this.init();
 		}
 	},
 	mounted() {
 		this.init();
 	},
 	methods: {
-		init() {
-			this.fullProducts = [];
-			for (let i = 0; i < 40; i++) {
-				this.fullProducts.push({
-					id: i,
-					name: `نام محصول ${i}`,
-					category: "دسته بندی",
-					price: 10000,
-					image: "https://upload.wikimedia.org/wikipedia/commons/d/de/Windows_live_square.JPG",
-					inventory: 5
-				});
+		async init() {
+			this.fullProducts = await product.getProducts(Number.MAX_SAFE_INTEGER, 0,
+				this.searchValue, this.category, this.min, this.max, this.sortObject);
+			if(this.firstTime) {
+				this.initialMax = 0;
+				for (const product of this.fullProducts) {
+					if (product.price > this.initialMax) {
+						this.initialMax = product.price;
+					}
+				}
 			}
 			this.numberOfPages = Math.ceil(this.fullProducts.length / this.pageLength);
 			this.products = [];
 			for (let i = 0; i < Math.min(this.pageLength, this.fullProducts.length); i++) {
 				this.products.push(this.fullProducts[i]);
 			}
+			this.firstTime = false;
 		},
 		async order(product){
 		  const logged = await authorization.isLoggedIn();
@@ -207,17 +232,14 @@ export default {
 		  console.log("Order has been fulfilled!");
 		  this.showModal = false;
 		},
-		minFunc(val){
-		  this.min = val;
-		  console.log(val);
-		},
-		maxFunc(val){
-		  this.max = val;
-		  console.log(val);
+		setRange(val){
+		  this.min = Number.parseInt(val.min);
+		  this.max = Number.parseInt(val.max);
+			this.init();
 		},
 		categoryFunc(val){
 		  this.category = val;
-		  console.log(val);
+			this.init();
 		}
 	}
 };

@@ -27,6 +27,7 @@ async function getReceipts(limit = Number.MAX_SAFE_INTEGER,
 		alert("خطایی به وجود آمده است" + "\n" + response.data.msg + "\n" + response.data.message || "");
 		return {};
 	}
+	return {};
 }
 async function updateStatus(trackingCode, status) {
 	const result = await sendRequest(RequestTypes.PUT, "/api/orders/status", {}, {

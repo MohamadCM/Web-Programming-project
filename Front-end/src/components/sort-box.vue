@@ -34,7 +34,11 @@ export default {
 				backGroundColor: "#00A1FF",
 				color: "white"
 			}, {
-				text: "قیمت",
+				text: "قیمت (نزولی)",
+				backGroundColor: "white",
+				color: "black"
+			}, {
+				text: "قیمت (صعودی)",
 				backGroundColor: "white",
 				color: "black"
 			}, {
@@ -100,17 +104,24 @@ export default {
 .btn__margin {
   margin-left: 10px;
   margin-right: 10px;
-  margin-top: 3px;
+  margin-top: 5px;
 }
 /* Selection button hover */
 .btn:hover {
   box-shadow: 0 0 3pt 0.5pt silver;
 }
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .btn {
     padding: 5px 10px;
     margin-top: 12px;
     font-size: 12px;
+  }
+}
+@media (max-width: 600px) {
+  .btn {
+    padding: 4px 8px;
+    margin-top: 14px;
+    font-size: 10px;
   }
 }
 /*Flex container*/

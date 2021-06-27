@@ -27,7 +27,8 @@ router.get("/", async (req: Request, res: Response) => {
 		const qLimit = Number.parseInt(<string>limit);
 		const qOffset = Number.parseInt(<string>offset);
 		let _qPrice, _qInventory;
-		if(_price) _qPrice = Number.parseInt(<string>_price);
+		if(_price && !!Number(<string>_price)) _qPrice = Number.parseInt(<string>_price);
+		else if(_price && !Number(<string>_price)) _qPrice = JSON.parse(<string>_price);
 		if(_inventory) _qInventory = Number.parseInt(<string>_inventory);
 		const categoryIsArray = Array.isArray(_category);
 		const catArr = [];
@@ -38,14 +39,14 @@ router.get("/", async (req: Request, res: Response) => {
 			catArr.push({});
 		const count: number | undefined = await Product
 			.getCount({_name, _category: categoryIsArray ? undefined : _category,
-				_picture, price: _qPrice, _soldCount, _inventory: _qInventory}, catArr);
+				_picture, _price: _qPrice, _soldCount, _inventory: _qInventory}, catArr);
 		if(!count){
 			res.status(404).json({...messages.wrongInput, message: "No product was found!"});
 			return;
 		}
 		const products: Product[] | undefined = await Product
 			.getList({_name, _category: categoryIsArray ? undefined : _category, _picture,
-				price: _qPrice, _soldCount, _inventory: _qInventory},
+				_price: _qPrice, _soldCount, _inventory: _qInventory},
 			qLimit, qOffset, <string | undefined>fields, JSON.parse(<string | undefined>sort || "{}"), catArr);
 		let result = <Array<Record<string, unknown>>><unknown>products;
 		if(fields && products)

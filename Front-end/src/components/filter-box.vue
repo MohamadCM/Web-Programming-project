@@ -15,7 +15,7 @@
             v-model="selectedCategory"
             class="category"
             type="checkbox"
-            :value="category.id"
+            :value="category.title"
           >
           <label
             :for="category.id"
@@ -46,7 +46,7 @@
           id="b"
           v-model="min"
           type="range"
-          min="0"
+          min="1"
           :max="initialSliderMax"
         >
       </div>
@@ -55,6 +55,13 @@
         <span>  تا </span>
         <span style="float: left; margin-left: 5px">{{ shownMinMax.max }}</span>
       </div>
+
+      <button
+        class="btn"
+        @click="sendPriceRange"
+      >
+        اعمال
+      </button>
     </div>
   </div>
 </template>
@@ -67,7 +74,7 @@ export default {
 	props: {
 		initialSliderMin: {
 			type: Number,
-			default: 0
+			default: 1
 		},
 		initialSliderMax: {
 			type: Number,
@@ -79,15 +86,15 @@ export default {
 			categories: [
 				{
 					id: 1,
-					title: "دسته‌بندی یک"
+					title: "category2"
 				},
 				{
 					id: 2,
-					title: "دسته‌بندی دو"
+					title: "category3"
 				},
 				{
 					id: 3,
-					title: "دسته‌بندی سه"
+					title: "دسته‌بندی نشده"
 				}
 			],
 			selectedCategory: [],
@@ -119,6 +126,14 @@ export default {
 		max(val){
 			this.result.max = Number.parseInt(val);
 			this.$emit("max", val);
+		}
+	},
+	methods: {
+	  sendPriceRange(){
+	    this.$emit("range", {
+	      max: this.max,
+	      min: this.min
+			});
 		}
 	}
 };
@@ -190,7 +205,7 @@ export default {
 #price-card {
   background: white;
   direction: rtl;
-  text-align: right;
+  text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 2px;
   margin-top: 15px;
@@ -250,5 +265,25 @@ input[type='range'] {
   font-family: inherit;
   font-size: 16px;
   direction: rtl;
+}
+/* Button styles */
+.btn {
+  color: white;
+  background: #00A1FF;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 24px;
+  border: 0 solid;
+  padding: 10px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  -webkit-transition: 300ms;
+  /* Position */
+  width: 120px;
+  margin: 10px;
+}
+
+/* Button shadow on hover */
+.btn:hover {
+  box-shadow: 0 0 3pt 0.5pt #00A1FF;
 }
 </style>
