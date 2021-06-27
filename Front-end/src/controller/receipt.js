@@ -1,11 +1,13 @@
 import { RequestTypes, sendRequest } from "../utils/request";
 
-async function getReceipts(limit = Number.MAX_SAFE_INTEGER, offset = 0, trackingCode= undefined, sort = {"_date": -1}, fields){
+async function getReceipts(limit = Number.MAX_SAFE_INTEGER,
+	offset = 0, trackingCode= undefined, sort = {"_date": -1}, fields){
 	const response = await sendRequest(RequestTypes.GET, "/api/orders/", {
 		_trackingCode: trackingCode,
 		sort,
 		limit,
-		offset
+		offset,
+		fields
 	});
 	if(response.status === 200) {
 		const orders = response.data.orders;
@@ -26,5 +28,17 @@ async function getReceipts(limit = Number.MAX_SAFE_INTEGER, offset = 0, tracking
 		return {};
 	}
 }
-
-export default {getReceipts};
+async function updateStatus(trackingCode, status) {
+	const result = await sendRequest(RequestTypes.PUT, "/api/orders/status", {}, {
+	  _order: trackingCode,
+		_status: status
+	});
+	if(result.status === 200){
+		return true;
+	}
+	else {
+		alert("خطایی به وجود آمده است" + "\n" + result.data.msg + "\n" + result.data.message || "");
+		return false;
+	}
+}
+export default {getReceipts, updateStatus};

@@ -25,7 +25,7 @@
         </tr>
         <tr
           v-for="receipt of receipts"
-          :key="receipt.status"
+          :key="receipt.trackingCode"
           class="border_bottom"
         >
           <td>{{ receipt.trackingCode }}</td>
@@ -41,10 +41,25 @@
             style="border: none"
           >
             <button
-              class="status__button"
-              @click="changeStatus(receipt)"
+              v-if="receipt.status !== 'لغو شده'"
+              class="cancel__status__button"
+              @click="changeStatus(receipt, -1)"
             >
-              پیشروی سفارش
+              لغو سفارش
+            </button>
+            <button
+              v-if="receipt.status !== 'درحال انجام'"
+              class="progress__status__button"
+              @click="changeStatus(receipt, 0)"
+            >
+              در حال انجام
+            </button>
+            <button
+              v-if="receipt.status !== 'انجام شده'"
+              class="done__status__button"
+              @click="changeStatus(receipt, 1)"
+            >
+              انجام سفارش
             </button>
           </td>
         </tr>
@@ -78,16 +93,18 @@ export default {
 	},
 	watch: {
 		async searchCode(val){
-		  const code = val && val.length > 0 ? val : undefined;
-			this.receipts = await receipt.getReceipts(Number.MAX_SAFE_INTEGER, 0, code);
+			this.receipts = await receipt.getReceipts(Number.MAX_SAFE_INTEGER, 0,
+				val && val.length > 0 ? val : undefined);
 		}
 	},
 	async mounted() {
 		this.receipts = await receipt.getReceipts();
 	},
 	methods: {
-		changeStatus(val){
-			console.log(`${JSON.stringify(val)} edited!`);
+		async changeStatus(val, newStatus){
+		  await receipt.updateStatus(val.trackingCode, newStatus);
+			this.receipts = await receipt.getReceipts(Number.MAX_SAFE_INTEGER, 0,
+				this.searchCode && this.searchCode.length > 0 ? this.searchCode : undefined);
 		},
 		formatPrice(val) {
 			return language.toFarsiNumber(formatter.formatToRial(val));
@@ -140,20 +157,56 @@ th {
   flex-direction: column;
   align-items: center;
 }
-.status__button{
+.done__status__button{
   background: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   font-family: inherit;
   font-size: 16px;
   border-radius: 24px;
   border: 0 solid;
-  background: #FFC80C;
-  padding: 13px 20px;
+  background: lightgreen;
+  padding: 6px 10px;
   /* Animation */
   -webkit-transition: 0.4s;
+  margin: 1px;
 }
 /* Box shadow on hover */
-.status__button:hover{
-  box-shadow: 0 0 5pt 1.5pt #FFC80C;
+.done__status__button:hover{
+  box-shadow: 0 0 5pt 1.5pt green;
+}
+.cancel__status__button{
+  background: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 24px;
+  border: 0 solid;
+  background: indianred;
+  padding: 6px 10px;
+  /* Animation */
+  -webkit-transition: 0.4s;
+  margin: 1px;
+  color: white;
+}
+/* Box shadow on hover */
+.cancel__status__button:hover{
+  box-shadow: 0 0 5pt 1.5pt red;
+}
+.progress__status__button{
+  background: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 24px;
+  border: 0 solid;
+  background: lightskyblue;
+  padding: 6px 10px;
+  /* Animation */
+  -webkit-transition: 0.4s;
+  margin: 1px;
+}
+/* Box shadow on hover */
+.progress__status__button:hover{
+  box-shadow: 0 0 5pt 1.5pt deepskyblue;
 }
 </style>

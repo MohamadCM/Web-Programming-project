@@ -4,7 +4,6 @@ function formatToRial(num) {
 		currency: "IRR"
 	});
 	const money = toCurrencyFormat.format(num);
-	console.log(money);
 	return money.replace("IRR", "").replace(".00", "") + " تومان";
 }
 
