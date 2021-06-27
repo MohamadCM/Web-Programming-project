@@ -1,6 +1,13 @@
 <template>
   <div>
     <modal
+      :key="waitModal"
+      v-model="waitModal"
+      :show="waitModal"
+    >
+      <loading />
+    </modal>
+    <modal
       :key="showModal"
       v-model="showModal"
       :show="showModal"
@@ -127,6 +134,7 @@ import formatter from "../utils/formatter";
 import authorization from "../controller/authorization";
 import product from "../controller/product";
 import receipt from "../controller/receipt";
+import loading from "../components/core/loading";
 
 export default {
 	name: "Home",
@@ -136,7 +144,8 @@ export default {
 		filterBox,
 		productCard,
 		pagination,
-		modal
+		modal,
+		loading
 	},
 	data() {
 		return {
@@ -158,7 +167,8 @@ export default {
 			category: [],
 			sortObject: {"_soldCount": -1},
 			firstTime: true,
-			postInfo: undefined
+			postInfo: undefined,
+			waitModal: false
 		};
 	},
 	watch: {
@@ -212,22 +222,27 @@ export default {
 	},
 	methods: {
 		async init() {
-			this.fullProducts = await product.getProducts(Number.MAX_SAFE_INTEGER, 0,
-				this.searchValue, this.category, this.min, this.max, this.sortObject);
-			if(this.firstTime) {
-				this.initialMax = 0;
-				for (const product of this.fullProducts) {
-					if (product.price > this.initialMax) {
-						this.initialMax = product.price;
+		  this.waitModal = true;
+		  setTimeout(async () => {
+				this.fullProducts = await product.getProducts(Number.MAX_SAFE_INTEGER, 0,
+					this.searchValue, this.category, this.min, this.max, this.sortObject);
+				if(this.firstTime) {
+					this.initialMax = 0;
+					for (const product of this.fullProducts) {
+						if (product.price > this.initialMax) {
+							this.initialMax = product.price;
+						}
 					}
 				}
-			}
-			this.numberOfPages = Math.ceil(this.fullProducts.length / this.pageLength);
-			this.products = [];
-			for (let i = 0; i < Math.min(this.pageLength, this.fullProducts.length); i++) {
-				this.products.push(this.fullProducts[i]);
-			}
-			this.firstTime = false;
+				this.numberOfPages = Math.ceil(this.fullProducts.length / this.pageLength);
+				this.products = [];
+				for (let i = 0; i < Math.min(this.pageLength, this.fullProducts.length); i++) {
+					this.products.push(this.fullProducts[i]);
+				}
+				this.firstTime = false;
+				this.waitModal = false;
+			}, 3000);
+
 		},
 		async order(product){
 		  const logged = await authorization.isLoggedIn();
